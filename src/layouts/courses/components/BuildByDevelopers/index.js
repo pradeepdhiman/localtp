@@ -15,7 +15,7 @@ import { useLocation } from "react-router-dom";
 
 function BuildByDevelopers() {
   const location = useLocation()
-  console.log(location)
+  // console.log(location)
   return (
     <Card>
       <SoftBox p={2}>

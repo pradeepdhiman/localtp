@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import {  useNavigate } from "react-router-dom";
 
+import * as actions from "./functions/action"
+
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
@@ -12,10 +14,12 @@ import PageCoverLayout from "examples/LayoutContainers/PageLayoutCover";
 import BuildByDevelopers from "./components/BuildByDevelopers";
 import { Card, Grid, Pagination, Stack } from "@mui/material";
 import { GetCourseList } from "api/trainingApi";
+import { useDispatch } from "react-redux";
 
 
 function Courses() {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +34,8 @@ function Courses() {
   const { user } = useAuth();
 
   useEffect(() => {
-    GetCourseList().then(res => console.log(res)).catch(err => console.log(err))
+    // GetCourseList().then(res => console.log(res)).catch(err => console.log(err))
+    dispatch(actions.courseList())
   }, [])
 
   const renderSearch = (

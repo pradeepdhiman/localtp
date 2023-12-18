@@ -40,7 +40,7 @@ function SignUp() {
   const queryStringObject = queryString.parse(queryStrings);
   const courseId = queryStringObject.courseid;
 
-  console.log(courseId)
+  // console.log(courseId)
 
   const handleSetAgremment = () => setAgremment(!agreement);
 

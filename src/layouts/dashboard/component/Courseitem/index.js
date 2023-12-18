@@ -21,7 +21,7 @@ function CourseItem({ complete = false, relativeCourse = false }) {
   const [progress, setProgress] = useState(30);
 
   const location = useLocation()
-  console.log(location)
+  // console.log(location)
   return (
     <Card>
       <SoftBox p={2}>
