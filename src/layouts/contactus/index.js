@@ -1,12 +1,11 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // react-router-dom components
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
-import Checkbox from "@mui/material/Checkbox";
 
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
@@ -22,7 +21,6 @@ import curved6 from "assets/images/curved-images/curved14.jpg";
 
 import AuthApi from "../../api/auth";
 
-import { useAuth } from "auth-context/auth.context";
 
 function Contactus() {
   const navigate = useNavigate();
@@ -30,8 +28,6 @@ function Contactus() {
   const [agreement, setAgremment] = useState(true);
   const [formData, setFormData] = useState({});
   const [error, setError] = useState("");
-
-  const { user } = useAuth();
 
   const handleSetAgremment = () => setAgremment(!agreement);
 
@@ -68,65 +64,54 @@ function Contactus() {
       description="We are happy to help you."
       image={curved6}
     >
-      {user && user.token ? (
-        <Card>
-          <h3 style={{ textAlign: "center" }}>You are already signed in.</h3>
-          <SoftBox mt={4} mb={1}>
-            <SoftButton variant="gradient" buttonColor="info" fullWidth onClick={handleRedirect}>
-              {`Let's go`}
-            </SoftButton>
-          </SoftBox>
-        </Card>
-      ) : (
-        <Card>
-          <SoftBox pt={2} pb={3} px={3}>
-            <SoftBox component="form" role="form">
-              <SoftBox mb={2}>
-                <SoftInput
-                  type="text"
-                  name="username"
-                  placeholder="Name"
-                  onChange={handleFormData}
-                />
-              </SoftBox>
-              <SoftBox mb={2}>
-                <SoftInput
-                  type="email"
-                  name="email"
-                  onChange={handleFormData}
-                  placeholder="Email"
-                />
-              </SoftBox>
-              <SoftBox mb={2}>
-                <SoftInput
-                  type="text"
-                  name="message"
-                  onChange={handleFormData}
-                  placeholder="Message"
-                />
-              </SoftBox>
-              <SoftBox mt={2} mb={2} textAlign="center">
-                <h6
-                  style={{
-                    fontSize: ".8em",
-                    color: "red",
-                    textAlign: "center",
-                    fontWeight: 400,
-                    transition: ".2s all",
-                  }}
-                >
-                  {error}
-                </h6>
-              </SoftBox>
-              <SoftBox mt={4} mb={1}>
-                <SoftButton variant="gradient" color="dark" onClick={handleSubmit} fullWidth>
-                  Send
-                </SoftButton>
-              </SoftBox>
+      <Card>
+        <SoftBox pt={2} pb={3} px={3}>
+          <SoftBox component="form" role="form">
+            <SoftBox mb={2}>
+              <SoftInput
+                type="text"
+                name="username"
+                placeholder="Name"
+                onChange={handleFormData}
+              />
+            </SoftBox>
+            <SoftBox mb={2}>
+              <SoftInput
+                type="email"
+                name="email"
+                onChange={handleFormData}
+                placeholder="Email"
+              />
+            </SoftBox>
+            <SoftBox mb={2}>
+              <SoftInput
+                type="text"
+                name="message"
+                onChange={handleFormData}
+                placeholder="Message"
+              />
+            </SoftBox>
+            <SoftBox mt={2} mb={2} textAlign="center">
+              <h6
+                style={{
+                  fontSize: ".8em",
+                  color: "red",
+                  textAlign: "center",
+                  fontWeight: 400,
+                  transition: ".2s all",
+                }}
+              >
+                {error}
+              </h6>
+            </SoftBox>
+            <SoftBox mt={4} mb={1}>
+              <SoftButton variant="gradient" color="dark" onClick={handleSubmit} fullWidth>
+                Send
+              </SoftButton>
             </SoftBox>
           </SoftBox>
-        </Card>
-      )}
+        </SoftBox>
+      </Card>
     </BasicLayout>
   );
 }

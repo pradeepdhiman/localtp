@@ -1,22 +1,13 @@
-import { applyMiddleware, configureStore, createStore } from '@reduxjs/toolkit';
-import rootReducer from './rootReducer';
-import { thunk } from 'redux-thunk';
-import { composeWithDevTools } from '@redux-devtools/extension';
+import { configureStore } from "@reduxjs/toolkit";
+import { coursesApi } from "layouts/courses/functions/query";
+import emptySplitApi from "../utils/emptySplitApi";
 
-const middlewareEnhancer = applyMiddleware(thunk)
 
-// const store = configureStore({
-//   reducer: rootReducer,
-// });
+export const store = configureStore({
+    reducer: {
+        [emptySplitApi.reducerPath]: coursesApi.reducer
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([emptySplitApi.middleware])
+})
 
-const store = createStore(rootReducer, composeWithDevTools(middlewareEnhancer))
-
-// const store = configureStore({
-//     reducer: {
-//     //   posts: postReducer,
-//     rootReducer
-//     },
-//     middleware: [thunk],
-//   });
-
-export default store;
+export default store

@@ -14,13 +14,15 @@ import SoftButton from "components/SoftButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-function Details() {
-  const [courseid, setCourseid]=useState("kjfse")
+function Details(props) {
+  const { course = {}} = props
   const Navigate = useNavigate()
 
   function selectHandler() {
-    Navigate("/authentication/sign-up?courseid="+courseid)
+    console.log(course)
+    Navigate("/authentication/sign-up?courseid=" + course.courseID + "&coursename=" + course.courseName);
   }
+  
   return (
     <Card>
       <SoftBox p={2} mt={3}>
@@ -56,18 +58,24 @@ function Details() {
                 </SoftTypography>
               </SoftBox>
               <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
-                Advance javascript
+                {course.courseName}
               </SoftTypography>
               <SoftBox mb={2}>
                 <SoftTypography variant="body2" color="text">
-                  From colors, cards, typography to complex elements
-                  From colors, cards, typography to complex elements
-                  From colors, cards, typography to complex elements
-                  From colors, cards, typography to complex elements
-                  From colors, cards, typography to complex elements
-                  From colors, cards, typography to complex elements
-                  From colors, cards, typography to complex elements
-                  From colors, cards, typography to complex elements
+                  {course.description}
+                </SoftTypography>
+              </SoftBox>
+              <SoftBox mb={2}>
+                <SoftTypography variant="body2" color="text">
+                  Course Duration : {course.duration}
+                </SoftTypography>
+              </SoftBox>
+              <SoftBox mb={2}>
+              <SoftTypography variant="body2" color="text">
+                  Total Amount : <SoftTypography variant="body2" component="span" color="info">{course.totalAmount}</SoftTypography>
+                </SoftTypography>
+                <SoftTypography variant="body2" color="text">
+                  Training Fees : <SoftTypography variant="body2" component="span" color="info">{course.trainingfee}</SoftTypography>
                 </SoftTypography>
               </SoftBox>
               <SoftButton variant="gradient" color="dark" onClick={selectHandler}>

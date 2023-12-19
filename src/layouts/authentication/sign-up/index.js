@@ -24,6 +24,7 @@ import AuthApi from "../../../api/auth";
 
 import { useAuth } from "auth-context/auth.context";
 import queryString from "query-string";
+import { authUser } from "../functions/query";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -32,15 +33,15 @@ function SignUp() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState("");
 
-  const { user } = useAuth();
 
   const location = useLocation();
 
   const queryStrings = location.search;
   const queryStringObject = queryString.parse(queryStrings);
   const courseId = queryStringObject.courseid;
+  const coursename = queryStringObject.coursename;
 
-  // console.log(courseId)
+  const user = authUser()
 
   const handleSetAgremment = () => setAgremment(!agreement);
 
@@ -79,11 +80,38 @@ function SignUp() {
     >
       {user && user.token ? (
         <Card>
-          <h3 style={{ textAlign: "center" }}>You are already signed in.</h3>
-          <SoftBox mt={4} mb={1}>
-            <SoftButton variant="gradient" buttonColor="info" fullWidth onClick={handleRedirect}>
-              {`Let's go`}
-            </SoftButton>
+          <SoftBox pt={2} pb={3} px={3}>
+            <h3 style={{ textAlign: "center", marginBottom: "20px" }}>Send request to learn this course.</h3>
+            <SoftBox component="form" role="form">
+              <SoftBox mb={2}>
+                <SoftInput
+                  type="text"
+                  readonly
+                  name="course"
+                  onChange={handleFormData}
+                  placeholder="Course"
+                  value={coursename}
+                />
+              </SoftBox>
+              <SoftBox mt={2} mb={2} textAlign="center">
+                <h6
+                  style={{
+                    fontSize: ".8em",
+                    color: "red",
+                    textAlign: "center",
+                    fontWeight: 400,
+                    transition: ".2s all",
+                  }}
+                >
+                  {error}
+                </h6>
+              </SoftBox>
+              <SoftBox mt={4} mb={1}>
+                <SoftButton variant="gradient" color="dark" onClick={handleSubmit} fullWidth>
+                  Send Request
+                </SoftButton>
+              </SoftBox>
+            </SoftBox>
           </SoftBox>
         </Card>
       ) : (
@@ -121,7 +149,7 @@ function SignUp() {
                   name="course"
                   onChange={handleFormData}
                   placeholder="Course"
-                  value={courseId}
+                  value={coursename}
                 />
               </SoftBox>
               <SoftBox display="flex" alignItems="center">
@@ -181,6 +209,111 @@ function SignUp() {
           </SoftBox>
         </Card>
       )}
+
+      {/* {user && user.token ? (
+        <Card>
+          <h3 style={{ textAlign: "center" }}>You are already signed in.</h3>
+          <SoftBox mt={4} mb={1}>
+            <SoftButton variant="gradient" buttonColor="info" fullWidth onClick={handleRedirect}>
+              {`Let's go`}
+            </SoftButton>
+          </SoftBox>
+        </Card>
+      ) : (
+        <Card>
+          <SoftBox pt={2} pb={3} px={3}>
+            <SoftBox component="form" role="form">
+              <SoftBox mb={2}>
+                <SoftInput
+                  type="text"
+                  name="username"
+                  placeholder="Name"
+                  onChange={handleFormData}
+                />
+              </SoftBox>
+              <SoftBox mb={2}>
+                <SoftInput
+                  type="email"
+                  name="email"
+                  onChange={handleFormData}
+                  placeholder="Email"
+                />
+              </SoftBox>
+              <SoftBox mb={2}>
+                <SoftInput
+                  type="password"
+                  name="password"
+                  onChange={handleFormData}
+                  placeholder="Password"
+                />
+              </SoftBox>
+              <SoftBox mb={2}>
+                <SoftInput
+                  type="text"
+                  readonly
+                  name="course"
+                  onChange={handleFormData}
+                  placeholder="Course"
+                  value={coursename}
+                />
+              </SoftBox>
+              <SoftBox display="flex" alignItems="center">
+                <Checkbox checked={agreement} onChange={handleSetAgremment} />
+                <SoftTypography
+                  variant="button"
+                  fontWeight="regular"
+                  onClick={handleSetAgremment}
+                  sx={{ cursor: "poiner", userSelect: "none" }}
+                >
+                  &nbsp;&nbsp;I agree the&nbsp;
+                </SoftTypography>
+                <SoftTypography
+                  component="a"
+                  href="#"
+                  variant="button"
+                  fontWeight="bold"
+                  textGradient
+                >
+                  Terms and Conditions
+                </SoftTypography>
+              </SoftBox>
+              <SoftBox mt={2} mb={2} textAlign="center">
+                <h6
+                  style={{
+                    fontSize: ".8em",
+                    color: "red",
+                    textAlign: "center",
+                    fontWeight: 400,
+                    transition: ".2s all",
+                  }}
+                >
+                  {error}
+                </h6>
+              </SoftBox>
+              <SoftBox mt={4} mb={1}>
+                <SoftButton variant="gradient" color="dark" onClick={handleSubmit} fullWidth>
+                  sign up
+                </SoftButton>
+              </SoftBox>
+              <SoftBox mt={3} textAlign="center">
+                <SoftTypography variant="button" color="text" fontWeight="regular">
+                  Already have an account?&nbsp;
+                  <SoftTypography
+                    component={Link}
+                    to="/authentication/sign-in"
+                    variant="button"
+                    color="dark"
+                    fontWeight="bold"
+                    textGradient
+                  >
+                    Sign in
+                  </SoftTypography>
+                </SoftTypography>
+              </SoftBox>
+            </SoftBox>
+          </SoftBox>
+        </Card>
+      )} */}
     </BasicLayout>
   );
 }

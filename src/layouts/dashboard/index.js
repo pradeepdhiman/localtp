@@ -12,19 +12,24 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import typography from "assets/theme/base/typography";
 import CourseItem from "./component/Courseitem";
+import { Stack } from "@mui/material";
+import SoftButton from "components/SoftButton";
 
 function Dashboard() {
   const { size } = typography;
-  
+
 
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <SoftBox mb={3}>
-        <SoftTypography variant="h4" gutterBottom px={2}>
-          My Courses
-        </SoftTypography>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <SoftTypography variant="h4" gutterBottom px={2}>
+            My Courses
+          </SoftTypography>
+          <SoftButton variant="text" color="info">All</SoftButton>
+        </Stack>
         <Grid container spacing={3} >
           <Grid item xs={12} lg={3}>
             <CourseItem />
@@ -41,9 +46,12 @@ function Dashboard() {
         </Grid>
       </SoftBox>
       <SoftBox mb={3}>
-        <SoftTypography variant="h4" gutterBottom px={2}>
-          Completed Courses
-        </SoftTypography>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <SoftTypography variant="h4" gutterBottom px={2}>
+            Completed Courses
+          </SoftTypography>
+          <SoftButton variant="text" color="info">All</SoftButton>
+        </Stack>
         <Grid container spacing={3} >
           <Grid item xs={12} lg={3}>
             <CourseItem complete={true} />
@@ -54,9 +62,12 @@ function Dashboard() {
         </Grid>
       </SoftBox>
       <SoftBox mb={3}>
-        <SoftTypography variant="h4" gutterBottom px={2}>
-          Relative Courses
-        </SoftTypography>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <SoftTypography variant="h4" gutterBottom px={2}>
+            Relative Courses
+          </SoftTypography>
+          <SoftButton variant="text" color="info">All</SoftButton>
+        </Stack>
         <Grid container spacing={3} >
           <Grid item xs={12} lg={3}>
             <CourseItem relativeCourse={true} />

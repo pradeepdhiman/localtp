@@ -25,8 +25,9 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
 
 import brand from "assets/images/logo-ct.png";
+import { SnackbarProvider } from "notistack";
 
-export default function App() {
+function App() {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
@@ -140,9 +141,17 @@ export default function App() {
       {/* {layout === "vr" && <Configurator />} */}
       <Routes>
         {getRoutes(routes)}
-        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to="/home" />} />
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </ThemeProvider>
+  );
+}
+
+export default function IntegrationNotistack() {
+  return (
+    <SnackbarProvider maxSnack={3}>
+      <App />
+    </SnackbarProvider>
   );
 }

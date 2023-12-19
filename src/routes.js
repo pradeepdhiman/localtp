@@ -32,7 +32,7 @@ const routes = [
     icon: <DashboardIcon size="12px" />,
     component: <Dashboard />,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:true
   },
   {
@@ -115,7 +115,7 @@ const routes = [
     type: "collapse",
     name: "Course Detail",
     key: "course-detail",
-    route: "/courses/:id", 
+    route: "/courses/:courseid", 
     icon: <DashboardIcon size="12px" />,
     component: <CourseDetail />, 
     noCollapse: true,

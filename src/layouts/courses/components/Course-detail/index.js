@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { RotatingLines } from "react-loader-spinner";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import Switch from "@mui/material/Switch";
 
@@ -21,17 +21,23 @@ import PageCoverLayoutPlain from "examples/LayoutContainers/PageLayoutCoverPlain
 import { Card, Grid, Pagination, Stack } from "@mui/material";
 import BuildByDevelopers from "../BuildByDevelopers";
 import Details from "../BuildByDevelopers/details";
+import { useGetCourseQuery } from "layouts/courses/functions/query";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 
 
 function CourseDetail() {
   const navigate = useNavigate();
+  const {courseid} = useParams()
+  const { data, error, isLoading, isFetching, isSuccess } = useGetCourseQuery(courseid)
+  const { data: course } = data || {};
 
   return (
     <PageCoverLayoutPlain>
       <SoftBox mb={3}>
         <Grid container spacing={3} mt={2}>
           <Grid item xs={12}>
-            <Details />
+          {(isLoading && isFetching) && <SoftBarLoader />}
+            {course && <Details course={course} />}
           </Grid>
         </Grid>
       </SoftBox>

@@ -13,9 +13,9 @@ import wavesWhite from "assets/images/shapes/waves-white.svg";
 import rocketWhite from "assets/images/illustrations/rocket-white.png";
 import { useLocation } from "react-router-dom";
 
-function BuildByDevelopers() {
+function BuildByDevelopers(props) {
+  const { course = {} } = props
   const location = useLocation()
-  // console.log(location)
   return (
     <Card>
       <SoftBox p={2}>
@@ -51,16 +51,16 @@ function BuildByDevelopers() {
                 </SoftTypography>
               </SoftBox>
               <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
-                Advance javascript
+                {course.courseName}
               </SoftTypography>
               <SoftBox mb={2}>
                 <SoftTypography variant="body2" color="text">
-                  From colors, cards, typography to complex elements
+                  {course.description}
                 </SoftTypography>
               </SoftBox>
               <SoftTypography
                 component="a"
-                href={`${location.pathname}/1`}
+                href={`${location.pathname}/${course.courseID}`}
                 variant="button"
                 color="text"
                 fontWeight="medium"

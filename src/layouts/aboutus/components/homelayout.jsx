@@ -20,7 +20,7 @@ import SoftButton from "components/SoftButton";
 import { useNavigate } from "react-router-dom";
 
 function HomeLayout({ color, header, title, description, image, top, children }) {
-const navigate = useNavigate()
+  const navigate = useNavigate()
 
 
   return (
@@ -48,14 +48,13 @@ const navigate = useNavigate()
                     {description}
                   </SoftTypography>
                   <SoftBox mt={2}>
-                    <SoftButton onClick={() => navigate('/courses')} color="dark">Get Start</SoftButton>
+                    <SoftButton onClick={() => navigate('/courses')} color="dark">Start Learning</SoftButton>
                   </SoftBox>
                 </>
               ) : (
                 header
               )}
             </SoftBox>
-            <SoftBox p={3}>{children}</SoftBox>
           </SoftBox>
         </Grid>
         <Grid item xs={12} md={5}>
@@ -81,6 +80,11 @@ const navigate = useNavigate()
               }}
             />
           </SoftBox>
+        </Grid>
+      </Grid>
+      <Grid container justifyContent="center" mt={3}>
+        <Grid item xs={11} sm={8}>
+          <SoftBox px={2}>{children}</SoftBox>
         </Grid>
       </Grid>
       <Footer />
