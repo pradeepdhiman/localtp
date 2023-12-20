@@ -54,7 +54,7 @@ const routes = [
     icon: <VideoFileIcon size="12px" />,
     component: <Study/>,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:true
   },
   {
@@ -65,7 +65,7 @@ const routes = [
     icon: <PersonIcon size="12px" />,
     component: <Overview/>,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:true
   },
   {
@@ -76,7 +76,7 @@ const routes = [
     icon: <QuizIcon size="12px" />,
     component: <Assessment/>,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:true
   },
   {
@@ -87,7 +87,7 @@ const routes = [
     icon: <QuizIcon size="12px" />,
     component: <AssessmentTest/>,
     noCollapse: true,
-    protected: false,
+    protected: true,
     sidebar:false
   },
   {
