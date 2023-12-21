@@ -20,33 +20,28 @@ function Footer() {
         <Grid item xs={10} lg={8}>
           <SoftBox display="flex" justifyContent="center" flexWrap="wrap" mb={3}>
             <SoftBox mr={{ xs: 2, lg: 3, xl: 6 }}>
-              <SoftTypography component="a" href="#" variant="body2" color="secondary">
-                Company
-              </SoftTypography>
-            </SoftBox>
-            <SoftBox mr={{ xs: 2, lg: 3, xl: 6 }}>
-              <SoftTypography component="a" href="#" variant="body2" color="secondary">
+              <SoftTypography component="a" href="/aboutus" variant="body2" color="secondary">
                 About Us
               </SoftTypography>
             </SoftBox>
             <SoftBox mr={{ xs: 0, lg: 3, xl: 6 }}>
-              <SoftTypography component="a" href="#" variant="body2" color="secondary">
-                Team
+              <SoftTypography component="a" href="/courses" variant="body2" color="secondary">
+                Courses
               </SoftTypography>
             </SoftBox>
             <SoftBox mr={{ xs: 2, lg: 3, xl: 6 }}>
-              <SoftTypography component="a" href="#" variant="body2" color="secondary">
-                Product
+              <SoftTypography component="a" href="/faq" variant="body2" color="secondary">
+                Faq
               </SoftTypography>
             </SoftBox>
             <SoftBox mr={{ xs: 2, lg: 3, xl: 6 }}>
-              <SoftTypography component="a" href="#" variant="body2" color="secondary">
-                Blog
+              <SoftTypography component="a" href="/contectus" variant="body2" color="secondary">
+                Contact us
               </SoftTypography>
             </SoftBox>
             <SoftBox>
-              <SoftTypography component="a" href="#" variant="body2" color="secondary">
-                Pricing
+              <SoftTypography component="a" href="/privacypolicy" variant="body2" color="secondary">
+                Privacy Policy
               </SoftTypography>
             </SoftBox>
           </SoftBox>
@@ -72,7 +67,7 @@ function Footer() {
         </Grid>
         <Grid item xs={12} lg={8} sx={{ textAlign: "center" }}>
           <SoftTypography variant="body2" color="secondary">
-            Copyright &copy; 2021 Soft by Creative Tim.
+            Copyright &copy; 2023 Soft by Bilberry.
           </SoftTypography>
         </Grid>
       </Grid>
