@@ -103,7 +103,7 @@ function Header() {
                 Alex Thompson
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
-                CEO / Co-Founder
+                Student
               </SoftTypography>
             </SoftBox>
           </Grid>
@@ -115,8 +115,6 @@ function Header() {
                 onChange={handleSetTabValue}
                 sx={{ background: "transparent" }}
               >
-                <Tab label="App" icon={<Cube />} />
-                <Tab label="Message" icon={<Document />} />
                 <Tab label="Settings" icon={<Settings />} />
               </Tabs>
             </AppBar>

@@ -18,6 +18,8 @@ import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 import Header from "layouts/profile/components/Header";
 import { useGetProfileQuery } from "./functions/query";
 import { authUser } from "layouts/authentication/functions/query";
+import Settings from "./components/Settings";
+import ProfileEdit from "./components/ProfileEditForm";
 
 const formInfo = {
   title:"profile information",
@@ -69,9 +71,12 @@ function Overview() {
               action={{ route: "", tooltip: "Edit Profile" }}
             />
           </Grid>
-          {/* <Grid item xs={12} xl={6}>
+          <Grid item xs={12} xl={6}>
             <ProfileEdit title="Edit Profile" info={formInfo}/>
-          </Grid> */}
+          </Grid>
+          <Grid item xs={12} xl={6}>
+            <Settings/>
+          </Grid>
         </Grid>
       </SoftBox>
 

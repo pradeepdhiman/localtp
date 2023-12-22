@@ -99,7 +99,7 @@ const routes = [
     component: <Home />,
     noCollapse: true,
     protected: false,
-    sidebar:true
+    sidebar:false
   },
   {
     type: "collapse",

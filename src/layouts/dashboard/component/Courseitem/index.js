@@ -66,7 +66,7 @@ function CourseItem({ complete = false, relativeCourse = false }) {
               </SoftBox> */}
               {(!complete && !relativeCourse) && <SoftTypography
                 component="a"
-                href={`${location.pathname}/mycourses?1`}
+                href={`${location.pathname}/study?1`}
                 variant="button"
                 color="text"
                 fontWeight="medium"
@@ -92,7 +92,7 @@ function CourseItem({ complete = false, relativeCourse = false }) {
               </SoftTypography>}
               {relativeCourse && <SoftTypography
                 component="a"
-                href={`${location.pathname}/1`}
+                href="/courses/1"
                 variant="button"
                 color="text"
                 fontWeight="medium"
@@ -116,7 +116,7 @@ function CourseItem({ complete = false, relativeCourse = false }) {
               >
                 Read more
               </SoftTypography>}
-              {complete && <Box mt={2}><SoftButton color="dark">Download Certificate</SoftButton></Box>}
+              {complete && <Box mt={2}><SoftButton size="small" color="dark">Download</SoftButton></Box>}
               {(!complete && !relativeCourse) &&
                 <SoftBox width="100%" textAlign="left" mt={2} >
                   <SoftProgress value={25} color="error" variant="gradient" label={false} />

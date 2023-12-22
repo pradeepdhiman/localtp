@@ -47,9 +47,6 @@ function HomeLayout({ color, header, title, description, image, top, children })
                   <SoftTypography variant="body2" fontWeight="regular" color="text">
                     {description}
                   </SoftTypography>
-                  <SoftBox mt={2}>
-                    <SoftButton onClick={() => navigate('/courses')} color="dark">Start Learning</SoftButton>
-                  </SoftBox>
                 </>
               ) : (
                 header

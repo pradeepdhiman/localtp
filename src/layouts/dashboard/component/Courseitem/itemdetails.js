@@ -12,8 +12,7 @@ import wavesWhite from "assets/images/shapes/waves-white.svg";
 import rocketWhite from "assets/images/illustrations/rocket-white.png";
 import SoftButton from "components/SoftButton";
 
-function ItemDetails
-() {
+function ItemDetails() {
   
   function selectHandler(){
 
