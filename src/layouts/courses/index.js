@@ -50,35 +50,41 @@ function Courses() {
     >
       {(isLoading && isFetching) && <SoftBarLoader />}
       {error && <SoftSnakBar message={error || "Somethig went wrong"} severity="error" />}
-      {courses && (
-        <><SoftBox mb={3}>
-          <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" py={1} px={2} mt={2}>
-              <SoftBox>
-                <SoftTypography variant="h4" gutterBottom>
+      {courses && <><SoftBox mb={3}>
+        <Card>
+          <SoftBox pt={2} px={2}>
+            <SoftBox mb={0.5}>
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <SoftTypography variant="h6" fontWeight="medium">
                   Courses
                 </SoftTypography>
-              </SoftBox>
-              {renderSearch}
+                {renderSearch}
+              </Stack>
             </SoftBox>
-          </Card>
-          <Grid container spacing={3} mt={.5}>
-            {courses.map((courseItem) => (
-              <Grid key={courseItem.courseID} item xs={12} lg={3}>
-                <BuildByDevelopers course={courseItem} />
-              </Grid>
-            ))}
-          </Grid>
-        </SoftBox>
-          <SoftBox>
-            <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-              <Pagination count={10} variant="outlined" shape="rounded" />
-            </Stack>
+            <SoftBox mb={1}>
+              <SoftTypography variant="button" fontWeight="regular" color="text">
+                Here is our best course for you.
+              </SoftTypography>
+            </SoftBox>
           </SoftBox>
-        </>
-      )}
-
-      {/* <Projects /> */}
+          <SoftBox p={2}>
+            <Grid container spacing={3}>
+              {courses.map((courseItem) => (
+                <Grid key={courseItem.courseID} item xs={12} md={6} xl={3}>
+                  <BuildByDevelopers course={courseItem} />
+                </Grid>
+              ))}
+            </Grid>
+          </SoftBox>
+        </Card>
+      </SoftBox>
+        <SoftBox>
+          <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Pagination count={10} variant="outlined" shape="rounded" />
+          </Stack>
+        </SoftBox>
+      </>
+      }
     </PageCoverLayout>
   );
 }
