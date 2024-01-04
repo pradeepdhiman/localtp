@@ -25,12 +25,33 @@ import AuthApi from "../../../api/auth";
 import queryString from "query-string";
 import { authUser } from "utils/utils";
 import { useApplicantRegisterMutation } from "utils/functions";
+import { useProfileMutation } from "utils/functions";
+
+const rawFields = {
+  applicantID: null,
+  firstName: null,
+  lastName: null,
+  email: null,
+  phone: null,
+  address: null,
+  qualification: null,
+  designation: null,
+  dob: null,
+  nationality: null,
+  companyName: null,
+  companyContactNumber: null,
+  companyAddress: null,
+  password: null,
+  courseId: null,
+  createdById: null,
+  remarks: null
+}
 
 function SignUp() {
   const navigate = useNavigate();
 
   const [agreement, setAgremment] = useState(true);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(rawFields);
   const [error, setError] = useState("");
 
 
@@ -41,8 +62,25 @@ function SignUp() {
   const courseId = queryStringObject.courseid;
   const coursename = queryStringObject.coursename;
   const [register, { data: regData, isError: regErr, isLoading: regLoading }] = useApplicantRegisterMutation()
+  const [getProfile, { data: profileData, isError: profileErr, isLoading: profileLoading }] = useProfileMutation()
 
   const user = authUser()
+
+  useEffect(() => {
+    if (user?.id) {
+      getProfile({ id: user.id })
+        .then((response) => {
+          console.log(response, "response profile")
+          if (!response.data.success) {
+            console.log("Failed to get profile info")
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [user?.id]);
+
 
   const handleSetAgremment = () => setAgremment(!agreement);
 
@@ -53,23 +91,46 @@ function SignUp() {
     });
   };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    register(formData)
-      .then((response) => {
-        if (response.data.success) {
-          return navigate("/authentication/sign-in");
-        } else {
-          setError(response.data.msg);
-        }
-      })
-      .catch((error) => {
-        if (error.response) {
-          return setError(error.response.data.msg);
-        }
-        return setError("There has been an error.");
-      });
+    
+    try {
+      let newData = {};
+  
+      if (user?.id) {
+        newData = {
+          ...formData,
+          courseId: courseId,
+          applicantID: user.id,
+          firstName: user.userName,
+          email: user.email,
+        };
+      } else {
+        newData = {
+          ...formData,
+          courseId: courseId,
+        };
+      }
+  
+      console.log(newData, "new data");
+  
+      const response = await register(newData);
+  
+      if (response.data.success) {
+        return navigate("/authentication/sign-in");
+      } else {
+        setError(response.data.msg || "An error occurred during registration.");
+      }
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.data.msg || "An error occurred during registration.");
+      } else {
+        setError("There has been an error.");
+      }
+    }
   };
+  
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   AuthApi.Register(formData)
@@ -139,8 +200,8 @@ function SignUp() {
               <SoftBox mb={2}>
                 <SoftInput
                   type="text"
-                  name="username"
-                  placeholder="Name"
+                  name="firstName"
+                  placeholder="first name"
                   onChange={handleFormData}
                 />
               </SoftBox>
@@ -165,7 +226,6 @@ function SignUp() {
                   type="text"
                   readonly
                   name="course"
-                  onChange={handleFormData}
                   placeholder="Course"
                   value={coursename}
                 />
