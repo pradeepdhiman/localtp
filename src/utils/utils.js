@@ -10,11 +10,17 @@ import SoftBadge from "components/SoftBadge";
 
 const createHeaders = () => {
   const user = authUser();
-  return {
-    Authorization: `Bearer ${user.token}`,
+  const headers = {
     "Content-Type": "application/json",
   };
+
+  if (user) {
+    headers.Authorization = `Bearer ${user.token}`;
+  }
+
+  return headers;
 };
+
 
 export const createRequest = (endpoint, data) => ({
   url: `${endpoint}`,
@@ -224,31 +230,6 @@ export const generateRows = (list, tableheads, onEdit, onDelete) => {
 
 
 };
-
-// export const responseInterceptor = async (response) => {
-//   if (response.error) {
-//     toast.error('An error occurred. Please try again.', {
-//       position: toast.POSITION.TOP_RIGHT,
-//       autoClose: 3000,
-//       hideProgressBar: false,
-//       closeOnClick: false,
-//       pauseOnHover: false,
-//       draggable: false,
-//     });
-//   } else {
-//     toast.success('Operation successful!', {
-//       position: toast.POSITION.TOP_RIGHT,
-//       autoClose: 3000,
-//       hideProgressBar: false,
-//       closeOnClick: false,
-//       pauseOnHover: false,
-//       draggable: false,
-//     });
-
-//   }
-//   return response;
-// };
-
 
 export const logout = () => {
   removeObject("user")

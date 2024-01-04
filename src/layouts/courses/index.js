@@ -69,7 +69,7 @@ function Courses() {
           </SoftBox>
           <SoftBox p={2}>
             <Grid container spacing={3}>
-              {courses.map((courseItem) => (
+              {courses?.data?.map((courseItem) => (
                 <Grid key={courseItem.courseID} item xs={12} md={6} xl={3}>
                   <BuildByDevelopers course={courseItem} />
                 </Grid>

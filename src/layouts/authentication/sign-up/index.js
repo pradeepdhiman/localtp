@@ -24,6 +24,7 @@ import AuthApi from "../../../api/auth";
 
 import queryString from "query-string";
 import { authUser } from "utils/utils";
+import { useApplicantRegisterMutation } from "utils/functions";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -39,6 +40,7 @@ function SignUp() {
   const queryStringObject = queryString.parse(queryStrings);
   const courseId = queryStringObject.courseid;
   const coursename = queryStringObject.coursename;
+  const [register, { data: regData, isError: regErr, isLoading: regLoading }] = useApplicantRegisterMutation()
 
   const user = authUser()
 
@@ -53,7 +55,7 @@ function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    AuthApi.Register(formData)
+    register(formData)
       .then((response) => {
         if (response.data.success) {
           return navigate("/authentication/sign-in");
@@ -68,6 +70,23 @@ function SignUp() {
         return setError("There has been an error.");
       });
   };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   AuthApi.Register(formData)
+  //     .then((response) => {
+  //       if (response.data.success) {
+  //         return navigate("/authentication/sign-in");
+  //       } else {
+  //         setError(response.data.msg);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       if (error.response) {
+  //         return setError(error.response.data.msg);
+  //       }
+  //       return setError("There has been an error.");
+  //     });
+  // };
 
   const handleRedirect = () => navigate("/dashboard");
 
@@ -186,7 +205,7 @@ function SignUp() {
               </SoftBox>
               <SoftBox mt={4} mb={1}>
                 <SoftButton variant="gradient" color="dark" onClick={handleSubmit} fullWidth>
-                  sign up
+                  {regLoading ? "Loading..." : "sign up"}
                 </SoftButton>
               </SoftBox>
               <SoftBox mt={3} textAlign="center">

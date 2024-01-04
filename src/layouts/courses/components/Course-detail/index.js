@@ -8,6 +8,7 @@ import PageCoverLayoutPlain from "examples/LayoutContainers/PageLayoutCoverPlain
 import { Grid } from "@mui/material";
 import Details from "../BuildByDevelopers/details";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { useGetCourseMutation } from "utils/functions";
 
 
 function CourseDetail() {
