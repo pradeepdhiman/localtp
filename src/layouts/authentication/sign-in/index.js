@@ -16,16 +16,14 @@ import SoftButton from "components/SoftButton";
 
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
-import GithubSocial from "layouts/authentication/components/Socials/github";
-import Separator from "layouts/authentication/components/Separator";
 
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 
 
-import { useLoginMutation } from "../functions/query";
 import { getObject } from "utils/utils";
 import { saveObject } from "utils/utils";
+import { useLoginMutation } from "utils/functions";
 
 function SignIn() {
   const navigate = useNavigate();

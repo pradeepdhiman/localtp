@@ -22,9 +22,8 @@ import curved6 from "assets/images/curved-images/curved14.jpg";
 
 import AuthApi from "../../../api/auth";
 
-import { useAuth } from "auth-context/auth.context";
 import queryString from "query-string";
-import { authUser } from "../functions/query";
+import { authUser } from "utils/utils";
 
 function SignUp() {
   const navigate = useNavigate();

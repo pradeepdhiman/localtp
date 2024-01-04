@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, Outlet } from 'react-router-dom';
 import SoftAlert from "./components/SoftAlert";
-import { authUser } from "layouts/authentication/functions/query";
+import { authUser } from "utils/utils";
 
 export const ProtectedRoute = () => {
   const navigate = useNavigate();

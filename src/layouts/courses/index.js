@@ -11,18 +11,19 @@ import PageCoverLayout from "examples/LayoutContainers/PageLayoutCover";
 import BuildByDevelopers from "./components/BuildByDevelopers";
 import { Card, Grid, Pagination, Stack } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { useGetCoursesQuery } from "./functions/query";
 import SoftSnakBar from "components/SoftSnakbar";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { useGetCoursesQuery } from "utils/functions";
 
 
 
 function Courses() {
-  const { data, error, isLoading, isFetching, isSuccess } = useGetCoursesQuery()
-  const { data: courses } = data || {};
+  const { data: courses, isError, isLoading, isFetching } = useGetCoursesQuery()
 
   const navigate = useNavigate();
   const dispatch = useDispatch()
+
+  console.log(courses, "vour")
 
   const [rememberMe, setRememberMe] = useState(true);
   const [formData, setFormData] = useState({
@@ -48,9 +49,8 @@ function Courses() {
       description="Lorm ipsum doller sit amet dummy cntent rfjjd remedies parlo gaibi"
       image={curved9}
     >
-      {(isLoading && isFetching) && <SoftBarLoader />}
-      {error && <SoftSnakBar message={error || "Somethig went wrong"} severity="error" />}
-      {courses && <><SoftBox mb={3}>
+      {isLoading && <SoftBarLoader />}
+      {courses?.data?.length && <><SoftBox mb={3}>
         <Card>
           <SoftBox pt={2} px={2}>
             <SoftBox mb={0.5}>

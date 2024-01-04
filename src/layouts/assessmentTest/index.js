@@ -6,9 +6,7 @@ import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton";
 import { useEffect, useState } from "react";
 import { Card, Checkbox, Divider, FormControl, FormControlLabel, Grid, Radio, RadioGroup } from "@mui/material";
-import SoftAlert from "components/SoftAlert";
-import { authUser } from "layouts/authentication/functions/query";
-import { useGetQuestionsListQuery } from "./functions/query";
+import { authUser } from "utils/utils";
 
 const initialQuestion = [
   {
@@ -38,9 +36,6 @@ function AssessmentTest() {
   const [timerRunning, setTimerRunning] = useState(false);
 
   let user = authUser()
-  const { data, error, isLoading, isFetching, isSuccess } = useGetQuestionsListQuery(user.id)
-  console.log("assessment test", data)
-
 
   function startTestHandler() {
     setTestStarted(!testStarted)

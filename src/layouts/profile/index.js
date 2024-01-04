@@ -16,10 +16,9 @@ import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 
 // Overview page components
 import Header from "layouts/profile/components/Header";
-import { useGetProfileQuery } from "./functions/query";
-import { authUser } from "layouts/authentication/functions/query";
 import Settings from "./components/Settings";
 import ProfileEdit from "./components/ProfileEditForm";
+import { authUser } from "utils/utils";
 
 const formInfo = {
   title:"profile information",
@@ -34,8 +33,6 @@ const formInfo = {
 
 function Overview() {
   let user = authUser()
-  const { data, error, isLoading, isFetching, isSuccess } = useGetProfileQuery(user.id)
-  console.log("Profile", data)
   return (
     <DashboardLayout>
       <Header />
