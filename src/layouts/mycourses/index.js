@@ -12,9 +12,15 @@ import Footer from "examples/Footer";
 import typography from "assets/theme/base/typography";
 import { useState } from "react";
 import MyCourseItem from "./component/MyCourseItem";
+import { useLocation } from "react-router-dom";
+import CourseItem from "layouts/dashboard/component/Courseitem";
 
 function MyCourses() {
   const { size } = typography;
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const completeParam = params.get('complete');
+
   const [selectedCourse, setSelectedCourse] = useState({});
 
   const handleCourseSelect = (event, newValue) => {
@@ -29,7 +35,7 @@ function MyCourses() {
       <SoftBox mb={3}>
         <Grid container spacing={3} >
           <Grid item xs={12} lg={3}>
-            <MyCourseItem />
+            {completeParam ? <CourseItem complete={true} /> : <MyCourseItem />}
           </Grid>
         </Grid>
       </SoftBox>

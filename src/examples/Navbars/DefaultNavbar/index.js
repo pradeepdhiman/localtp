@@ -18,6 +18,8 @@ import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMob
 
 import breakpoints from "assets/theme/base/breakpoints";
 import { useAuth } from "auth-context/auth.context";
+import { authUser } from "utils/utils";
+import { logout } from "utils/utils";
 
 function DefaultNavbar({ transparent, light, action }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
@@ -25,7 +27,8 @@ function DefaultNavbar({ transparent, light, action }) {
 
   const openMobileNavbar = ({ currentTarget }) => setMobileNavbar(currentTarget.parentNode);
   const closeMobileNavbar = () => setMobileNavbar(false);
-  let { user } = useAuth();
+  // let { user } = useAuth();
+  let user = authUser()
 
   useEffect(() => {
     // A function that sets the display state for the DefaultNavbarMobile.
@@ -97,6 +100,11 @@ function DefaultNavbar({ transparent, light, action }) {
           />
           {!user && <DefaultNavbarLink
             name="Sign in"
+            route="/authentication/sign-in"
+            light={light}
+          />}
+          {user && <DefaultNavbarLink
+            name="Logout"
             route="/authentication/sign-in"
             light={light}
           />}

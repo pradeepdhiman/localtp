@@ -4,23 +4,30 @@ import { getRequest } from "utils/utils";
 import { updateRequest } from "utils/utils";
 import { readRequest } from "utils/utils";
 import { createRequest } from "utils/utils";
+import { userRegister } from "./utils";
 
 export const applicantApis = emptySplitApi.injectEndpoints({
     endpoints: (build) => ({
-        login: build.mutation({
-            query: (data) => createRequest("/Authentication/authenticate", data),
-        }),
         getQuestionsList: build.query({
             query: () => readRequest("/CourseQuestion/List"),
         }),
         getCourses: build.query({
             query: () => readRequest("/Course/List"),
         }),
+        completedCourse: build.query({
+            query: (data) => getRequest("/ApplicantCourse/GetAplicantCompletedCourses", data),
+        }),
+        activeCourse: build.query({
+            query: (data) => getRequest("/ApplicantCourse/GetAplicantActiveCourses", data),
+        }),
+        login: build.mutation({
+            query: (data) => createRequest("/Authentication/authenticate", data),
+        }),
         getCourse: build.mutation({
             query: (data) => getRequest("/Course", data),
         }),
         applicantRegister: build.mutation({
-            query: (data) => createRequest("/Applicant", data),
+            query: (data) => createRequest("/ApplicantRegister", data),
         }),
         profile: build.mutation({
             query: (data) => getRequest("/User", data),
@@ -58,5 +65,7 @@ export const {
     useLoginMutation,
     useGetCourseMutation,
     useGetQuestionsListQuery,
-    useGetCoursesQuery
+    useGetCoursesQuery,
+    useCompletedCourseQuery,
+    useActiveCourseQuery,
 } = applicantApis;

@@ -27,24 +27,26 @@ import { authUser } from "utils/utils";
 import { useApplicantRegisterMutation } from "utils/functions";
 import { useProfileMutation } from "utils/functions";
 
+
+
 const rawFields = {
-  applicantID: null,
-  firstName: null,
-  lastName: null,
-  email: null,
-  phone: null,
-  address: null,
-  qualification: null,
-  designation: null,
-  dob: null,
-  nationality: null,
-  companyName: null,
-  companyContactNumber: null,
-  companyAddress: null,
-  password: null,
-  courseId: null,
-  createdById: null,
-  remarks: null
+  applicantID: 0,
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  address: "",
+  qualification: "",
+  designation: "",
+  dob: "",
+  nationality: "",
+  companyName: "",
+  companyContactNumber: "",
+  companyAddress: "",
+  password: "",
+  courseId: 0,
+  createdById: 0,
+  remarks: ""
 }
 
 function SignUp() {
@@ -94,29 +96,30 @@ function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       let newData = {};
-  
+
       if (user?.id) {
         newData = {
           ...formData,
-          courseId: courseId,
-          applicantID: user.id,
-          firstName: user.userName,
-          email: user.email,
+          CourseId: parseInt(courseId),
+          ApplicantID: parseInt(user.id),
+          FirstName: user.userName,
+          Email: user.email,
+          Password: JSON.stringify(formData.Password)
         };
       } else {
         newData = {
           ...formData,
-          courseId: courseId,
+          courseId: parseInt(courseId),
         };
       }
-  
+
       console.log(newData, "new data");
-  
+
       const response = await register(newData);
-  
+
       if (response.data.success) {
         return navigate("/authentication/sign-in");
       } else {
@@ -130,7 +133,7 @@ function SignUp() {
       }
     }
   };
-  
+
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   AuthApi.Register(formData)

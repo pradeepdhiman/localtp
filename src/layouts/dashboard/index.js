@@ -24,13 +24,20 @@ import team1 from "assets/images/team-1.jpg";
 import team2 from "assets/images/team-2.jpg";
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
+import { useCompletedCourseQuery } from "utils/functions";
+import { useActiveCourseQuery } from "utils/functions";
+import { authUser } from "utils/utils";
 
 function Dashboard() {
   const { size } = typography;
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  let user = authUser()
 
+  const { data: completedCourse, isError: completedError, isLoading: completedLoading } = useCompletedCourseQuery(user?.id)
+  const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery(user?.id)
 
+ 
 
   return (
     <DashboardLayout>
@@ -41,7 +48,7 @@ function Dashboard() {
             <SoftBox mb={0.5}>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <SoftTypography variant="h6" fontWeight="medium">
-                  Projects
+                  My Courses
                 </SoftTypography>
                 <SoftButton onClick={() => navigate(`${pathname}/mycourses`)} variant="text" color="info">
                   All
@@ -80,7 +87,7 @@ function Dashboard() {
                 <SoftTypography variant="h6" fontWeight="medium">
                   Completed Courses
                 </SoftTypography>
-                <SoftButton variant="text" color="info">All</SoftButton>
+                <SoftButton  onClick={() => navigate(`${pathname}/mycourses?complete=true`)} variant="text" color="info">All</SoftButton>
               </Stack>
             </SoftBox>
             <SoftBox mb={1}>

@@ -56,23 +56,40 @@ function AssessmentTest() {
   useEffect(() => {
     let intervalId;
 
-    if (timerRunning) {
-      intervalId = setInterval(() => {
-        setSeconds((prevSeconds) => {
-          if (prevSeconds > 0) {
-            return prevSeconds - 1;
-          } else {
-            clearInterval(intervalId);
-            setTimerRunning(false);
-            return 0;
-          }
-        });
-      }, 1000);
-    }
+    const handleBeforeUnload = (event) => {
+      const message = "Are you sure you want to leave? Your progress will be lost.";
+      event.returnValue = message; 
+      return message; 
+    };
 
-    return () => clearInterval(intervalId);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
+    return () => {
+      clearInterval(intervalId);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, [timerRunning]);
+
+  // useEffect(() => {
+  //   let intervalId;
+
+  //   if (timerRunning) {
+  //     intervalId = setInterval(() => {
+  //       setSeconds((prevSeconds) => {
+  //         if (prevSeconds > 0) {
+  //           return prevSeconds - 1;
+  //         } else {
+  //           clearInterval(intervalId);
+  //           setTimerRunning(false);
+  //           return 0;
+  //         }
+  //       });
+  //     }, 1000);
+  //   }
+
+  //   return () => clearInterval(intervalId);
+
+  // }, [timerRunning]);
 
   
   const finelSubmitHandler = () => {

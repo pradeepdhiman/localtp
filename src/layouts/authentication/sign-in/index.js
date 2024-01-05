@@ -24,6 +24,7 @@ import curved9 from "assets/images/curved-images/curved-6.jpg";
 import { getObject } from "utils/utils";
 import { saveObject } from "utils/utils";
 import { useLoginMutation } from "utils/functions";
+import { logout } from "utils/utils";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -35,8 +36,11 @@ function SignIn() {
     'password': ''
   });
 
-  let user = getObject("user")
+  useEffect(() => {
+    logout()
+  }, [])
 
+  let user = getObject("user")
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 

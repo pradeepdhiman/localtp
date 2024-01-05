@@ -22,6 +22,21 @@ const createHeaders = () => {
 };
 
 
+
+export const userRegister = (endpoint, queryParam) => {
+  const queryString = Object.entries(queryParam)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join('&');
+
+  return {
+    url: queryString ? `${endpoint}?${queryString}` : endpoint,
+    method: "POST",
+    headers: createHeaders(),
+  };
+};
+
+
+
 export const createRequest = (endpoint, data) => ({
   url: `${endpoint}`,
   method: "POST",

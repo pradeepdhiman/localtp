@@ -53,6 +53,7 @@ import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 import AuthApi from "../../../api/auth";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
+import { authUser } from "utils/utils";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -62,8 +63,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const route = useLocation().pathname.split("/").slice(1);
   const navigate = useNavigate();
 
-  const { user } = useAuth();
-  const { setUser } = useAuth();
+  // const { user } = useAuth();
+  // const { setUser } = useAuth();
+
+  let user = authUser()
 
 
   useEffect(() => {
@@ -98,10 +101,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleCloseMenu = () => setOpenMenu(false);
 
   const handleLogout = () => {
-    AuthApi.Logout(user);
-    setUser(null);
-    localStorage.removeItem("user");
-    return navigate("/authentication/sign-in");
+    // AuthApi.Logout(user);
+    // setUser(null);
+    // localStorage.removeItem("user");
+    // return navigate("/authentication/sign-in");
+    navigate("/authentication/sign-in");
   };
 
   // Render the notifications menu
@@ -151,7 +155,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
         <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-          <Breadcrumbs icon={<HomeIcon/>} title={route[route.length - 1]} route={route} light={light} />
+          <Breadcrumbs icon={<HomeIcon />} title={route[route.length - 1]} route={route} light={light} />
         </SoftBox>
         {isMini ? null : (
           <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
@@ -163,22 +167,22 @@ function DashboardNavbar({ absolute, light, isMini }) {
             </SoftBox>
             <SoftBox color={light ? "white" : "inherit"}>
               {(user && user.token) && <IconButton
-                  size="small"
-                  color="inherit"
-                  sx={navbarIconButton}
-                  aria-controls="logout"
-                  aria-haspopup="true"
-                  variant="contained"
-                  onClick={handleLogout}
+                size="small"
+                color="inherit"
+                sx={navbarIconButton}
+                aria-controls="logout"
+                aria-haspopup="true"
+                variant="contained"
+                onClick={handleLogout}
+              >
+                <SoftTypography
+                  variant="button"
+                  fontWeight="medium"
+                  color={light ? "white" : "dark"}
                 >
-                  <SoftTypography
-                    variant="button"
-                    fontWeight="medium"
-                    color={light ? "white" : "dark"}
-                  >
-                    Logout
-                  </SoftTypography>
-                </IconButton>}
+                  Logout
+                </SoftTypography>
+              </IconButton>}
               {/* {user && user.token ? (
                 <IconButton
                   size="small"
