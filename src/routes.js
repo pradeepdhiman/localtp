@@ -83,7 +83,7 @@ const routes = [
     type: "collapse",
     name: "Assessment",
     key: "assessment",
-    route: "/dashboard/assessment/:courseid",
+    route: "/test",
     icon: <QuizIcon size="12px" />,
     component: <AssessmentTest/>,
     noCollapse: true,

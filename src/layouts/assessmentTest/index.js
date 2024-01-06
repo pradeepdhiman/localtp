@@ -7,6 +7,8 @@ import SoftButton from "components/SoftButton";
 import { useEffect, useState } from "react";
 import { Card, Checkbox, Divider, FormControl, FormControlLabel, Grid, Radio, RadioGroup } from "@mui/material";
 import { authUser } from "utils/utils";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 const initialQuestion = [
   {
@@ -36,11 +38,21 @@ function AssessmentTest() {
   const [timerRunning, setTimerRunning] = useState(false);
 
   let user = authUser()
+  const MySwal = withReactContent(Swal)
 
   function startTestHandler() {
-    setTestStarted(!testStarted)
-    setSeconds(600);
-    setTimerRunning(true);
+    Swal.fire({
+      icon: "warning",
+      title: "Important Notes",
+      text: "Please refrain from refreshing or minimizing the screen. Any ongoing tests will be automatically canceled if you perform these actions. Your cooperation is appreciated to ensure the accuracy and completion of the testing process. Thank you.",
+      confirmButtonText: "Start Test",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setTestStarted(!testStarted)
+        setSeconds(600);
+        setTimerRunning(true);
+      }
+    });
   }
 
   function submitHandler() {
@@ -58,8 +70,8 @@ function AssessmentTest() {
 
     const handleBeforeUnload = (event) => {
       const message = "Are you sure you want to leave? Your progress will be lost.";
-      event.returnValue = message; 
-      return message; 
+      event.returnValue = message;
+      return message;
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -91,7 +103,7 @@ function AssessmentTest() {
 
   // }, [timerRunning]);
 
-  
+
   const finelSubmitHandler = () => {
     // AuthApi.Login(formData)
     //   .then((response) => {

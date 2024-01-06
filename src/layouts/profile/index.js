@@ -19,11 +19,18 @@ import Header from "layouts/profile/components/Header";
 import Settings from "./components/Settings";
 import ProfileEdit from "./components/ProfileEditForm";
 import { authUser } from "utils/utils";
+import { useGetProfileQuery } from "utils/functions";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { useDispatch, useSelector } from "react-redux";
+import { setProfileInfo } from "./profileSlice";
+import { useState } from "react";
+import { Stack, Tab, Tabs } from "@mui/material";
+import SoftButton from "components/SoftButton";
 
 const formInfo = {
-  title:"profile information",
-  description:"Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality).",
-  info:{
+  title: "profile information",
+  description: "Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality).",
+  info: {
     fullName: "Alec M. Thompson",
     mobile: "(44) 123 1234 123",
     email: "alecthompson@mail.com",
@@ -31,52 +38,58 @@ const formInfo = {
   }
 }
 
+
 function Overview() {
   let user = authUser()
+  const { profileInfo = {} } = useSelector(state => state.profile)
+  const dispatch = useDispatch()
+  const [show, setShow] = useState(false)
+  const [tabValue, setTabValue] = useState(0);
+  const [tabsOrientation, setTabsOrientation] = useState("horizontal");
+  const { data: { data: profile } = {}, isError: profileErr, isLoading: profileLoading } = useGetProfileQuery({ id: user?.id }) || {};
+
+  console.log(profileInfo, "data")
+  function editClickhandler() {
+    dispatch(setProfileInfo(profile))
+    setShow(!show)
+  }
+  function toogleSetting() {
+    dispatch(setProfileInfo({}))
+    setShow(!show)
+  }
+   const handleSetTabValue = (event, newValue) => setTabValue(newValue);
   return (
     <DashboardLayout>
-      <Header />
-      <SoftBox mt={5} mb={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md xl>
-            <ProfileInfoCard
-              title="profile information"
-              description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
-              info={{
-                fullName: "Alec M. Thompson",
-                mobile: "(44) 123 1234 123",
-                email: "alecthompson@mail.com",
-                location: "USA",
-              }}
-              social={[
-                {
-                  link: "https://www.facebook.com/CreativeTim/",
-                  icon: <FacebookIcon />,
-                  color: "facebook",
-                },
-                {
-                  link: "https://twitter.com/creativetim",
-                  icon: <TwitterIcon />,
-                  color: "twitter",
-                },
-                {
-                  link: "https://www.instagram.com/creativetimofficial/",
-                  icon: <InstagramIcon />,
-                  color: "instagram",
-                },
-              ]}
-              action={{ route: "", tooltip: "Edit Profile" }}
-            />
+      {profileLoading ? <SoftBarLoader /> : <>
+        <Header name={profile?.firstname + profile?.lastName} email={profile?.userEmail} showAction={toogleSetting} />
+        <SoftBox mt={5}>
+          <SoftButton color="dark">Upload Document</SoftButton>
+        </SoftBox>
+        <SoftBox mt={2} mb={3}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md xl>
+              <ProfileInfoCard
+                title="profile information"
+                description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+                info={{
+                  fullName: profile?.firstname + profile?.lastName,
+                  mobile: profile?.mobileNo,
+                  email: profile?.userEmail,
+                  location: "USA",
+                }}
+                action={{ route: "", tooltip: "Edit Profile", edithandler: editClickhandler }}
+              />
+            </Grid>
+            {profileInfo?.userId && <Grid item xs={12} xl={6}>
+              <ProfileEdit title="Edit Profile" info={formInfo} />
+            </Grid>}
+            {show && <Grid item xs={12} xl={6}>
+              <Settings />
+            </Grid>}
           </Grid>
-          <Grid item xs={12} xl={6}>
-            <ProfileEdit title="Edit Profile" info={formInfo}/>
-          </Grid>
-          <Grid item xs={12} xl={6}>
-            <Settings/>
-          </Grid>
-        </Grid>
-      </SoftBox>
-
+        </SoftBox>
+      </>
+      }
       <Footer />
     </DashboardLayout>
   );

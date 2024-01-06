@@ -20,6 +20,12 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         activeCourse: build.query({
             query: (data) => getRequest("/ApplicantCourse/GetAplicantActiveCourses", data),
         }),
+        getStudyMaterial: build.query({
+            query: (data) => getRequest("/Course", data),
+        }),
+        getProfile: build.query({
+            query: (data) => getRequest("/User", data),
+        }),
         login: build.mutation({
             query: (data) => createRequest("/Authentication/authenticate", data),
         }),
@@ -27,7 +33,7 @@ export const applicantApis = emptySplitApi.injectEndpoints({
             query: (data) => getRequest("/Course", data),
         }),
         applicantRegister: build.mutation({
-            query: (data) => createRequest("/ApplicantRegister", data),
+            query: (data) => createRequest("/General/ApplicantRegister", data),
         }),
         profile: build.mutation({
             query: (data) => getRequest("/User", data),
@@ -68,4 +74,6 @@ export const {
     useGetCoursesQuery,
     useCompletedCourseQuery,
     useActiveCourseQuery,
+    useGetStudyMaterialQuery,
+    useGetProfileQuery,
 } = applicantApis;

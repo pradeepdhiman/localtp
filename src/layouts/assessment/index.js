@@ -6,47 +6,44 @@ import SoftBox from "components/SoftBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import typography from "assets/theme/base/typography";
-import { Autocomplete, Card, TextField } from "@mui/material";
-import { useState } from "react";
-import AssessmentCourseDetail from "./component/AssessmentCourseDetail";
-const top100Films = [
-  { label: 'The Shawshank Redemption', year: 1994 },
-  { label: 'The Godfather', year: 1972 },
-  { label: 'The Godfather: Part II', year: 1974 },
-  { label: 'The Dark Knight', year: 2008 },
-  { label: '12 Angry Men', year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: 'Pulp Fiction', year: 1994 }
-];
+import { Grid } from "@mui/material";
+import AssessmentCourseItem from "./component/AssessmentCourseItem";
+import { useActiveCourseQuery } from "utils/functions";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { authUser } from "utils/utils";
+import SoftTypography from "components/SoftTypography";
+
 function Assessment() {
-  const { size } = typography;
-  const [selectedCourse, setSelectedCourse] = useState(top100Films[0]);
 
-  const handleCourseSelect = (event, newValue) => {
-    setSelectedCourse(newValue);
-  };
-
-
+  const user = authUser()
+  const { data: { data: courses } = {}, isError: activeErr, isLoading: activeLoading } = useActiveCourseQuery(user?.id);
+  // const { data: courses, isError: activeErr, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.id });
+  console.log("first", courses)
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <SoftBox >
-        <Autocomplete
-          disablePortal
-          disableClearable
-          id="combo-box-demo"
-          value={selectedCourse}
-          onChange={handleCourseSelect}
-          options={top100Films}
-          getOptionLabel={(option) => option.label}
-          sx={{ width: 300 }}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </SoftBox>
-      <SoftBox pb={3}>
-        <AssessmentCourseDetail />
+      <SoftBox p={2}>
+        {activeLoading && <SoftBarLoader />}
+        {courses?.length !== 0 ? <Grid container spacing={3}>
+          {courses?.map((courseItem, index) => <Grid key={courseItem.courseID} item xs={12} md={6} xl={3}>
+            <AssessmentCourseItem item={courseItem} />
+          </Grid>)}
+        </Grid> : <SoftTypography>No Active course available</SoftTypography>}
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} xl={3}>
+            <AssessmentCourseItem />
+          </Grid>
+          <Grid item xs={12} md={6} xl={3}>
+            <AssessmentCourseItem />
+          </Grid>
+          <Grid item xs={12} md={6} xl={3}>
+            <AssessmentCourseItem />
+          </Grid>
+          <Grid item xs={12} md={6} xl={3}>
+            <AssessmentCourseItem />
+          </Grid>
+        </Grid>
       </SoftBox>
       <Footer />
     </DashboardLayout>

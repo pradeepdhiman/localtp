@@ -247,9 +247,30 @@ export const generateRows = (list, tableheads, onEdit, onDelete) => {
 };
 
 export const logout = () => {
+  clearTimeout(logoutTimer);
   removeObject("user")
+
 }
 
 export const authUser = () => {
   return JSON.parse(getObject("user"))
 }
+
+
+
+// auto log out 
+
+
+let logoutTimer;
+
+export function startAutoLogout(timeoutInMinutes = 1) {
+  clearTimeout(logoutTimer);
+  const timeoutInMilliseconds = timeoutInMinutes * 60 * 1000;
+
+  logoutTimer = setTimeout(() => {
+    logout()
+  }, timeoutInMilliseconds);
+}
+
+
+

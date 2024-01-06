@@ -14,7 +14,7 @@ import Footer from "examples/Footer";
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
 import typography from "assets/theme/base/typography";
 import { Autocomplete, Card, CardContent, Switch, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CompleteCourse from "./component/CompleteCourse";
 import Projects from "layouts/courses/components/Projects";
 import { CardCover } from "@mui/joy";
@@ -24,6 +24,10 @@ import StudyMaterialList from "examples/Lists/StudyMaterialList";
 import ScheduleList from "examples/Lists/ScheduleList";
 import studymaterialdata from "./data/studymaterialdata";
 import schedulelistdata from "./data/schedulelistdata";
+import { useLocation } from "react-router-dom";
+import { useActiveCourseQuery } from "utils/functions";
+import { authUser } from "utils/utils";
+import { useGetStudyMaterialQuery } from "utils/functions";
 const top100Films = [
   { label: 'The Shawshank Redemption', year: 1994 },
   { label: 'The Godfather', year: 1972 },
@@ -37,6 +41,18 @@ function Study() {
   const { size } = typography;
   const [selectedCourse, setSelectedCourse] = useState({});
   const [isLive, setIsLive] = useState(false);
+  let user = authUser()
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const courseParam = queryParams.get('course');
+  const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.id })
+  const { data: material, isError: matError, isLoading: matLoading } = useGetStudyMaterialQuery({ id: selectedCourse?.courseID })
+
+  useEffect(() => {
+    let selected = activeCourse?.data?.find(x => x.courseID === courseParam)
+    setSelectedCourse(selected)
+  }, [activeCourse, courseParam])
 
   const handleCourseSelect = (event, newValue) => {
     setSelectedCourse(newValue);
@@ -55,8 +71,8 @@ function Study() {
           id="combo-box-demo"
           value={selectedCourse}
           onChange={handleCourseSelect}
-          options={top100Films}
-          getOptionLabel={(option) => option.label}
+          options={activeCourse?.data || []}
+          getOptionLabel={(option) => option?.courseID}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} />}
         />
@@ -110,7 +126,7 @@ function Study() {
       <SoftBox pb={3} mt={3}>
         <Grid container gap={2}>
           <Grid item xs={12} md><StudyMaterialList title="Study Material" datalist={studymaterialdata} /></Grid>
-          <Grid item xs={12} md={8}><ScheduleList title="Study Material" datalist={schedulelistdata} /></Grid>
+          <Grid item xs={12} md={8}><ScheduleList title="Course Schedules" datalist={schedulelistdata} /></Grid>
         </Grid>
       </SoftBox>
       <Footer />

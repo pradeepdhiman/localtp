@@ -26,6 +26,8 @@ import queryString from "query-string";
 import { authUser } from "utils/utils";
 import { useApplicantRegisterMutation } from "utils/functions";
 import { useProfileMutation } from "utils/functions";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 
 
@@ -38,7 +40,7 @@ const rawFields = {
   address: "",
   qualification: "",
   designation: "",
-  dob: "",
+  dob: new Date(),
   nationality: "",
   companyName: "",
   companyContactNumber: "",
@@ -67,6 +69,7 @@ function SignUp() {
   const [getProfile, { data: profileData, isError: profileErr, isLoading: profileLoading }] = useProfileMutation()
 
   const user = authUser()
+  const MySwal = withReactContent(Swal)
 
   useEffect(() => {
     if (user?.id) {
@@ -103,25 +106,33 @@ function SignUp() {
       if (user?.id) {
         newData = {
           ...formData,
-          CourseId: parseInt(courseId),
-          ApplicantID: parseInt(user.id),
-          FirstName: user.userName,
-          Email: user.email,
-          Password: JSON.stringify(formData.Password)
+          courseId: parseInt(courseId),
+          applicantID: parseInt(user.id),
+          firstName: user.userName,
+          email: user.email,
+          password: JSON.stringify(formData.password),
+          createdById: parseInt(user.id),
         };
       } else {
         newData = {
           ...formData,
           courseId: parseInt(courseId),
+          createdById: 1
         };
       }
-
-      console.log(newData, "new data");
 
       const response = await register(newData);
 
       if (response.data.success) {
-        return navigate("/authentication/sign-in");
+        Swal.fire({
+          title: "Successfully register!",
+          text: "Please check your email we will send you payment link.",
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            return navigate("/authentication/sign-in");
+          }
+        });
       } else {
         setError(response.data.msg || "An error occurred during registration.");
       }

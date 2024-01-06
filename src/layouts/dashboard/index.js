@@ -15,15 +15,6 @@ import CourseItem from "./component/Courseitem";
 import { Card, Stack } from "@mui/material";
 import SoftButton from "components/SoftButton";
 import { useLocation, useNavigate } from "react-router-dom";
-import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
-
-import homeDecor1 from "assets/images/home-decor-1.jpg";
-import homeDecor2 from "assets/images/home-decor-2.jpg";
-import homeDecor3 from "assets/images/home-decor-3.jpg";
-import team1 from "assets/images/team-1.jpg";
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
 import { useCompletedCourseQuery } from "utils/functions";
 import { useActiveCourseQuery } from "utils/functions";
 import { authUser } from "utils/utils";
@@ -34,10 +25,13 @@ function Dashboard() {
   const { pathname } = useLocation();
   let user = authUser()
 
-  const { data: completedCourse, isError: completedError, isLoading: completedLoading } = useCompletedCourseQuery(user?.id)
-  const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery(user?.id)
+  const { data: completedCourse, isError: completedError, isLoading: completedLoading } = useCompletedCourseQuery({ ApplicantID: user?.id })
+  const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.id })
 
- 
+
+  console.log(completedCourse, "completed")
+  console.log(activeCourse, "active")
+
 
   return (
     <DashboardLayout>
@@ -87,7 +81,7 @@ function Dashboard() {
                 <SoftTypography variant="h6" fontWeight="medium">
                   Completed Courses
                 </SoftTypography>
-                <SoftButton  onClick={() => navigate(`${pathname}/mycourses?complete=true`)} variant="text" color="info">All</SoftButton>
+                <SoftButton onClick={() => navigate(`${pathname}/mycourses?complete=true`)} variant="text" color="info">All</SoftButton>
               </Stack>
             </SoftBox>
             <SoftBox mb={1}>

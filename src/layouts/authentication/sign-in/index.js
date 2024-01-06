@@ -25,6 +25,7 @@ import { getObject } from "utils/utils";
 import { saveObject } from "utils/utils";
 import { useLoginMutation } from "utils/functions";
 import { logout } from "utils/utils";
+import { startAutoLogout } from "utils/utils";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -54,7 +55,13 @@ function SignIn() {
   const submitFormData = async (e) => {
     e.preventDefault();
     try {
-      await login(formData);
+      const res = await login(formData);
+      if(res?.data?.success){
+        const userString = JSON.stringify(res.data.data || {});
+        saveObject("user", userString);
+        startAutoLogout(10)
+        navigate("/dashboard");
+      }
     } catch (err) {
       console.log(err, "err")
     }
@@ -65,13 +72,13 @@ function SignIn() {
     return navigate("/dashboard");
   };
 
-  useEffect(() => {
-    if (data?.success) {
-      const userString = JSON.stringify(data.data || {});
-      saveObject("user", userString);
-      navigate("/dashboard");
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data?.success) {
+  //     const userString = JSON.stringify(data.data || {});
+  //     saveObject("user", userString);
+  //     navigate("/dashboard");
+  //   }
+  // }, [data]);
 
 
   return (

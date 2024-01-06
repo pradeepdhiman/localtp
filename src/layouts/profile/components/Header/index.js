@@ -29,31 +29,28 @@ import breakpoints from "assets/theme/base/breakpoints";
 import burceMars from "assets/images/bruce-mars.jpg";
 import curved0 from "assets/images/curved-images/curved0.jpg";
 
-function Header() {
+function Header({ name = "Applicant Name", email = "", showAction }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
 
   useEffect(() => {
-    // A function that sets the orientation state of the tabs.
     function handleTabsOrientation() {
       return window.innerWidth < breakpoints.values.sm
         ? setTabsOrientation("vertical")
         : setTabsOrientation("horizontal");
     }
 
-    /** 
-     The event listener that's calling the handleTabsOrientation function when resizing the window.
-    */
     window.addEventListener("resize", handleTabsOrientation);
 
-    // Call the handleTabsOrientation function to set the state with the initial value.
     handleTabsOrientation();
 
-    // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, [tabsOrientation]);
 
-  const handleSetTabValue = (event, newValue) => setTabValue(newValue);
+  const handleSetTabValue = (event, newValue) => {
+    showAction()
+  };
+  // const handleSetTabValue = (event, newValue) => setTabValue(newValue);
 
   return (
     <SoftBox position="relative">
@@ -88,7 +85,7 @@ function Header() {
         }}
       >
         <Grid container spacing={3} alignItems="center">
-          <Grid item>
+          {/* <Grid item>
             <SoftAvatar
               src={burceMars}
               alt="profile-image"
@@ -96,26 +93,26 @@ function Header() {
               size="xl"
               shadow="sm"
             />
-          </Grid>
+          </Grid> */}
           <Grid item>
             <SoftBox height="100%" mt={0.5} lineHeight={1}>
               <SoftTypography variant="h5" fontWeight="medium">
-                Alex Thompson
+                {name}
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
-                Student
+                {email}
               </SoftTypography>
             </SoftBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
+          <Grid item xs={12} md={6} lg={2} sx={{ ml: "auto" }}>
             <AppBar position="static">
               <Tabs
                 orientation={tabsOrientation}
                 value={tabValue}
-                onChange={handleSetTabValue}
+                // onChange={handleSetTabValue}
                 sx={{ background: "transparent" }}
               >
-                <Tab label="Settings" icon={<Settings />} />
+                <Tab onClick={() => showAction()} icon={<Settings />} />
               </Tabs>
             </AppBar>
           </Grid>

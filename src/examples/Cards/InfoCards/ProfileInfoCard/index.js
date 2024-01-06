@@ -19,12 +19,15 @@ import SoftTypography from "components/SoftTypography";
 import colors from "assets/theme/base/colors";
 import typography from "assets/theme/base/typography";
 import EditIcon from '@mui/icons-material/Edit';
+import { EditSharp } from "@mui/icons-material";
 
 function ProfileInfoCard({ title, description, info, social, action }) {
   const labels = [];
   const values = [];
   const { socialMediaColors } = colors;
   const { size } = typography;
+
+
 
   // Convert this form `objectKey` of the object key in to this `object key`
   Object.keys(info).forEach((el) => {
@@ -54,7 +57,7 @@ function ProfileInfoCard({ title, description, info, social, action }) {
   ));
 
   // Render the card social media icons
-  const renderSocial = social.map(({ link, icon, color }) => (
+  const renderSocial = social?.map(({ link, icon, color }) => (
     <SoftBox
       key={color}
       component="a"
@@ -77,7 +80,7 @@ function ProfileInfoCard({ title, description, info, social, action }) {
         <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
           {title}
         </SoftTypography>
-        <SoftTypography component={Link} to={action.route} variant="body2" color="secondary">
+        <SoftTypography sx={{cursor:"pointer"}} onClick={action.edithandler} variant="body2" color="secondary">
           <Tooltip title={action.tooltip} placement="top">
             <Icon><EditIcon /></Icon>
           </Tooltip>
@@ -113,6 +116,7 @@ ProfileInfoCard.propTypes = {
   info: PropTypes.objectOf(PropTypes.string).isRequired,
   social: PropTypes.arrayOf(PropTypes.object).isRequired,
   action: PropTypes.shape({
+    edithandler: () => { },
     route: PropTypes.string.isRequired,
     tooltip: PropTypes.string.isRequired,
   }).isRequired,
