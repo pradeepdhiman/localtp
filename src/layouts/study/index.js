@@ -125,7 +125,7 @@ function Study() {
       </SoftBox>
       <SoftBox pb={3} mt={3}>
         <Grid container gap={2}>
-          <Grid item xs={12} md><StudyMaterialList title="Study Material" datalist={studymaterialdata} /></Grid>
+          <Grid item xs={12} md><StudyMaterialList title="Study Material" datalist={material?.data || []} /></Grid>
           <Grid item xs={12} md={8}><ScheduleList title="Course Schedules" datalist={schedulelistdata} /></Grid>
         </Grid>
       </SoftBox>

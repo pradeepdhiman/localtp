@@ -26,6 +26,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         getProfile: build.query({
             query: (data) => getRequest("/User", data),
         }),
+        updateProfile: build.mutation({
+            query: (data) => updateRequest("/User", data),
+        }),
         login: build.mutation({
             query: (data) => createRequest("/Authentication/authenticate", data),
         }),
@@ -66,6 +69,7 @@ export const applicantApis = emptySplitApi.injectEndpoints({
 });
 
 export const {
+    useUpdateProfileMutation,
     useApplicantRegisterMutation,
     useProfileMutation,
     useLoginMutation,

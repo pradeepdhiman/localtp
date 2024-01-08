@@ -17,44 +17,52 @@ import SoftButton from "components/SoftButton";
 import pdficon from "assets/images/icons/pdf.png"
 
 function StudyMaterialList({ title, datalist }) {
-  const renderList = datalist.map(({ image, name, description, action }) => (
-    <SoftBox key={name} component="li" display="flex" alignItems="center" py={1} mb={1}>
-      <SoftBox mr={2}>
-        <SoftAvatar src={pdficon} alt="pdf file" variant="rounded" shadow="md" />
+  console.log(datalist, "datalist")
+  const renderList = datalist.length !== 0 ? (
+    datalist.map(({ image, name, description, action }) => (
+      <SoftBox key={name} component="li" display="flex" alignItems="center" py={1} mb={1}>
+        <SoftBox mr={2}>
+          <SoftAvatar src={pdficon} alt="pdf file" variant="rounded" shadow="md" />
+        </SoftBox>
+        <SoftBox
+          display="flex"
+          flexDirection="column"
+          alignItems="flex-start"
+          justifyContent="center"
+        >
+          <SoftTypography variant="button" fontWeight="medium">
+            {name}
+          </SoftTypography>
+          <SoftTypography variant="caption" color="text">
+            {description}
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox ml="auto">
+          {action.type === "internal" ? (
+            <SoftButton component={Link} to={action.route} variant="text" color="info">
+              {action.label}
+            </SoftButton>
+          ) : (
+            <SoftButton
+              component="a"
+              href={action.route}
+              target="_blank"
+              rel="noreferrer"
+              variant="text"
+              color={action.color}
+            >
+              {action.label}
+            </SoftButton>
+          )}
+        </SoftBox>
       </SoftBox>
-      <SoftBox
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        justifyContent="center"
-      >
-        <SoftTypography variant="button" fontWeight="medium">
-          {name}
-        </SoftTypography>
-        <SoftTypography variant="caption" color="text">
-          {description}
-        </SoftTypography>
-      </SoftBox>
-      <SoftBox ml="auto">
-        {action.type === "internal" ? (
-          <SoftButton component={Link} to={action.route} variant="text" color="info">
-            {action.label}
-          </SoftButton>
-        ) : (
-          <SoftButton
-            component="a"
-            href={action.route}
-            target="_blank"
-            rel="noreferrer"
-            variant="text"
-            color={action.color}
-          >
-            {action.label}
-          </SoftButton>
-        )}
-      </SoftBox>
-    </SoftBox>
-  ));
+    ))
+  ) : (
+    <SoftTypography variant="h6" fontWeight="medium" >
+      Study material not available
+    </SoftTypography>
+  );
+  
 
   return (
     <Card sx={{ height: "100%" }}>

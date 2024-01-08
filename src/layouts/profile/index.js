@@ -26,6 +26,8 @@ import { setProfileInfo } from "./profileSlice";
 import { useState } from "react";
 import { Stack, Tab, Tabs } from "@mui/material";
 import SoftButton from "components/SoftButton";
+import DocUpload from "./components/DocUpload";
+import SoftTypography from "components/SoftTypography";
 
 const formInfo = {
   title: "profile information",
@@ -48,22 +50,29 @@ function Overview() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const { data: { data: profile } = {}, isError: profileErr, isLoading: profileLoading } = useGetProfileQuery({ id: user?.id }) || {};
 
-  console.log(profileInfo, "data")
   function editClickhandler() {
     dispatch(setProfileInfo(profile))
-    setShow(!show)
+    // setShow(!show)
   }
   function toogleSetting() {
-    dispatch(setProfileInfo({}))
+    // dispatch(setProfileInfo({}))
     setShow(!show)
   }
-   const handleSetTabValue = (event, newValue) => setTabValue(newValue);
+  const handleSetTabValue = (event, newValue) => setTabValue(newValue);
   return (
     <DashboardLayout>
       {profileLoading ? <SoftBarLoader /> : <>
         <Header name={profile?.firstname + profile?.lastName} email={profile?.userEmail} showAction={toogleSetting} />
         <SoftBox mt={5}>
-          <SoftButton color="dark">Upload Document</SoftButton>
+          {/* <SoftButton color="dark">Upload Document</SoftButton> */}
+          <SoftBox>
+            <SoftBox px={2}>
+              <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
+                Upload payment proof
+              </SoftTypography>
+            </SoftBox>
+            <DocUpload />
+          </SoftBox>
         </SoftBox>
         <SoftBox mt={2} mb={3}>
           <Grid container spacing={3}>
@@ -81,7 +90,7 @@ function Overview() {
               />
             </Grid>
             {profileInfo?.userId && <Grid item xs={12} xl={6}>
-              <ProfileEdit title="Edit Profile" info={formInfo} />
+              <ProfileEdit title="Edit Profile" info={formInfo} formFields={profile} />
             </Grid>}
             {show && <Grid item xs={12} xl={6}>
               <Settings />

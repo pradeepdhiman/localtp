@@ -3,36 +3,42 @@ import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";
 import SoftTypography from "components/SoftTypography";
-import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
-const ProfileEdit = ({ title, info }) => {
+import { yupResolver } from "@hookform/resolvers/yup";
+import { fields } from "layouts/profile/constant";
+import { schema } from "layouts/profile/constant";
+import { authUser } from "utils/utils";
+import { useUpdateProfileMutation } from "utils/functions";
 
-    const [formData, setFormData] = useState({});
-    const [error, setError] = useState("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // AuthApi.Register(formData)
-        //   .then((response) => {
-        //     if (response.data.success) {
-        //       return navigate("/authentication/sign-in");
-        //     } else {
-        //       setError(response.data.msg);
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     if (error.response) {
-        //       return setError(error.response.data.msg);
-        //     }
-        //     return setError("There has been an error.");
-        //   });
-    };
 
-    const handleFormData = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
+const ProfileEdit = ({ title, info, formFields }) => {
+
+    const [updateProfile, { data: resUpdate, isError: errUpdate, isLoading: loadingUpdate }] = useUpdateProfileMutation()
+
+    const { handleSubmit, control, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+        defaultValues: formFields
+    });
+
+    const user = authUser()
+
+
+    const submitFormData = async (data) => {
+        let newData = {
+            ...data,
+            updatedById: parseInt(user.id),
+            updatedDate: new Date()
+        }
+        console.log("form data", data)
+        try {
+            const res = await updateProfile(newData)
+            console.log(res)
+        } catch (err) {
+            console.log(err)
+        }
+
     };
 
     return (<Card sx={{ height: "100%" }}>
@@ -42,76 +48,46 @@ const ProfileEdit = ({ title, info }) => {
             </SoftTypography>
         </SoftBox>
         <SoftBox p={2}>
-            <SoftBox component="form" role="form">
-                <SoftBox mb={2}>
-                    <SoftInput
-                        type="text"
-                        name="username"
-                        placeholder="Name"
-                        onChange={handleFormData}
-                    />
-                </SoftBox>
-                <SoftBox mb={2}>
-                    <SoftInput
-                        type="email"
-                        name="email"
-                        onChange={handleFormData}
-                        placeholder="Email"
-                    />
-                </SoftBox>
-                <SoftBox mb={2}>
-                    <SoftInput
-                        type="text"
-                        name="contact"
-                        onChange={handleFormData}
-                        placeholder="Contact NO."
-                    />
-                </SoftBox>
-                <SoftBox mb={2}>
-                    <SoftInput
-                        type="text"
-                        name="address"
-                        onChange={handleFormData}
-                        placeholder="Address"
-                    />
-                </SoftBox>
-                <SoftBox mb={2}>
-                    <SoftInput
-                        type="text"
-                        name="description"
-                        onChange={handleFormData}
-                        placeholder="Description"
-                    />
-                </SoftBox>
-                {/* <SoftBox mb={2}>
-                    <SoftInput
-                        type="password"
-                        name="password"
-                        onChange={handleFormData}
-                        placeholder="Password"
-                    />
-                </SoftBox> */}
-                <SoftBox mt={2} mb={2} textAlign="center">
-                    <h6
-                        style={{
-                            fontSize: ".8em",
-                            color: "red",
-                            textAlign: "center",
-                            fontWeight: 400,
-                            transition: ".2s all",
-                        }}
-                    >
-                        {error}
-                    </h6>
-                </SoftBox>
+            <SoftBox component="form"
+                role="form"
+                onSubmit={handleSubmit(submitFormData)}>
+                {Object.keys(fields).map((fieldName) => (
+                    fields[fieldName].hidden ? null : (
+                        <SoftBox key={fieldName} mb={2}>
+                            <Controller
+                                name={fieldName}
+                                control={control}
+                                render={({ field }) => (
+                                    <>
+                                        <SoftInput
+                                            type={fields[fieldName].type || "text"}
+                                            {...field}
+                                            placeholder={fields[fieldName].placeholder}
+                                        />
+                                        {errors[fieldName] && (
+                                            <SoftTypography
+                                                component="label"
+                                                variant="caption"
+                                                color="error"
+                                            >
+                                                {errors[fieldName]?.message}
+                                            </SoftTypography>
+                                        )}
+                                    </>
+                                )}
+                            />
+                        </SoftBox>
+                    )
+                ))}
                 <SoftBox mt={4} mb={1}>
-                    <SoftButton variant="gradient" color="dark" onClick={handleSubmit} fullWidth>
+                    <SoftButton variant="gradient" color="dark" type="submit" fullWidth>
                         Update
                     </SoftButton>
                 </SoftBox>
             </SoftBox>
         </SoftBox>
-    </Card>);
+
+    </Card >);
 }
 
 export default ProfileEdit;

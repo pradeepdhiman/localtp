@@ -11,11 +11,13 @@ import SoftTypography from "components/SoftTypography";
 // Images
 import wavesWhite from "assets/images/shapes/waves-white.svg";
 import rocketWhite from "assets/images/illustrations/rocket-white.png";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import SoftButton from "components/SoftButton";
 
 function BuildByDevelopers(props) {
   const { course = {} } = props
   const location = useLocation()
+  const navigate = useNavigate();
   return (
     <Card>
       <SoftBox p={2}>
@@ -54,11 +56,22 @@ function BuildByDevelopers(props) {
                 {course.courseName}
               </SoftTypography>
               <SoftBox mb={2}>
-                <SoftTypography variant="body2" color="text">
+                <SoftTypography
+                  variant="body2"
+                  color="text"
+                  sx={{
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                  }}
+                >
                   {course.description}
                 </SoftTypography>
+
               </SoftBox>
-              <SoftTypography
+              <SoftButton onClick={() => navigate(`${location.pathname}/${course.courseID}`)} size="small" variant="text" color="dark">Read More</SoftButton>
+              {/* <SoftTypography
                 component="a"
                 href={`${location.pathname}/${course.courseID}`}
                 variant="button"
@@ -83,7 +96,7 @@ function BuildByDevelopers(props) {
                 }}
               >
                 Read More
-              </SoftTypography>
+              </SoftTypography> */}
             </SoftBox>
           </Grid>
         </Grid>

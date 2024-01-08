@@ -18,6 +18,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useCompletedCourseQuery } from "utils/functions";
 import { useActiveCourseQuery } from "utils/functions";
 import { authUser } from "utils/utils";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 
 function Dashboard() {
   const { size } = typography;
@@ -27,11 +28,6 @@ function Dashboard() {
 
   const { data: completedCourse, isError: completedError, isLoading: completedLoading } = useCompletedCourseQuery({ ApplicantID: user?.id })
   const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.id })
-
-
-  console.log(completedCourse, "completed")
-  console.log(activeCourse, "active")
-
 
   return (
     <DashboardLayout>
@@ -56,8 +52,14 @@ function Dashboard() {
             </SoftBox>
           </SoftBox>
           <SoftBox p={2}>
+            {activeLoading && <SoftBarLoader />}
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6} xl={3}>
+              {activeCourse?.data?.length !== 0 ? <Grid item xs={12} md={6} xl={3}>
+                <CourseItem />
+              </Grid> : <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
+                You dont have active course.
+              </SoftTypography></Grid>}
+              {/* <Grid item xs={12} md={6} xl={3}>
                 <CourseItem />
               </Grid>
               <Grid item xs={12} md={6} xl={3}>
@@ -68,7 +70,7 @@ function Dashboard() {
               </Grid>
               <Grid item xs={12} md={6} xl={3}>
                 <CourseItem />
-              </Grid>
+              </Grid> */}
             </Grid>
           </SoftBox>
         </Card>
@@ -91,8 +93,14 @@ function Dashboard() {
             </SoftBox>
           </SoftBox>
           <SoftBox p={2}>
+            {completedLoading && <SoftBarLoader />}
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6} xl={3}>
+              {completedCourse?.data?.length !== 0 ? <Grid item xs={12} md={6} xl={3}>
+                <CourseItem />
+              </Grid> : <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
+                You have not complete any course yet.
+              </SoftTypography></Grid>}
+              {/* <Grid item xs={12} md={6} xl={3}>
                 <CourseItem complete={true} />
               </Grid>
               <Grid item xs={12} md={6} xl={3}>
@@ -103,7 +111,7 @@ function Dashboard() {
               </Grid>
               <Grid item xs={12} md={6} xl={3}>
                 <CourseItem complete={true} />
-              </Grid>
+              </Grid> */}
             </Grid>
           </SoftBox>
         </Card>
@@ -114,7 +122,7 @@ function Dashboard() {
             <SoftBox mb={0.5}>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <SoftTypography variant="h6" fontWeight="medium">
-                  Relative Courses
+                  Most Useful Courses
                 </SoftTypography>
                 <SoftButton onClick={() => navigate("/courses")} variant="text" color="info">All</SoftButton>
               </Stack>

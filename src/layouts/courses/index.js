@@ -51,11 +51,11 @@ function Courses() {
     >
       {isLoading && <SoftBarLoader />}
       {courses?.data?.length && <><SoftBox mb={3}>
-        <Card>
-          <SoftBox pt={2} px={2}>
-            <SoftBox mb={0.5}>
+        <>
+          <SoftBox px={4} mt={2}>
+            <SoftBox >
               <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <SoftTypography variant="h6" fontWeight="medium">
+                <SoftTypography variant="h6" fontWeight="medium" >
                   Courses
                 </SoftTypography>
                 {renderSearch}
@@ -76,7 +76,7 @@ function Courses() {
               ))}
             </Grid>
           </SoftBox>
-        </Card>
+        </>
       </SoftBox>
         <SoftBox>
           <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
