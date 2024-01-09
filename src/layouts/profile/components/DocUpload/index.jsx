@@ -6,10 +6,16 @@ import SoftInput from "components/SoftInput";
 const DocUpload = () => {
     return (
         <Card>
-            <SoftBox p={2} sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center", gap:"16px" }}>
-                <SoftInput type="file" />
-                <SoftButton variant="outlined" color="dark">Upload</SoftButton>
-            </SoftBox>
+            {/* <SoftBox p={2} sx={{ display: "flex", justifyContent: "flex-start", alignItem: "center", gap:"16px" }}>
+                
+                
+                
+            </SoftBox> */}
+            <Grid container xs={12} sm={6} md={4}>
+                <Grid item><SoftInput type="file" /></Grid>
+                <Grid item><SoftInput type="text" /></Grid>
+                <Grid item><SoftButton variant="outlined" color="dark">Upload</SoftButton></Grid>
+            </Grid>
         </Card>
     );
 }
