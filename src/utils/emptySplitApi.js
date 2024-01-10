@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { _apiUrl } from 'config/constant';
 import { API_SERVER } from "config/constant";
 import { toast } from 'react-toastify';
 
@@ -40,7 +41,7 @@ const responseInterceptor = (baseQuery) => async (args, api, extraOptions) => {
 };
 
 
-const baseQuery = fetchBaseQuery({ baseUrl: API_SERVER });
+const baseQuery = fetchBaseQuery({ baseUrl: _apiUrl });
 
 const emptySplitApi = createApi({
   baseQuery: responseInterceptor(baseQuery),

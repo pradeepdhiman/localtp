@@ -27,6 +27,7 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "contex
 import brand from "assets/images/logo-ct.png";
 import { SnackbarProvider } from "notistack";
 
+
 function App() {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;

@@ -4,7 +4,7 @@ import { getRequest } from "utils/utils";
 import { updateRequest } from "utils/utils";
 import { readRequest } from "utils/utils";
 import { createRequest } from "utils/utils";
-import { userRegister } from "./utils";
+import { postForm, userRegister } from "./utils";
 
 export const applicantApis = emptySplitApi.injectEndpoints({
     endpoints: (build) => ({
@@ -26,6 +26,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         getProfile: build.query({
             query: (data) => getRequest("/User", data),
         }),
+        getAppliedCourse: build.query({
+            query: (data) => getRequest("/ApplicantCourse/GetAplicantAppliedCourse", data),
+        }),
         updateProfile: build.mutation({
             query: (data) => updateRequest("/User", data),
         }),
@@ -40,6 +43,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         }),
         profile: build.mutation({
             query: (data) => getRequest("/User", data),
+        }),
+        paymentProof: build.mutation({
+            query: (data) => postForm("/ApplicantCourse/ApplicantCoursePaymentUpload", data),
         }),
         // listApplicant: build.query({
         //     query: () => readRequest("/Applicant/List"),
@@ -69,6 +75,7 @@ export const applicantApis = emptySplitApi.injectEndpoints({
 });
 
 export const {
+    usePaymentProofMutation,
     useUpdateProfileMutation,
     useApplicantRegisterMutation,
     useProfileMutation,
@@ -80,4 +87,5 @@ export const {
     useActiveCourseQuery,
     useGetStudyMaterialQuery,
     useGetProfileQuery,
+    useGetAppliedCourseQuery,
 } = applicantApis;

@@ -8,18 +8,30 @@ import { IconButton } from "@mui/material";
 import { toast } from "react-toastify";
 import SoftBadge from "components/SoftBadge";
 
-const createHeaders = () => {
+const createHeaders = (isForm) => {
   const user = authUser();
-  const headers = {
-    "Content-Type": "application/json",
-  };
+  const headers = {};
+
+  if (isForm) {
+    // headers["Content-Type"] = "multipart/form-data";
+  } else {
+    headers["Content-Type"] = "application/json";
+  }
 
   if (user) {
-    headers.Authorization = `Bearer ${user.token}`;
+    headers["Authorization"] = `Bearer ${user.token}`;
   }
 
   return headers;
 };
+
+
+const generateBoundary = () => {
+  return "----WebKitFormBoundary" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+};
+
+
+
 
 
 
@@ -42,6 +54,13 @@ export const createRequest = (endpoint, data) => ({
   method: "POST",
   body: JSON.stringify(data),
   headers: createHeaders(),
+});
+
+export const postForm = (endpoint, data) => ({
+  url: `${endpoint}`,
+  method: "PUT",
+  body: data,
+  headers: createHeaders(true),
 });
 
 export const getRequest = (endpoint, queryParam) => {

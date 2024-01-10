@@ -32,7 +32,7 @@ import Swal from "sweetalert2";
 
 
 const rawFields = {
-  applicantID: 0,
+  applicantID: null,
   firstName: "",
   lastName: "",
   email: "",
@@ -46,8 +46,8 @@ const rawFields = {
   companyContactNumber: "",
   companyAddress: "",
   password: "",
-  courseId: 0,
-  createdById: 0,
+  courseId: null,
+  createdById: null,
   remarks: ""
 }
 
@@ -67,6 +67,7 @@ function SignUp() {
   const coursename = queryStringObject.coursename;
   const [register, { data: regData, isError: regErr, isLoading: regLoading }] = useApplicantRegisterMutation()
   const [getProfile, { data: profileData, isError: profileErr, isLoading: profileLoading }] = useProfileMutation()
+
 
   const user = authUser()
   const MySwal = withReactContent(Swal)
@@ -134,7 +135,7 @@ function SignUp() {
           }
         });
       } else {
-        setError(response.data.msg || "An error occurred during registration.");
+        setError(response.data.errors[0] || "An error occurred during registration.");
       }
     } catch (error) {
       if (error.response) {
