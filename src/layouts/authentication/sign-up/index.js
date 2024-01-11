@@ -32,7 +32,7 @@ import Swal from "sweetalert2";
 
 
 const rawFields = {
-  applicantID: null,
+  applicantID: 0,
   firstName: "",
   lastName: "",
   email: "",
@@ -46,8 +46,8 @@ const rawFields = {
   companyContactNumber: "",
   companyAddress: "",
   password: "",
-  courseId: null,
-  createdById: null,
+  courseId: 0,
+  createdById: 0,
   remarks: ""
 }
 
@@ -65,9 +65,11 @@ function SignUp() {
   const queryStringObject = queryString.parse(queryStrings);
   const courseId = queryStringObject.courseid;
   const coursename = queryStringObject.coursename;
-  const [register, { data: regData, isError: regErr, isLoading: regLoading }] = useApplicantRegisterMutation()
+  const [register, { data: regData, error: regErr, isLoading: regLoading }] = useApplicantRegisterMutation()
   const [getProfile, { data: profileData, isError: profileErr, isLoading: profileLoading }] = useProfileMutation()
 
+console.log(regErr, "aaaa")
+console.log(regData, "bbb")
 
   const user = authUser()
   const MySwal = withReactContent(Swal)
@@ -146,23 +148,7 @@ function SignUp() {
     }
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   AuthApi.Register(formData)
-  //     .then((response) => {
-  //       if (response.data.success) {
-  //         return navigate("/authentication/sign-in");
-  //       } else {
-  //         setError(response.data.msg);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       if (error.response) {
-  //         return setError(error.response.data.msg);
-  //       }
-  //       return setError("There has been an error.");
-  //     });
-  // };
+
 
   const handleRedirect = () => navigate("/dashboard");
 
@@ -211,13 +197,14 @@ function SignUp() {
       ) : (
         <Card>
           <SoftBox pt={2} pb={3} px={3}>
-            <SoftBox component="form" role="form">
+            <SoftBox component="form" role="form" onSubmit={handleSubmit}>
               <SoftBox mb={2}>
                 <SoftInput
                   type="text"
                   name="firstName"
                   placeholder="first name"
                   onChange={handleFormData}
+                  required
                 />
               </SoftBox>
               <SoftBox mb={2}>
@@ -225,6 +212,7 @@ function SignUp() {
                   type="email"
                   name="email"
                   onChange={handleFormData}
+                  required
                   placeholder="Email"
                 />
               </SoftBox>
@@ -233,6 +221,7 @@ function SignUp() {
                   type="password"
                   name="password"
                   onChange={handleFormData}
+                  required
                   placeholder="Password"
                 />
               </SoftBox>
@@ -279,7 +268,7 @@ function SignUp() {
                 </h6>
               </SoftBox>
               <SoftBox mt={4} mb={1}>
-                <SoftButton variant="gradient" color="dark" onClick={handleSubmit} fullWidth>
+                <SoftButton type="submit" variant="gradient" color="dark"  fullWidth>
                   {regLoading ? "Loading..." : "sign up"}
                 </SoftButton>
               </SoftBox>
@@ -302,111 +291,6 @@ function SignUp() {
           </SoftBox>
         </Card>
       )}
-
-      {/* {user && user.token ? (
-        <Card>
-          <h3 style={{ textAlign: "center" }}>You are already signed in.</h3>
-          <SoftBox mt={4} mb={1}>
-            <SoftButton variant="gradient" buttonColor="info" fullWidth onClick={handleRedirect}>
-              {`Let's go`}
-            </SoftButton>
-          </SoftBox>
-        </Card>
-      ) : (
-        <Card>
-          <SoftBox pt={2} pb={3} px={3}>
-            <SoftBox component="form" role="form">
-              <SoftBox mb={2}>
-                <SoftInput
-                  type="text"
-                  name="username"
-                  placeholder="Name"
-                  onChange={handleFormData}
-                />
-              </SoftBox>
-              <SoftBox mb={2}>
-                <SoftInput
-                  type="email"
-                  name="email"
-                  onChange={handleFormData}
-                  placeholder="Email"
-                />
-              </SoftBox>
-              <SoftBox mb={2}>
-                <SoftInput
-                  type="password"
-                  name="password"
-                  onChange={handleFormData}
-                  placeholder="Password"
-                />
-              </SoftBox>
-              <SoftBox mb={2}>
-                <SoftInput
-                  type="text"
-                  readonly
-                  name="course"
-                  onChange={handleFormData}
-                  placeholder="Course"
-                  value={coursename}
-                />
-              </SoftBox>
-              <SoftBox display="flex" alignItems="center">
-                <Checkbox checked={agreement} onChange={handleSetAgremment} />
-                <SoftTypography
-                  variant="button"
-                  fontWeight="regular"
-                  onClick={handleSetAgremment}
-                  sx={{ cursor: "poiner", userSelect: "none" }}
-                >
-                  &nbsp;&nbsp;I agree the&nbsp;
-                </SoftTypography>
-                <SoftTypography
-                  component="a"
-                  href="#"
-                  variant="button"
-                  fontWeight="bold"
-                  textGradient
-                >
-                  Terms and Conditions
-                </SoftTypography>
-              </SoftBox>
-              <SoftBox mt={2} mb={2} textAlign="center">
-                <h6
-                  style={{
-                    fontSize: ".8em",
-                    color: "red",
-                    textAlign: "center",
-                    fontWeight: 400,
-                    transition: ".2s all",
-                  }}
-                >
-                  {error}
-                </h6>
-              </SoftBox>
-              <SoftBox mt={4} mb={1}>
-                <SoftButton variant="gradient" color="dark" onClick={handleSubmit} fullWidth>
-                  sign up
-                </SoftButton>
-              </SoftBox>
-              <SoftBox mt={3} textAlign="center">
-                <SoftTypography variant="button" color="text" fontWeight="regular">
-                  Already have an account?&nbsp;
-                  <SoftTypography
-                    component={Link}
-                    to="/authentication/sign-in"
-                    variant="button"
-                    color="dark"
-                    fontWeight="bold"
-                    textGradient
-                  >
-                    Sign in
-                  </SoftTypography>
-                </SoftTypography>
-              </SoftBox>
-            </SoftBox>
-          </SoftBox>
-        </Card>
-      )} */}
     </BasicLayout>
   );
 }

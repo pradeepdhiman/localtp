@@ -13,16 +13,22 @@ import rocketWhite from "assets/images/illustrations/rocket-white.png";
 import SoftButton from "components/SoftButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 function Details(props) {
-  const { course = {}} = props
+  const { course = {} } = props
   const Navigate = useNavigate()
+  const { session } = useSelector(state => state.common)
 
   function selectHandler() {
-    console.log(course)
+    if (session.length === 0) {
+      return;
+    }
+
     Navigate("/authentication/sign-up?courseid=" + course.courseID + "&coursename=" + course.courseName);
   }
-  
+
+
   return (
     <Card>
       <SoftBox p={2} mt={3}>
@@ -71,7 +77,7 @@ function Details(props) {
                 </SoftTypography>
               </SoftBox>
               <SoftBox mb={2}>
-              <SoftTypography variant="body2" color="text">
+                <SoftTypography variant="body2" color="text">
                   Total Amount : <SoftTypography variant="body2" component="span" color="info">{course.totalAmount}</SoftTypography>
                 </SoftTypography>
                 <SoftTypography variant="body2" color="text">
@@ -79,7 +85,7 @@ function Details(props) {
                 </SoftTypography>
               </SoftBox>
               <SoftButton variant="gradient" color="dark" onClick={selectHandler}>
-                Select Course
+                {session.length !== 0 ? "Countinue" : "Select session to countinue"}
               </SoftButton>
             </SoftBox>
           </Grid>

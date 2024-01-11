@@ -19,6 +19,8 @@ import { useCompletedCourseQuery } from "utils/functions";
 import { useActiveCourseQuery } from "utils/functions";
 import { authUser } from "utils/utils";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { useGetAppliedCourseQuery } from "utils/functions";
+import AppliedCourse from "./component/Courseitem/appliedCourse";
 
 function Dashboard() {
   const { size } = typography;
@@ -28,10 +30,41 @@ function Dashboard() {
 
   const { data: completedCourse, isError: completedError, isLoading: completedLoading } = useCompletedCourseQuery({ ApplicantID: user?.id })
   const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.id })
+  const { data: appliedCourse, isError: appliedError, isLoading: appliedLoading } = useGetAppliedCourseQuery({ ApplicantID: user?.id })
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <SoftBox mb={3}>
+        {appliedCourse?.data?.length !==0 ? <Card>
+          <SoftBox pt={2} px={2}>
+            <SoftBox mb={0.5}>
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <SoftTypography variant="h6" fontWeight="medium">
+                  Applied Course
+                </SoftTypography>
+                {/* <SoftButton onClick={() => navigate(`${pathname}/mycourses`)} variant="text" color="info">
+                  All
+                </SoftButton> */}
+              </Stack>
+            </SoftBox>
+            <SoftBox mb={1}>
+              <SoftTypography variant="button" fontWeight="regular" color="text">
+                Start learning your course.
+              </SoftTypography>
+            </SoftBox>
+          </SoftBox>
+          <SoftBox p={2}>
+            <Grid container spacing={3}>
+              {appliedCourse?.data?.length !== 0 ? <Grid item xs={12} md={6} xl={3}>
+                <AppliedCourse />
+              </Grid> : <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
+                You did not apply any course so far.
+              </SoftTypography></Grid>}
+            </Grid>
+          </SoftBox>
+        </Card> : null}
+      </SoftBox>
       <SoftBox mb={3}>
         <Card>
           <SoftBox pt={2} px={2}>

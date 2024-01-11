@@ -11,13 +11,17 @@ import SoftTypography from "components/SoftTypography";
 // Images
 import wavesWhite from "assets/images/shapes/waves-white.svg";
 import rocketWhite from "assets/images/illustrations/rocket-white.png";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SoftButton from "components/SoftButton";
+import { Box, LinearProgress } from "@mui/material";
+import { useState } from "react";
+import SoftProgress from "components/SoftProgress";
 
-function BuildByDevelopers(props) {
-  const { course = {} } = props
+function AppliedCourse({ complete = false, relativeCourse = false }) {
+  const [progress, setProgress] = useState(30);
+
   const location = useLocation()
-  const navigate = useNavigate();
+  // console.log(location)
   return (
     <Card>
       <SoftBox p={2}>
@@ -53,31 +57,20 @@ function BuildByDevelopers(props) {
                 </SoftTypography>
               </SoftBox>
               <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
-                {course.courseName}
+                Advance javascript
               </SoftTypography>
-              <SoftBox mb={2}>
-                <SoftTypography
-                  variant="body2"
-                  color="text"
-                  sx={{
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {course.description}
+              {/* <SoftBox mb={2}>
+                <SoftTypography variant="body2" color="text">
+                  From colors, cards, typography to complex elements
                 </SoftTypography>
-
-              </SoftBox>
-              <SoftButton onClick={() => navigate(`${location.pathname}/${course.courseID}`)} size="small" variant="text" color="dark">Read More</SoftButton>
-              
-            </SoftBox>
-          </Grid>
+              </SoftBox> */}
+              <Box mt={2}><SoftButton component={Link} to="/dashboard/profile" size="small" color="dark">Pay Now</SoftButton></Box>
+          </SoftBox>
         </Grid>
-      </SoftBox>
-    </Card>
+      </Grid>
+    </SoftBox>
+    </Card >
   );
 }
 
-export default BuildByDevelopers;
+export default AppliedCourse;

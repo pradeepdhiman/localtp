@@ -4,7 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     courseList: [],
     activeCourse: {},
-    assessmentItem:{}
+    assessmentItem:{},
+    session:[],
 };
 
 const commonSlice = createSlice({
@@ -20,8 +21,11 @@ const commonSlice = createSlice({
         setAssessmentItem: (state, { payload }) => {
             state.assessmentItem = payload
         },
+        setSelectedSession: (state, { payload }) => {
+            state.session = payload
+        },
     },
 });
 
-export const { setCourseList, setActiveCourse, setAssessmentItem } = commonSlice.actions;
+export const {setSelectedSession, setCourseList, setActiveCourse, setAssessmentItem } = commonSlice.actions;
 export default commonSlice;
