@@ -17,6 +17,7 @@ const DocUpload = () => {
     const user = authUser();
     const [selectedCourse, setSelectedCourse] = useState(null);
     const { data: appliedCourse, isError: appliedError, isLoading: appliedLoading } = useGetAppliedCourseQuery({ ApplicantID: user?.id });
+    // const { data: appliedCourse, isError: appliedError, isLoading: appliedLoading } = useGetAppliedCourseQuery({ ApplicantID: user?.applicantId });
     const [sendpaymentproof, { data: proofData, isError: proofErr, isLoading: proofLoading }] = usePaymentProofMutation()
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
@@ -26,9 +27,6 @@ const DocUpload = () => {
 
     const MySwal = withReactContent(Swal)
 
-
-
-
     const submithandler = async (data) => {
         const file = data.file[0];
         const binaryData = await readFileAsync(file);
@@ -37,6 +35,7 @@ const DocUpload = () => {
         const formData = new FormData();
         formData.append("ApplicantCourseID", applicantCourseID);
         formData.append("ApplicantID", user?.id || applicantID);
+        // formData.append("ApplicantID", user?.applicantId || applicantID);
         formData.append("CourseID", courseID);
         formData.append("ReceiptImage", file, file.name);
         formData.append("ReceiptID", receiptID);
