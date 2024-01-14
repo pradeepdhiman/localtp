@@ -50,7 +50,7 @@ function Courses() {
       image={curved9}
     >
       {isLoading && <SoftBarLoader />}
-      {courses?.data?.length && <><SoftBox mb={3}>
+      {courses?.data?.length ? <><SoftBox mb={3}>
         <>
           <SoftBox px={4} mt={2}>
             <SoftBox >
@@ -84,7 +84,9 @@ function Courses() {
           </Stack>
         </SoftBox>
       </>
-      }
+        : <SoftTypography variant="button" fontWeight="regular" color="text">
+          No Course Available
+        </SoftTypography>}
     </PageCoverLayout>
   );
 }

@@ -46,7 +46,8 @@ function Study() {
 
   const queryParams = new URLSearchParams(location.search);
   const courseParam = queryParams.get('course');
-  const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.id })
+  const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.applicantId })
+  // const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.id })
   const { data: material, isError: matError, isLoading: matLoading } = useGetStudyMaterialQuery({ id: selectedCourse?.courseID })
 
   useEffect(() => {

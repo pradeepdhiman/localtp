@@ -5,7 +5,7 @@ const initialState = {
     courseList: [],
     activeCourse: {},
     assessmentItem:{},
-    session:[],
+    session:{},
 };
 
 const commonSlice = createSlice({

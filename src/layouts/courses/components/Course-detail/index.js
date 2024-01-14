@@ -8,10 +8,11 @@ import PageCoverLayoutPlain from "examples/LayoutContainers/PageLayoutCoverPlain
 import { Grid } from "@mui/material";
 import Details from "../BuildByDevelopers/details";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
-import { useGetCourseMutation } from "utils/functions";
 import SessionList from "examples/Lists/SessionList";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedSession } from "utils/commonSlice";
+import { useAssociatedScheduleQuery } from "utils/functions";
+import { useGetCourseQuery } from "utils/functions";
 
 const dummySession = [
   {
@@ -84,49 +85,32 @@ function CourseDetail() {
   const { session } = useSelector(state => state.common)
   const navigate = useNavigate();
   const { courseid } = useParams()
-  const [getCoursem, { data, isError, isLoading }] = useGetCourseMutation()
-  const { data: course } = data || {};
+  const { data: course, isError, isLoading } = useGetCourseQuery({ id: courseid })
+  const { data: assosSchedule, isError: assosErr, isLoading: assosLoading } = useAssociatedScheduleQuery({ CourseID: courseid })
+
 
   useEffect(() => {
     dispatch(setSelectedSession([]));
-    const fetchData = async () => {
-      try {
-        const response = await getCoursem({ id: courseid });
-      } catch (error) {
-        console.error('Error fetching course data:', error);
-      }
-    };
+  }, [courseid]);
 
-    fetchData();
-  }, [courseid, getCoursem]);
 
-  
 
   function selecthandler(selectedItem) {
-    let newSession = session || [];
-  
-    const isSessionSelected = newSession.some(item => item.sessionId === selectedItem.sessionId);
-  
-    if (isSessionSelected) {
-      newSession = newSession.filter(item => item.sessionId !== selectedItem.sessionId);
-    } else {
-      newSession = [...newSession, selectedItem];
-    }
-  
-    dispatch(setSelectedSession([...newSession]));
+    dispatch(setSelectedSession(selectedItem));
   }
-  
-  
+
+
   return (
     <PageCoverLayoutPlain>
       <SoftBox mb={3}>
         <Grid container spacing={3} mt={2}>
           <Grid item xs={12}>
             {(isLoading) && <SoftBarLoader />}
-            {course && <Details course={course} />}
+            {course && <Details course={course?.data} />}
           </Grid>
           <Grid item xs={12}>
-            <SessionList title="Availabe Session" list={dummySession || []} action={selecthandler} />
+            {(assosLoading) && <SoftBarLoader />}
+            <SessionList title="Availabe Session" list={assosSchedule?.data || []} action={selecthandler} />
           </Grid>
         </Grid>
       </SoftBox>

@@ -12,51 +12,73 @@ import Card from "@mui/material/Card";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import moment from "moment";
 
 function SessionList({ title, list, action }) {
-  
+
   const { session } = useSelector(state => state.common)
 
-  
-  
-  
-  const renderlist = list.map((item) => (
-    <SoftBox key={item?.sessionId} component="li" display="flex" alignItems="center" py={1} mb={1}>
-      <SoftBox
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        justifyContent="center"
-      >
-        <SoftTypography variant="button" fontWeight="medium">
-          {item?.sessionName}
-        </SoftTypography>
-        <SoftTypography variant="caption" color="text">
-          {item?.teacher}
-        </SoftTypography>
+  const renderlist = list.length > 0 ? (
+    list.map((item) => (
+      <SoftBox key={item?.scheduledID} component="li" display="flex" alignItems="center" py={1} mb={1}>
+        <SoftBox
+          display="flex"
+          flexDirection="column"
+          alignItems="flex-start"
+          justifyContent="center"
+        >
+          <SoftTypography variant="button" fontWeight="medium">
+            {item?.scheduledName}
+          </SoftTypography>
+          <SoftTypography variant="caption" color="text">
+            {item?.instructorName}
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox
+          ml="auto"
+          display="flex"
+          flexDirection="column"
+          alignItems="flex-start"
+          justifyContent="center"
+        >
+          <SoftTypography variant="button" fontWeight="medium">
+            <b>From</b> {moment(item?.startDate).format("MM-DD-YYYY")}
+          </SoftTypography>
+          <SoftTypography variant="button" fontWeight="medium">
+            <b>To</b>  {moment(item?.endDate).format("MM-DD-YYYY")}
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox
+          ml="auto"
+          display="flex"
+          flexDirection="column"
+          alignItems="flex-start"
+          justifyContent="center"
+        >
+          <SoftTypography variant="button" fontWeight="medium">
+            {moment(item?.validityDateTime).format("HH:mm:ss a")}
+          </SoftTypography>
+          <SoftTypography variant="button" fontWeight="medium">
+            {item?.locationName}
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox ml="auto">
+          <SoftButton onClick={() => action(item)} component="button" variant="text" color={session?.scheduledID === item?.scheduledID ? "success" : "info"}>
+            {session?.scheduledID === item?.scheduledID ? "Unselect" : "Select"}
+          </SoftButton>
+        </SoftBox>
       </SoftBox>
-      <SoftBox
-        ml="auto"
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        justifyContent="center"
-      >
-        <SoftTypography variant="button" fontWeight="medium">
-          {item?.sessionDate}
-        </SoftTypography>
-        <SoftTypography variant="caption" color="text">
-          {item?.sessionStartTime}
-        </SoftTypography>
-      </SoftBox>
-      <SoftBox ml="auto">
-        <SoftButton onClick={()=>action(item)} component="button" variant="text" color="info">
-          {session?.find(x => x.sessionId === item?.sessionId) ? "Unselect" : "Select"}
-        </SoftButton>
-      </SoftBox>
+    ))
+  ) : (
+    <SoftBox py={1} mb={1}>
+      <SoftTypography variant="body1">
+        No schedule available.
+      </SoftTypography>
     </SoftBox>
-  ));
+  );
+
+
 
   return (
     <Card sx={{ height: "100%" }}>
