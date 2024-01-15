@@ -39,7 +39,7 @@ function Dashboard() {
     <DashboardLayout>
       <DashboardNavbar />
       <SoftBox mb={3}>
-        {appliedCourse?.data?.length !==0 ? <Card>
+        {appliedCourse?.data?.length !== 0 ? <Card>
           <SoftBox pt={2} px={2}>
             <SoftBox mb={0.5}>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -53,18 +53,18 @@ function Dashboard() {
             </SoftBox>
             <SoftBox mb={1}>
               <SoftTypography variant="button" fontWeight="regular" color="text">
-                Start learning your course.
+                Your applied course.
               </SoftTypography>
             </SoftBox>
           </SoftBox>
           <SoftBox p={2}>
-            <Grid container spacing={3}>
-              {appliedCourse?.data?.length !== 0 ? <Grid item xs={12} md={6} xl={3}>
-                <AppliedCourse />
-              </Grid> : <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
-                You did not apply any course so far.
-              </SoftTypography></Grid>}
-            </Grid>
+            {appliedCourse?.data?.length !== 0 ?
+              <AppliedCourse course={appliedCourse?.data} /> : <Card>
+                <SoftBox p={2}>
+                  <SoftTypography variant="button" fontWeight="bold" color="text">
+                    You did not apply any course so far.
+                  </SoftTypography>
+                </SoftBox></Card>}
           </SoftBox>
         </Card> : null}
       </SoftBox>

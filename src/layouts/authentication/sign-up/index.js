@@ -32,6 +32,7 @@ import { useSelector } from "react-redux";
 import { useMasterListByTypeQuery } from "utils/functions";
 import SoftAutoSelect from "examples/AutoSelect";
 import { validateForm } from "utils/utils";
+import SoftAddAbleAutoSelect from "examples/AutoSelect/AddAbleAutoSelect";
 
 
 
@@ -135,34 +136,33 @@ function SignUp() {
     try {
       let newData = {};
 
-      if (user?.id) {
+      if (user?.applicantId) {
         newData = {
           ...formData,
           courseId: parseInt(courseId),
-          applicantID: parseInt(user.applicantID),
+          applicantID: parseInt(user.applicantId),
           firstName: user.userName,
           email: user.email,
           password: JSON.stringify(formData.password),
-          createdById: parseInt(user.applicantID),
-          scheduleId: parseInt(session?.scheduleId),
+          createdById: parseInt(user.applicantId),
+          scheduleId: parseInt(session?.scheduledID),
         };
       } else {
         newData = {
           ...formData,
           courseId: parseInt(courseId),
           createdById: 1,
-          scheduleId: parseInt(session?.scheduleId),
-          nationality: nationality.code,
-          designation: designation.code,
-          qualification: qualification.code,
+          scheduleId: parseInt(session?.scheduledID),
+          nationality: nationality.masterCodeID,
+          designation: designation.masterCodeID,
+          qualification: qualification.masterCodeID,
         };
       }
 
       let err = validateForm(newData, formRule)
-      console.log(err)
-      if (err) {
-        setFormerror(err)
-        return
+      if (Object.keys(err).length > 0) {
+        setFormerror(err);
+        return;
       }
 
       const response = await register(newData);
@@ -292,33 +292,39 @@ function SignUp() {
                 />
               </SoftBox>
               <SoftBox mb={2}>
-                <SoftAutoSelect
-                  dataList={qualificationList?.data}
+                <SoftAddAbleAutoSelect
+                  dataList={qualificationList?.data || []}
                   selectedValue={qualification}
                   selectHandler={qualificationSelectHandler}
+                  label={null}
                   placeholder="Select Qualification"
+                  isEditable={false}
                 />
                 {formerror?.qualification ? <SoftTypography color="error" variant="button" fontWeight="medium">
                   {formerror?.qualification}
                 </SoftTypography> : null}
               </SoftBox>
               <SoftBox mb={2}>
-                <SoftAutoSelect
-                  dataList={desigList?.data}
+                <SoftAddAbleAutoSelect
+                  dataList={desigList?.data || []}
                   selectedValue={designation}
                   selectHandler={designationSelectHandler}
+                  label={null}
                   placeholder="Select Designation"
+                  isEditable={false}
                 />
                 {formerror?.designation ? <SoftTypography color="error" variant="button" fontWeight="medium">
                   {formerror?.designation}
                 </SoftTypography> : null}
               </SoftBox>
               <SoftBox mb={2}>
-                <SoftAutoSelect
-                  dataList={nationalityList?.data}
+                <SoftAddAbleAutoSelect
+                  dataList={nationalityList?.data || []}
                   selectedValue={nationality}
                   selectHandler={nationalitySelectHandler}
+                  label={null}
                   placeholder="Select Nationality"
+                  isEditable={false}
                 />
                 {formerror?.nationality ? <SoftTypography color="error" variant="button" fontWeight="medium">
                   {formerror?.nationality}

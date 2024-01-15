@@ -1,4 +1,4 @@
-import { Card, Grid } from "@mui/material";
+import { Card, Grid, TextField } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";
@@ -16,10 +16,9 @@ import Swal from "sweetalert2";
 const DocUpload = () => {
     const user = authUser();
     const [selectedCourse, setSelectedCourse] = useState(null);
-    // const { data: appliedCourse, isError: appliedError, isLoading: appliedLoading } = useGetAppliedCourseQuery({ ApplicantID: user?.id });
     const { data: appliedCourse, isError: appliedError, isLoading: appliedLoading } = useGetAppliedCourseQuery({ ApplicantID: user?.applicantId });
     const [sendpaymentproof, { data: proofData, isError: proofErr, isLoading: proofLoading }] = usePaymentProofMutation()
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
 
     const handleCourseSelect = (event, newValue) => {
         setSelectedCourse(newValue);
@@ -30,16 +29,16 @@ const DocUpload = () => {
     const submithandler = async (data) => {
         const file = data.file[0];
         const binaryData = await readFileAsync(file);
-        const { applicantCourseID, applicantID, courseID, receiptID } = appliedCourse?.data;
+        const { applicantCourseID, applicantID, courseID, receiptID } = selectedCourse;
 
         const formData = new FormData();
-        formData.append("ApplicantCourseID", applicantCourseID);
-        formData.append("ApplicantID", user?.id || applicantID);
-        // formData.append("ApplicantID", user?.applicantId || applicantID);
-        formData.append("CourseID", courseID);
+        formData.append("ApplicantCourseID", parseInt(applicantCourseID));
+        formData.append("ApplicantID", parseInt(user?.applicantId) || parseInt(applicantID));
+        formData.append("CourseID", parseInt(courseID));
         formData.append("ReceiptImage", file, file.name);
-        formData.append("ReceiptID", receiptID);
+        formData.append("ReceiptID", 123456789);
         formData.append("ReceiptDate", moment().format('DD-MM-YYYY'));
+        // formData.append("ReceiptDate", moment().format('DD-MM-YYYY'));
         formData.append("AmountPaid", data.amount);
 
         try {
@@ -76,19 +75,6 @@ const DocUpload = () => {
             <SoftBox p={2} >
                 <form onSubmit={handleSubmit(submithandler)}>
                     <Grid container spacing={2}>
-                        {/* <Grid xs={12} item>
-                        <Autocomplete
-                            disablePortal
-                            disableClearable
-                            id="combo-box-demo"
-                            value={selectedCourse}
-                            onChange={handleCourseSelect}
-                            options={appliedCourse?.data || []}
-                            getOptionLabel={(option) => option?.courseID}
-                            sx={{ width: 300 }}
-                            renderInput={(params) => <TextField  {...params} />}
-                        />
-                    </Grid> */}
                         <Grid item xs={6}>
                             <SoftBox display="flex" py={1} pr={2}>
                                 <SoftTypography variant="button" fontWeight="regular" color="text">
@@ -130,16 +116,45 @@ const DocUpload = () => {
                         </Grid>
                         <Grid item xs={6}>
                             <Grid container spacing={2}>
-                                <Grid item xs={12} >
-                                    <SoftInput type="file" {...register('file', { required: 'File is required' })} />
+                                <Grid item xs={12}>
+                                    <Autocomplete
+                                        disablePortal
+                                        disableClearable
+                                        id="combo-box-demo"
+                                        value={selectedCourse}
+                                        onChange={handleCourseSelect}
+                                        options={appliedCourse?.data || []}
+                                        getOptionLabel={(option) => option?.courseName}
+                                        sx={{ width: "100%" }}
+                                        renderInput={(params) => <TextField {...register('appliedCrs', { required: 'Select course for payment' })}
+                                            error={Boolean(errors.appliedCrs)}
+                                            helperText={errors.appliedCrs?.message} placeholder="Select applied course" {...params} />}
+                                    />
                                 </Grid>
-                                <Grid item xs={12} >
-                                    <SoftInput type="number" placeholder="Amount" {...register('amount', { required: 'Amount is required' })} />
+                                <Grid item xs={12}>
+                                    <SoftInput
+                                        type="file"
+                                        {...register('file', { required: 'File is required' })}
+                                        error={Boolean(errors.file)}
+                                        helperText={errors.file?.message}
+                                    />
                                 </Grid>
-                                <Grid item xs={12} >
-                                    <SoftButton disabled={proofLoading} type="submit" variant="outlined" color="dark" >Upload</SoftButton>
+                                <Grid item xs={12}>
+                                    <SoftInput
+                                        type="number"
+                                        placeholder="Amount"
+                                        {...register('amount', { required: 'Amount is required' })}
+                                        error={Boolean(errors.amount)}
+                                        helperText={errors.amount?.message}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <SoftButton disabled={proofLoading} type="submit" variant="outlined" color="dark">
+                                        Upload
+                                    </SoftButton>
                                 </Grid>
                             </Grid>
+
                         </Grid>
                     </Grid>
                 </form>

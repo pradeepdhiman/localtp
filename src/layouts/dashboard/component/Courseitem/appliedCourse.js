@@ -1,5 +1,4 @@
 
-// @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
@@ -11,66 +10,94 @@ import SoftTypography from "components/SoftTypography";
 // Images
 import wavesWhite from "assets/images/shapes/waves-white.svg";
 import rocketWhite from "assets/images/illustrations/rocket-white.png";
-import { Link, useLocation } from "react-router-dom";
 import SoftButton from "components/SoftButton";
-import { Box, LinearProgress } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import SoftProgress from "components/SoftProgress";
+import { useSelector } from "react-redux";
 
-function AppliedCourse({ complete = false, relativeCourse = false }) {
-  const [progress, setProgress] = useState(30);
+function AppliedCourse(props) {
+  const { course = {} } = props
+  const Navigate = useNavigate()
 
-  const location = useLocation()
-  // console.log(location)
   return (
-    <Card>
-      <SoftBox p={2}>
-        <Grid container spacing={3} direction="column">
-          <Grid item xs={12} lg={5} sx={{ position: "relative", ml: "auto" }} >
-            <SoftBox
-              height="100%"
-              display="grid"
-              justifyContent="center"
-              alignItems="center"
-              bgColor="info"
-              borderRadius="lg"
-              variant="gradient"
-            >
+    <>
+      {course?.length && course?.map(item => <Card>
+        <SoftBox p={2}>
+          <Grid container spacing={3} direction="row">
+            <Grid item xs={12} lg={4} sx={{ position: "relative", ml: "auto" }} >
               <SoftBox
-                component="img"
-                src={wavesWhite}
-                alt="waves"
-                display="block"
-                position="absolute"
-                left={0}
-                width="100%"
                 height="100%"
-              />
-              <SoftBox component="img" src={rocketWhite} alt="rocket" width="100%" pt={3} />
-            </SoftBox>
-          </Grid>
-          <Grid item xs={12} lg={6}>
-            <SoftBox display="flex" flexDirection="column" height="100%">
-              <SoftBox pt={1} mb={0.5}>
-                <SoftTypography variant="body2" color="text" fontWeight="medium">
-                  By Maximan
+                display="grid"
+                justifyContent="center"
+                alignItems="center"
+                bgColor="info"
+                borderRadius="lg"
+                variant="gradient"
+              >
+                <SoftBox
+                  component="img"
+                  src={wavesWhite}
+                  alt="waves"
+                  display="block"
+                  position="absolute"
+                  left={0}
+                  width="100%"
+                  height="100%"
+                />
+                <SoftBox component="img" src={rocketWhite} alt="rocket" width="100%" pt={3} />
+              </SoftBox>
+            </Grid>
+            <Grid item xs={12} lg={8}>
+              <SoftBox >
+                <SoftTypography display="inline-block" variant="button" fontWeight="medium">
+                  Course Name :
+                </SoftTypography>
+                <SoftTypography display="inline-block" variant="caption" fontWeight="regular" color="text">
+                  &nbsp;{item?.courseName}
                 </SoftTypography>
               </SoftBox>
-              <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
-                Advance javascript
-              </SoftTypography>
-              {/* <SoftBox mb={2}>
-                <SoftTypography variant="body2" color="text">
-                  From colors, cards, typography to complex elements
+              <SoftBox >
+                <SoftTypography display="inline-block" variant="button" fontWeight="medium">
+                  Course Schedule Name :
                 </SoftTypography>
-              </SoftBox> */}
-              <Box mt={2}><SoftButton component={Link} to="/dashboard/profile" size="small" color="dark">Pay Now</SoftButton></Box>
-          </SoftBox>
-        </Grid>
-      </Grid>
-    </SoftBox>
-    </Card >
+                <SoftTypography display="inline-block" variant="caption" fontWeight="regular" color="text">
+                  &nbsp;{item?.scheduleName}
+                </SoftTypography>
+              </SoftBox>
+              <SoftBox >
+                <SoftTypography display="inline-block" variant="button" fontWeight="medium">
+                  Course Fee :
+                </SoftTypography>
+                <SoftTypography display="inline-block" variant="caption" fontWeight="regular" color="text">
+                  &nbsp; ${item?.trainingfee}
+                </SoftTypography>
+              </SoftBox>
+              <SoftBox >
+                <SoftTypography display="inline-block" variant="button" fontWeight="medium">
+                  Status :
+                </SoftTypography>
+                <SoftTypography display="inline-block" variant="caption" fontWeight="regular" color="text">
+                  &nbsp;{item?.courseStatusName}
+                </SoftTypography>
+              </SoftBox>
+              <SoftBox >
+                <SoftTypography display="inline-block" variant="button" fontWeight="medium">
+                  Payment Status :
+                </SoftTypography>
+                <SoftTypography display="inline-block" variant="caption" fontWeight="regular" color="text">
+                  &nbsp;{item?.paymentStatusName}
+                </SoftTypography>
+              </SoftBox>
+              <SoftBox mt={2}>
+                <SoftButton variant="gradient" color="dark" onClick={()=>Navigate("/dashboard/profile")}>Activate Now</SoftButton>
+              </SoftBox>
+            </Grid>
+          </Grid>
+        </SoftBox>
+      </Card>)}
+    </>
   );
 }
 
 export default AppliedCourse;
+
