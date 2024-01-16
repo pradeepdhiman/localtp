@@ -16,8 +16,7 @@ import SoftTypography from "components/SoftTypography";
 function Assessment() {
 
   const user = authUser()
-  const { data: { data: courses } = {}, isError: activeErr, isLoading: activeLoading } = useActiveCourseQuery(user?.id);
-  // const { data: courses, isError: activeErr, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.id });
+  const { data: { data: courses } = {}, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.applicantId })
   console.log("first", courses)
 
   return (
@@ -26,24 +25,10 @@ function Assessment() {
       <SoftBox p={2}>
         {activeLoading && <SoftBarLoader />}
         {courses?.length !== 0 ? <Grid container spacing={3}>
-          {courses?.map((courseItem, index) => <Grid key={courseItem.courseID} item xs={12} md={6} xl={3}>
-            <AssessmentCourseItem item={courseItem} />
+          {courses?.map((courseItem, index) => <Grid key={courseItem.applicantCourseID} item xs={12} md={6} xl={3}>
+            <AssessmentCourseItem itemData={courseItem} />
           </Grid>)}
         </Grid> : <SoftTypography>No Active course available</SoftTypography>}
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} xl={3}>
-            <AssessmentCourseItem />
-          </Grid>
-          <Grid item xs={12} md={6} xl={3}>
-            <AssessmentCourseItem />
-          </Grid>
-          <Grid item xs={12} md={6} xl={3}>
-            <AssessmentCourseItem />
-          </Grid>
-          <Grid item xs={12} md={6} xl={3}>
-            <AssessmentCourseItem />
-          </Grid>
-        </Grid>
       </SoftBox>
       <Footer />
     </DashboardLayout>

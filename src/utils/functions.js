@@ -20,9 +20,6 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         activeCourse: build.query({
             query: (data) => getRequest("/ApplicantCourse/GetAplicantActiveCourses", data),
         }),
-        getStudyMaterial: build.query({
-            query: (data) => getRequest("/Course", data),
-        }),
         getProfile: build.query({
             query: (data) => getRequest("/User", data),
         }),
@@ -31,6 +28,12 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         }),
         associatedSchedule: build.query({
             query: (data) => getRequest("/Schedule/GetScheduleListByCourse", data),
+        }),
+        selectedSchedule: build.mutation({
+            query: (data) => getRequest("/Schedule", data),
+        }),
+        getCourseQuestion: build.mutation({
+            query: (data) => getRequest("/CourseQuestion", data),
         }),
         getCourse: build.query({
             query: (data) => getRequest("/Course", data),
@@ -46,6 +49,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         }),
         applicantRegister: build.mutation({
             query: (data) => createRequest("/General/ApplicantRegister", data),
+        }),
+        studyMat: build.mutation({
+            query: (data) => getRequest("/TrainingMaterial/GetTrainingMaterialListByCourse", data),
         }),
         profile: build.mutation({
             query: (data) => getRequest("/User", data),
@@ -81,8 +87,11 @@ export const applicantApis = emptySplitApi.injectEndpoints({
 });
 
 export const {
+    useStudyMatMutation,
+    useSelectedScheduleMutation,
     usePaymentProofMutation,
     useUpdateProfileMutation,
+    useGetCourseQuestionMutation,
     useApplicantRegisterMutation,
     useProfileMutation,
     useLoginMutation,
@@ -90,7 +99,6 @@ export const {
     useGetCoursesQuery,
     useCompletedCourseQuery,
     useActiveCourseQuery,
-    useGetStudyMaterialQuery,
     useGetProfileQuery,
     useGetAppliedCourseQuery,
     useAssociatedScheduleQuery,

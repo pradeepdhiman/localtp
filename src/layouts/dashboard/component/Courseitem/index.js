@@ -17,7 +17,7 @@ import { Box, LinearProgress } from "@mui/material";
 import { useState } from "react";
 import SoftProgress from "components/SoftProgress";
 
-function CourseItem({ complete = false, relativeCourse = false }) {
+function CourseItem({ complete = false, relativeCourse = false, item = {} }) {
   const [progress, setProgress] = useState(30);
 
   const location = useLocation()
@@ -53,11 +53,11 @@ function CourseItem({ complete = false, relativeCourse = false }) {
             <SoftBox display="flex" flexDirection="column" height="100%">
               <SoftBox pt={1} mb={0.5}>
                 <SoftTypography variant="body2" color="text" fontWeight="medium">
-                  By Maximan
+                  {item?.courseStatusName}
                 </SoftTypography>
               </SoftBox>
               <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
-                Advance javascript
+                {item?.courseName}
               </SoftTypography>
               {/* <SoftBox mb={2}>
                 <SoftTypography variant="body2" color="text">
@@ -66,7 +66,7 @@ function CourseItem({ complete = false, relativeCourse = false }) {
               </SoftBox> */}
               {(!complete && !relativeCourse) && <SoftTypography
                 component="a"
-                href={`${location.pathname}/study?course=1`}
+                href={`${location.pathname}/study?course=${item?.courseID}`}
                 variant="button"
                 color="text"
                 fontWeight="medium"
@@ -120,12 +120,12 @@ function CourseItem({ complete = false, relativeCourse = false }) {
               {(!complete && !relativeCourse) &&
                 <SoftBox width="100%" textAlign="left" mt={2} >
                   <SoftProgress value={25} color="error" variant="gradient" label={false} />
-            </SoftBox>
+                </SoftBox>
               }
-          </SoftBox>
+            </SoftBox>
+          </Grid>
         </Grid>
-      </Grid>
-    </SoftBox>
+      </SoftBox>
     </Card >
   );
 }

@@ -27,7 +27,10 @@ import schedulelistdata from "./data/schedulelistdata";
 import { useLocation } from "react-router-dom";
 import { useActiveCourseQuery } from "utils/functions";
 import { authUser } from "utils/utils";
-import { useGetStudyMaterialQuery } from "utils/functions";
+import { useStudyMatMutation } from "utils/functions";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { useSelectedScheduleMutation } from "utils/functions";
+import { useSelector } from "react-redux";
 const top100Films = [
   { label: 'The Shawshank Redemption', year: 1994 },
   { label: 'The Godfather', year: 1972 },
@@ -38,7 +41,7 @@ const top100Films = [
   { label: 'Pulp Fiction', year: 1994 }
 ];
 function Study() {
-  const { size } = typography;
+  const { joinedSession } = useSelector(state => state.study)
   const [selectedCourse, setSelectedCourse] = useState({});
   const [isLive, setIsLive] = useState(false);
   let user = authUser()
@@ -47,13 +50,34 @@ function Study() {
   const queryParams = new URLSearchParams(location.search);
   const courseParam = queryParams.get('course');
   const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.applicantId })
-  // const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.id })
-  const { data: material, isError: matError, isLoading: matLoading } = useGetStudyMaterialQuery({ id: selectedCourse?.courseID })
+  const [getMat, { data: material, isError: matError, isLoading: matLoading }] = useStudyMatMutation()
+  const [getSch, { data: schList, isLoading: schLoading }] = useSelectedScheduleMutation()
 
   useEffect(() => {
-    let selected = activeCourse?.data?.find(x => x.courseID === courseParam)
-    setSelectedCourse(selected)
+    if (!courseParam) {
+      setSelectedCourse(activeCourse?.data[0])
+    } else {
+      let selected = activeCourse?.data?.find(x => x.courseID == courseParam)
+      setSelectedCourse(selected)
+    }
   }, [activeCourse, courseParam])
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        if (selectedCourse?.courseID !== undefined && selectedCourse?.courseID !== null) {
+          await getMat({ CourseID: selectedCourse.courseID });
+          await getSch({ id: selectedCourse.scheduleID });
+        }
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    }
+
+    fetchData();
+
+  }, [selectedCourse]);
+
 
   const handleCourseSelect = (event, newValue) => {
     setSelectedCourse(newValue);
@@ -73,7 +97,7 @@ function Study() {
           value={selectedCourse}
           onChange={handleCourseSelect}
           options={activeCourse?.data || []}
-          getOptionLabel={(option) => option?.courseID}
+          getOptionLabel={(option) => option?.courseName}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} />}
         />
@@ -90,7 +114,7 @@ function Study() {
           <Switch checked={isLive} onChange={videoVSlive} />
         </SoftBox>
       </SoftBox>
-      <SoftBox pb={3} mt={3}>
+      {joinedSession && Object.keys(joinedSession).length ? <SoftBox pb={3} mt={3}>
         <Grid container gap={2}>
           <Grid item xs={12} md={8}>
             <Card sx={{ minWidth: 300, minHeight: 450, width: "100%", flexGrow: 1 }}>
@@ -123,11 +147,17 @@ function Study() {
             <VideoList title="Video List" videolist={profilesListData} />
           </Grid>
         </Grid>
-      </SoftBox>
+      </SoftBox> : null}
       <SoftBox pb={3} mt={3}>
         <Grid container gap={2}>
-          <Grid item xs={12} md><StudyMaterialList title="Study Material" datalist={material?.data || []} /></Grid>
-          <Grid item xs={12} md={8}><ScheduleList title="Course Schedules" datalist={schedulelistdata} /></Grid>
+          <Grid item xs={12} md>
+            {matLoading && <SoftBarLoader />}
+            {material?.data?.length && <StudyMaterialList title="Study Material" datalist={material?.data || []} />}
+          </Grid>
+          <Grid item xs={12} md={8}>
+            {schLoading && <SoftBarLoader />}
+            {schList && Object.keys(schList?.data).length && <ScheduleList title="Course Schedules" datalist={[schList?.data] || []} />}
+          </Grid>
         </Grid>
       </SoftBox>
       <Footer />

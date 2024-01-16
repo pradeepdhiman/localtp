@@ -1,12 +1,4 @@
 
-
-// react-routers components
-import { Link } from "react-router-dom";
-
-// prop-types is library for typechecking of props
-import PropTypes from "prop-types";
-
-// @mui material components
 import Card from "@mui/material/Card";
 
 // Soft UI Dashboard React components
@@ -16,10 +8,14 @@ import SoftAvatar from "components/SoftAvatar";
 import SoftButton from "components/SoftButton";
 
 import watch from "assets/images/icons/watch.png"
+import moment from "moment";
+import { useDispatch } from "react-redux";
+import { setJoinedSession } from "layouts/study/studySlice";
 
 function ScheduleList({ title, datalist }) {
-  const renderList = datalist.map(({ image, name, description, action }) => (
-    <SoftBox key={name} component="li" display="flex" alignItems="center" py={1} mb={1}>
+  const dispatch = useDispatch()
+  const renderList = datalist?.map(({ scheduledID, scheduledName, startDate }) => (
+    <SoftBox key={scheduledID} component="li" display="flex" alignItems="center" py={1} mb={1}>
       <SoftBox mr={2}>
         <SoftAvatar src={watch} alt="schedule icon" variant="rounded" shadow="md" />
       </SoftBox>
@@ -30,33 +26,15 @@ function ScheduleList({ title, datalist }) {
         justifyContent="center"
       >
         <SoftTypography variant="button" fontWeight="medium">
-          {name}
+          {scheduledName}
         </SoftTypography>
         <SoftTypography variant="caption" color="text">
-          {description}
+          {moment(startDate).format("DD-MM-YYYY hh:mmA")}
         </SoftTypography>
       </SoftBox>
-      {/* <SoftBox ml="auto">
-        {action.type === "internal" ? (
-          <SoftButton component={Link} to={action.route} variant="text" color="info">
-            {action.label}
-          </SoftButton>
-        ) : (
-          <SoftButton
-            component="a"
-            href={action.route}
-            target="_blank"
-            rel="noreferrer"
-            variant="text"
-            color={action.color}
-          >
-            {action.label}
-          </SoftButton>
-        )}
-      </SoftBox> */}
       <SoftBox ml="auto">
-        <SoftButton size="small" color="dark">
-          {action.label}
+        <SoftButton size="small" color="dark" onClick={() => dispatch(setJoinedSession({ scheduledID, scheduledName }))}>
+          Join Session
         </SoftButton>
       </SoftBox>
     </SoftBox>
@@ -78,10 +56,6 @@ function ScheduleList({ title, datalist }) {
   );
 }
 
-// Typechecking props for the ProfilesList
-ScheduleList.propTypes = {
-  title: PropTypes.string.isRequired,
-  datalist: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
+
 
 export default ScheduleList;

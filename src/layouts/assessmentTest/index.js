@@ -10,6 +10,8 @@ import { authUser } from "utils/utils";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useGetCourseQuestionMutation } from "utils/functions";
 
 const initialQuestion = [
   {
@@ -30,6 +32,7 @@ const initialQuestion = [
 
 
 function AssessmentTest() {
+  const { assessmentItem } = useSelector(state => state.common)
   const [testStarted, setTestStarted] = useState(false)
   const [questions, setQuestions] = useState(initialQuestion);
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
@@ -40,6 +43,8 @@ function AssessmentTest() {
   const [behave, setBehave] = useState(0);
   const navigate = useNavigate();
 
+  const [getQuestion, { data: question, isLoading: questionLoading }] = useGetCourseQuestionMutation()
+
 
   const handleContextMenu = (e) => {
     e.preventDefault();
@@ -48,20 +53,27 @@ function AssessmentTest() {
   let user = authUser()
   const MySwal = withReactContent(Swal)
 
-  function startTestHandler() {
+  async function startTestHandler() {
     Swal.fire({
       icon: "warning",
       title: "Important Notes",
       text: "Please refrain from refreshing or minimizing the screen. Any ongoing tests will be automatically canceled if you perform these actions. Your cooperation is appreciated to ensure the accuracy and completion of the testing process. Thank you.",
       confirmButtonText: "Start Test",
-    }).then((result) => {
+      showCancelButton: true,
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        setTestStarted(!testStarted)
-        setSeconds(600);
-        setTimerRunning(true);
+        try {
+          await getQuestion({ id: assessmentItem?.courseID });
+          setTestStarted(!testStarted);
+          setSeconds(600);
+          setTimerRunning(true);
+        } catch (err) {
+          console.log(err);
+        }
       }
     });
   }
+
 
   function submitHandler() {
     if (!answer) return
@@ -87,6 +99,7 @@ function AssessmentTest() {
     return () => {
       clearInterval(intervalId);
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      // dashboard/assessment
     };
   }, [timerRunning]);
 
@@ -101,27 +114,27 @@ function AssessmentTest() {
     if (document.hidden) {
       setBehave(prev => {
         const nextValue = prev + 1;
-        
+
         let msg = "";
         if (nextValue === 1) {
           msg = "You are not allowed to mimimized tab. If you do it again your test will be cenceled.";
         } else if (nextValue === 2) {
           msg = "You have broken the rule of the test. Try next time.";
         }
-  
+
         Swal.fire({
           icon: "info",
           title: "Window Resized",
           text: msg,
         }).then((result) => {
           if (result.isConfirmed && nextValue === 2) {
-            navigate('/dashboard/assessment'); 
+            navigate('/dashboard/assessment');
           }
         });
-  
+
         return nextValue;
       });
-      
+
     }
   };
 
@@ -140,24 +153,24 @@ function AssessmentTest() {
     ) {
       setBehave(prev => {
         const nextValue = prev + 1;
-        
+
         let msg = "";
         if (nextValue === 1) {
           msg = "You are not allowed to resize the window. If you do it again your test will be canceled.";
         } else if (nextValue === 2) {
           msg = "You have broken the rule of the test. Try next time.";
         }
-  
+
         Swal.fire({
           icon: "info",
           title: "Window Resized",
           text: msg,
         }).then((result) => {
           if (result.isConfirmed && nextValue === 2) {
-            navigate('/dashboard/assessment'); 
+            navigate('/dashboard/assessment');
           }
         });
-  
+
         return nextValue;
       });
     }
@@ -210,16 +223,27 @@ function AssessmentTest() {
           <SoftBox py={3} px={3}>
             <Grid container gap={2} direction="column" alignItems="flex-start">
               <Grid item>
-                <SoftTypography><b>Question :- </b> {questions[activeQuestionIndex].question} </SoftTypography>
+                <SoftTypography><b>Question :- </b> {question?.data?.questionTitle} </SoftTypography>
               </Grid>
               <Grid item>
                 <FormControl>
-                  <RadioGroup name="radio-buttons-group" onChange={(e) => setAnswer(e.target.value)} value={answer}                  >
-                    {questions[activeQuestionIndex] && questions[activeQuestionIndex].options?.map((item, index) => (
-                      <FormControlLabel value={item} control={<Radio />} label={item} />
-                    ))}
+                  <RadioGroup
+                    name="radio-buttons-group"
+                    onChange={(e) => setAnswer(e.target.value)}
+                    value={answer}
+                  >
+                    {(question && question?.data) && (
+                      <>
+                        <FormControlLabel value={question?.data?.optionA} control={<Radio />} label={question?.data?.optionA} />
+                        <FormControlLabel value={question?.data?.optionB} control={<Radio />} label={question?.data?.optionB} />
+                        <FormControlLabel value={question?.data?.optionC} control={<Radio />} label={question?.data?.optionC} />
+                        <FormControlLabel value={question?.data?.optionD} control={<Radio />} label={question?.data?.optionD} />
+                        <FormControlLabel value={question?.data?.optionE} control={<Radio />} label={question?.data?.optionE} />
+                      </>
+                    )}
                   </RadioGroup>
                 </FormControl>
+
               </Grid>
 
             </Grid>

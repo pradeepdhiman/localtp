@@ -3,9 +3,6 @@
 // react-routers components
 import { Link } from "react-router-dom";
 
-// prop-types is library for typechecking of props
-import PropTypes from "prop-types";
-
 // @mui material components
 import Card from "@mui/material/Card";
 
@@ -17,10 +14,9 @@ import SoftButton from "components/SoftButton";
 import pdficon from "assets/images/icons/pdf.png"
 
 function StudyMaterialList({ title, datalist }) {
-  console.log(datalist, "datalist")
   const renderList = datalist.length !== 0 ? (
-    datalist.map(({ image, name, description, action }) => (
-      <SoftBox key={name} component="li" display="flex" alignItems="center" py={1} mb={1}>
+    datalist.map(({ courseName, materialTypeName, filePath, materialID }) => (
+      <SoftBox key={materialID} component="li" display="flex" alignItems="center" py={1} mb={1}>
         <SoftBox mr={2}>
           <SoftAvatar src={pdficon} alt="pdf file" variant="rounded" shadow="md" />
         </SoftBox>
@@ -31,29 +27,16 @@ function StudyMaterialList({ title, datalist }) {
           justifyContent="center"
         >
           <SoftTypography variant="button" fontWeight="medium">
-            {name}
+            {courseName}
           </SoftTypography>
           <SoftTypography variant="caption" color="text">
-            {description}
+            {materialTypeName}
           </SoftTypography>
         </SoftBox>
         <SoftBox ml="auto">
-          {action.type === "internal" ? (
-            <SoftButton component={Link} to={action.route} variant="text" color="info">
-              {action.label}
-            </SoftButton>
-          ) : (
-            <SoftButton
-              component="a"
-              href={action.route}
-              target="_blank"
-              rel="noreferrer"
-              variant="text"
-              color={action.color}
-            >
-              {action.label}
-            </SoftButton>
-          )}
+          <SoftButton component={Link} to={filePath} target="_blank" variant="text" color="info">
+            Read
+          </SoftButton>
         </SoftBox>
       </SoftBox>
     ))
@@ -62,7 +45,7 @@ function StudyMaterialList({ title, datalist }) {
       Study material not available
     </SoftTypography>
   );
-  
+
 
   return (
     <Card sx={{ height: "100%" }}>
@@ -80,10 +63,6 @@ function StudyMaterialList({ title, datalist }) {
   );
 }
 
-// Typechecking props for the ProfilesList
-StudyMaterialList.propTypes = {
-  title: PropTypes.string.isRequired,
-  datalist: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
+
 
 export default StudyMaterialList;

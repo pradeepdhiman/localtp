@@ -28,9 +28,6 @@ function Dashboard() {
   const { pathname } = useLocation();
   let user = authUser()
 
-  // const { data: completedCourse, isError: completedError, isLoading: completedLoading } = useCompletedCourseQuery({ ApplicantID: user?.id })
-  // const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.id })
-  // const { data: appliedCourse, isError: appliedError, isLoading: appliedLoading } = useGetAppliedCourseQuery({ ApplicantID: user?.id })
   const { data: completedCourse, isError: completedError, isLoading: completedLoading } = useCompletedCourseQuery({ ApplicantID: user?.applicantId })
   const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.applicantId })
   const { data: appliedCourse, isError: appliedError, isLoading: appliedLoading } = useGetAppliedCourseQuery({ ApplicantID: user?.applicantId })
@@ -91,22 +88,10 @@ function Dashboard() {
             {activeLoading && <SoftBarLoader />}
             <Grid container spacing={3}>
               {activeCourse?.data?.length !== 0 ? <Grid item xs={12} md={6} xl={3}>
-                <CourseItem />
+                {activeCourse?.data.length && activeCourse?.data?.map(itemData => <CourseItem key={itemData.applicantCourseI} item={itemData} />)}
               </Grid> : <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
                 You dont have active course.
               </SoftTypography></Grid>}
-              {/* <Grid item xs={12} md={6} xl={3}>
-                <CourseItem />
-              </Grid>
-              <Grid item xs={12} md={6} xl={3}>
-                <CourseItem />
-              </Grid>
-              <Grid item xs={12} md={6} xl={3}>
-                <CourseItem />
-              </Grid>
-              <Grid item xs={12} md={6} xl={3}>
-                <CourseItem />
-              </Grid> */}
             </Grid>
           </SoftBox>
         </Card>
@@ -136,18 +121,6 @@ function Dashboard() {
               </Grid> : <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
                 You have not complete any course yet.
               </SoftTypography></Grid>}
-              {/* <Grid item xs={12} md={6} xl={3}>
-                <CourseItem complete={true} />
-              </Grid>
-              <Grid item xs={12} md={6} xl={3}>
-                <CourseItem complete={true} />
-              </Grid>
-              <Grid item xs={12} md={6} xl={3}>
-                <CourseItem complete={true} />
-              </Grid>
-              <Grid item xs={12} md={6} xl={3}>
-                <CourseItem complete={true} />
-              </Grid> */}
             </Grid>
           </SoftBox>
         </Card>

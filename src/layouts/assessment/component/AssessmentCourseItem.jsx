@@ -9,12 +9,12 @@ import { useDispatch } from "react-redux";
 import { setAssessmentItem } from "utils/commonSlice";
 import { useNavigate } from "react-router-dom";
 
-const AssessmentCourseItem = ({ item = {} }) => {
+const AssessmentCourseItem = ({ itemData = {} }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
 
     function starthandler() {
-        dispatch(setAssessmentItem(item))
+        dispatch(setAssessmentItem(itemData))
         navigate('/test');
     }
 
@@ -49,17 +49,17 @@ const AssessmentCourseItem = ({ item = {} }) => {
                         <SoftBox display="flex" flexDirection="column" height="100%">
                             <SoftBox pt={1} mb={0.5}>
                                 <SoftTypography variant="body2" color="text" fontWeight="medium">
-                                    By Maximan
+                                    {itemData?.courseStatusName}
                                 </SoftTypography>
                             </SoftBox>
                             <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
-                                Advance javascript
+                                {itemData?.courseName}
                             </SoftTypography>
-                            <SoftBox mb={2}>
+                            {/* <SoftBox mb={2}>
                                 <SoftTypography variant="body2" color="text">
                                     From colors, cards, typography to complex elements
                                 </SoftTypography>
-                            </SoftBox>
+                            </SoftBox> */}
                             <SoftBox width="100%" textAlign="left" mt={2} >
                                 <SoftProgress value={100} color="error" variant="gradient" label={false} />
                             </SoftBox>
