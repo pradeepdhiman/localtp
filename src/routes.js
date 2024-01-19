@@ -22,6 +22,7 @@ import Study from "layouts/study";
 import Overview from "layouts/profile";
 import Assessment from "layouts/assessment";
 import AssessmentTest from "layouts/assessmentTest";
+import Test from "./layouts/Test";
 
 const routes = [
   {
@@ -33,7 +34,7 @@ const routes = [
     component: <Dashboard />,
     noCollapse: true,
     protected: true,
-    sidebar:true
+    sidebar: true
   },
   {
     type: "collapse",
@@ -44,7 +45,7 @@ const routes = [
     component: <MyCourses />,
     noCollapse: true,
     protected: false,
-    sidebar:true
+    sidebar: true
   },
   {
     type: "collapse",
@@ -52,10 +53,10 @@ const routes = [
     key: "study",
     route: "/dashboard/study",
     icon: <VideoFileIcon size="12px" />,
-    component: <Study/>,
+    component: <Study />,
     noCollapse: true,
     protected: true,
-    sidebar:true
+    sidebar: true
   },
   {
     type: "collapse",
@@ -63,10 +64,10 @@ const routes = [
     key: "profile",
     route: "/dashboard/profile",
     icon: <PersonIcon size="12px" />,
-    component: <Overview/>,
+    component: <Overview />,
     noCollapse: true,
     protected: true,
-    sidebar:true
+    sidebar: true
   },
   {
     type: "collapse",
@@ -74,21 +75,32 @@ const routes = [
     key: "assessment",
     route: "/dashboard/assessment",
     icon: <QuizIcon size="12px" />,
-    component: <Assessment/>,
+    component: <Assessment />,
     noCollapse: true,
     protected: true,
-    sidebar:true
+    sidebar: true
   },
   {
     type: "collapse",
     name: "Assessment",
     key: "assessment",
-    route: "/test",
+    route: "/dashboard/assessment/welcome",
     icon: <QuizIcon size="12px" />,
-    component: <AssessmentTest/>,
+    component: <AssessmentTest />,
     noCollapse: true,
     protected: true,
-    sidebar:false
+    sidebar: false
+  },
+  {
+    type: "collapse",
+    name: "Test",
+    key: "test",
+    route: "/test",
+    icon: <QuizIcon size="12px" />,
+    component: <Test />,
+    noCollapse: true,
+    protected: true,
+    sidebar: false
   },
   {
     type: "collapse",
@@ -99,7 +111,7 @@ const routes = [
     component: <Home />,
     noCollapse: true,
     protected: false,
-    sidebar:false 
+    sidebar: false
   },
   {
     type: "collapse",
@@ -115,9 +127,9 @@ const routes = [
     type: "collapse",
     name: "Course Detail",
     key: "course-detail",
-    route: "/courses/:courseid", 
+    route: "/courses/:courseid",
     icon: <DashboardIcon size="12px" />,
-    component: <CourseDetail />, 
+    component: <CourseDetail />,
     noCollapse: true,
     protected: false,
   },
@@ -135,7 +147,7 @@ const routes = [
     name: "Sign Up",
     key: "sign-up",
     route: "/authentication/sign-up",
-    icon:"",
+    icon: "",
     component: <SignUp />,
     noCollapse: true,
   },
@@ -144,8 +156,8 @@ const routes = [
     name: "About us",
     key: "about-us",
     route: "/aboutus",
-    icon:"",
-    component: <Aboutus/>,
+    icon: "",
+    component: <Aboutus />,
     noCollapse: true,
   },
   {
@@ -153,8 +165,8 @@ const routes = [
     name: "Privacy Policy",
     key: "privacy-policy",
     route: "/privacypolicy",
-    icon:"",
-    component: <PrivacyPolicy/>,
+    icon: "",
+    component: <PrivacyPolicy />,
     noCollapse: true,
   },
   {
@@ -162,8 +174,8 @@ const routes = [
     name: "Contect Us",
     key: "contect-us",
     route: "/contectus",
-    icon:"",
-    component: <Contactus/>,
+    icon: "",
+    component: <Contactus />,
     noCollapse: true,
   },
   {
@@ -171,8 +183,8 @@ const routes = [
     name: "Faq",
     key: "faq",
     route: "/faq",
-    icon:"",
-    component: <Faq/>,
+    icon: "",
+    component: <Faq />,
     noCollapse: true,
   },
 ];

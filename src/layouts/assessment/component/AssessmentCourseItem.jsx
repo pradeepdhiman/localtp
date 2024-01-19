@@ -15,7 +15,7 @@ const AssessmentCourseItem = ({ itemData = {} }) => {
 
     function starthandler() {
         dispatch(setAssessmentItem(itemData))
-        navigate('/test');
+        navigate('/dashboard/assessment/welcome');
     }
 
     return (

@@ -33,6 +33,20 @@ function Assessment() {
       <Footer />
     </DashboardLayout>
   );
+  // return (
+  //   <DashboardLayout>
+  //     <DashboardNavbar />
+  //     <SoftBox p={2}>
+  //       {activeLoading && <SoftBarLoader />}
+  //       {courses?.length !== 0 ? <Grid container spacing={3}>
+  //         {courses?.map((courseItem, index) => <Grid key={courseItem.applicantCourseID} item xs={12} md={6} xl={3}>
+  //           <AssessmentCourseItem itemData={courseItem} />
+  //         </Grid>)}
+  //       </Grid> : <SoftTypography>No Active course available</SoftTypography>}
+  //     </SoftBox>
+  //     <Footer />
+  //   </DashboardLayout>
+  // );
 }
 
 export default Assessment;

@@ -35,6 +35,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         getCourseQuestion: build.mutation({
             query: (data) => getRequest("/CourseQuestion", data),
         }),
+        getCourseQuestionList: build.mutation({
+            query: (data) => getRequest("/CourseQuestion/GetCourseQuestionListByCourse", data),
+        }),
         getCourse: build.query({
             query: (data) => getRequest("/Course", data),
         }),
@@ -50,6 +53,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         applicantRegister: build.mutation({
             query: (data) => createRequest("/General/ApplicantRegister", data),
         }),
+        submitAssessment: build.mutation({
+            query: (data) => createRequest("/CandidateAssesment", data),
+        }),
         studyMat: build.mutation({
             query: (data) => getRequest("/TrainingMaterial/GetTrainingMaterialListByCourse", data),
         }),
@@ -58,6 +64,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         }),
         paymentProof: build.mutation({
             query: (data) => postForm("/ApplicantCourse/ApplicantCoursePaymentUpload", data),
+        }),
+        courseAssess: build.mutation({
+            query: (data) => getRequest("/CourseAssessment", data),
         }),
         // listApplicant: build.query({
         //     query: () => readRequest("/Applicant/List"),
@@ -92,7 +101,10 @@ export const {
     usePaymentProofMutation,
     useUpdateProfileMutation,
     useGetCourseQuestionMutation,
+    useGetCourseQuestionListMutation,
     useApplicantRegisterMutation,
+    useSubmitAssessmentMutation,
+    useCourseAssessMutation,
     useProfileMutation,
     useLoginMutation,
     useGetQuestionsListQuery,
