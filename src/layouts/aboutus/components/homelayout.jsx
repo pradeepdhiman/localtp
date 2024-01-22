@@ -26,14 +26,7 @@ function HomeLayout({ color, header, title, description, image, top, children })
   return (
     <PageLayout background="white">
       <DefaultNavbar />
-      <Grid
-        container
-        justifyContent="center"
-        sx={{
-          minHeight: "75vh",
-          margin: 0,
-        }}
-      >
+      <Grid container justifyContent="center" sx={{ minHeight: "75vh", margin: 0 }}>
         <Grid item xs={11} sm={8} md={5} xl={3}>
           <SoftBox mt={top}>
             <SoftBox pt={3} px={3}>
@@ -78,10 +71,8 @@ function HomeLayout({ color, header, title, description, image, top, children })
             />
           </SoftBox>
         </Grid>
-      </Grid>
-      <Grid container justifyContent="center" mt={3}>
-        <Grid item xs={11} sm={8}>
-          <SoftBox px={2}>{children}</SoftBox>
+        <Grid xs={8} sm={8} md={8} lg={8} >
+          <SoftBox mt={4}>{children}</SoftBox>
         </Grid>
       </Grid>
       <Footer />
@@ -89,7 +80,6 @@ function HomeLayout({ color, header, title, description, image, top, children })
   );
 }
 
-// Setting default values for the props of HomeLayout
 HomeLayout.defaultProps = {
   header: "",
   title: "",

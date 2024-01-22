@@ -29,8 +29,7 @@ function Test() {
   const [getQuestion, { data: question, isLoading: questionLoading }] = useGetCourseQuestionListMutation();
   const [courseAssess, { data: assessResp, isLoading: assessLoading }] = useCourseAssessMutation();
   const [submitAssessment, { data: submitRes, isLoading: submitLoading }] = useSubmitAssessmentMutation();
-
-
+  
   const handleContextMenu = (e) => e.preventDefault();
   let user = authUser();
   const MySwal = withReactContent(Swal);
@@ -54,17 +53,31 @@ function Test() {
 
   useEffect(() => {
     let timer;
-    
+
     if (isRunning) {
       timer = setInterval(() => {
         setTimeRemaining(prevTime => (prevTime > 0 ? prevTime - 1 : clearInterval(timer)));
       }, 1000);
     }
-  
+
     return () => {
       clearInterval(timer);
       if (timeRemaining === 0 && answeerlist?.length) {
-        submitAssessmentData();
+      MySwal.fire({
+          icon: 'info',
+          title: 'Assessment result',
+          text: `Dear ${res?.data?.data?.applicantName} you have attemped ${res?.data?.data?.totalQuestions} questions. Correct answer is ${res?.data?.data?.correctAnswers} `,
+          confirmButtonText: 'Ok',
+          showCancelButton: false,
+        }).then(result => {
+          if (result.isConfirmed) {
+            try {
+              navigate("/dashboard");
+            } catch (err) {
+              console.log(err);
+            }
+          }
+        });
       }
     };
   }, [isRunning, timeRemaining]);
@@ -77,17 +90,11 @@ function Test() {
 
   const nextHandler = async () => {
     if (!answer) return;
-
     let newVal = {
       detailID: 0,
       candidateAssesmentID: 0,
       questionID: parseInt(question?.data[activeQuestionIndex].questionID),
       applicantAnswer: answer,
-      correctAnswer: question?.data[activeQuestionIndex].correctAnswer,
-      weightage: "",
-      weightageScored: "",
-      result: "",
-      grade: "",
       createdById: parseInt(user?.applicantId),
       remarks: ""
     }
@@ -106,6 +113,7 @@ function Test() {
   const submitAssessmentData = async () => {
     const sendAbleData = {
       candidateAssesmentID: 0,
+      courseID: parseInt(assessmentItem?.courseID),
       applicantID: parseInt(user?.applicantId),
       coursesAssesmentID: parseInt(assessResp?.data?.assessmentID),
       assesmentDate: moment(),
@@ -117,13 +125,30 @@ function Test() {
     try {
       const res = await submitAssessment(sendAbleData);
       if (res?.data?.success) {
-        navigate("/dashboard");
+        const result = await MySwal.fire({
+          icon: 'info',
+          title: 'Assessment result',
+          text: `Dear ${res?.data?.data?.applicantName} you have attemped ${res?.data?.data?.totalQuestions} questions. Correct answer is ${res?.data?.data?.correctAnswers} `,
+          confirmButtonText: 'Ok',
+          showCancelButton: true,
+        });
+    
+        if (result.isConfirmed) {
+          try {
+            navigate("/dashboard");
+            // window.open('/test', '_blank');
+          } catch (err) {
+            console.log(err);
+          }
+        }
+       
       }
     } catch (err) {
       console.error("Error submitting assessment:", err);
     }
   };
   useEffect(() => {
+    if (submitLoading) return
     if (answeerlist?.length === assessResp?.data?.numberofQuestions) {
       submitAssessmentData();
     }

@@ -57,7 +57,7 @@ function MyCourseItem({ complete = false, relativeCourse = false }) {
                 </SoftTypography>
               </SoftBox>
               <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
-                Advance javascript
+                Advance javascriptcccccccccccc
               </SoftTypography>
               <SoftBox mb={2}>
                 <SoftTypography variant="body2" color="text">

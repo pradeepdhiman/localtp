@@ -55,7 +55,7 @@ function DefaultNavbar({ transparent, light, action }) {
     return () => window.removeEventListener("resize", displayMobileNavbar);
   }, []);
 
-  
+
 
   return (
     <Container>
@@ -85,10 +85,15 @@ function DefaultNavbar({ transparent, light, action }) {
           </SoftTypography>
         </SoftBox>
         <SoftBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
+          {user && <DefaultNavbarLink
+            name="Dashaboard"
+            route="/dashboard"
+            light={light}
+          />}
           <DefaultNavbarLink name="home" route="/home" light={light} />
           <DefaultNavbarLink name="our courses" route="/courses" light={light} />
           <DefaultNavbarLink
-           
+
             name="about us"
             route="/aboutus"
             light={light}

@@ -22,8 +22,6 @@ import VideoList from "examples/Lists/VideoLIst";
 import profilesListData from "./data/profilesListData";
 import StudyMaterialList from "examples/Lists/StudyMaterialList";
 import ScheduleList from "examples/Lists/ScheduleList";
-import studymaterialdata from "./data/studymaterialdata";
-import schedulelistdata from "./data/schedulelistdata";
 import { useLocation } from "react-router-dom";
 import { useActiveCourseQuery } from "utils/functions";
 import { authUser } from "utils/utils";
@@ -31,15 +29,8 @@ import { useStudyMatMutation } from "utils/functions";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useSelectedScheduleMutation } from "utils/functions";
 import { useSelector } from "react-redux";
-const top100Films = [
-  { label: 'The Shawshank Redemption', year: 1994 },
-  { label: 'The Godfather', year: 1972 },
-  { label: 'The Godfather: Part II', year: 1974 },
-  { label: 'The Dark Knight', year: 2008 },
-  { label: '12 Angry Men', year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: 'Pulp Fiction', year: 1994 }
-];
+import { useSelectedCourseScheduleMutation } from "utils/functions";
+
 function Study() {
   const { joinedSession } = useSelector(state => state.study)
   const [selectedCourse, setSelectedCourse] = useState({});
@@ -51,7 +42,8 @@ function Study() {
   const courseParam = queryParams.get('course');
   const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.applicantId })
   const [getMat, { data: material, isError: matError, isLoading: matLoading }] = useStudyMatMutation()
-  const [getSch, { data: schList, isLoading: schLoading }] = useSelectedScheduleMutation()
+  // const [getSch, { data: schList, isLoading: schLoading }] = useSelectedScheduleMutation()
+  const [getSch, { data: schList, isLoading: schLoading }] = useSelectedCourseScheduleMutation()
 
   useEffect(() => {
     if (!courseParam) {
@@ -67,7 +59,8 @@ function Study() {
       try {
         if (selectedCourse?.courseID !== undefined && selectedCourse?.courseID !== null) {
           await getMat({ CourseID: selectedCourse.courseID });
-          await getSch({ id: selectedCourse.scheduleID });
+          // await getSch({ id: selectedCourse.scheduleID });
+          await getSch({ ScheduledID: selectedCourse.scheduleID, CourseID: selectedCourse?.courseID });
         }
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -156,7 +149,7 @@ function Study() {
           </Grid>
           <Grid item xs={12} md={8}>
             {schLoading && <SoftBarLoader />}
-            {schList && Object.keys(schList?.data).length && <ScheduleList title="Course Schedules" datalist={[schList?.data] || []} />}
+            {schList && Object.keys(schList?.data).length && <ScheduleList title="Course Schedules" datalist={schList?.data || []} />}
           </Grid>
         </Grid>
       </SoftBox>

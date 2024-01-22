@@ -12,6 +12,7 @@ import SoftTypography from "components/SoftTypography";
 import SoftAvatar from "components/SoftAvatar";
 import SoftButton from "components/SoftButton";
 import pdficon from "assets/images/icons/pdf.png"
+import { _apiBaseUrl } from "config/constant";
 
 function StudyMaterialList({ title, datalist }) {
   const renderList = datalist.length !== 0 ? (
@@ -34,9 +35,12 @@ function StudyMaterialList({ title, datalist }) {
           </SoftTypography>
         </SoftBox>
         <SoftBox ml="auto">
-          <SoftButton component={Link} to={filePath} target="_blank" variant="text" color="info">
+          <SoftButton sx={{cursor:"pointer"}}  onClick={() => window.open(`${_apiBaseUrl}Content/Receipts/${filePath}`, "_blank")} variant="text" color="info">
             Read
           </SoftButton>
+          {/* <SoftButton component={Link} to={filePath} target="_blank" variant="text" color="info">
+            Read
+          </SoftButton> */}
         </SoftBox>
       </SoftBox>
     ))

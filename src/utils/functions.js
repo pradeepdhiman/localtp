@@ -32,6 +32,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         selectedSchedule: build.mutation({
             query: (data) => getRequest("/Schedule", data),
         }),
+        selectedCourseSchedule: build.mutation({
+            query: (data) => getRequest("/CourseSchedule/GetCourseScheduleListByScheduledCourse", data),
+        }),
         getCourseQuestion: build.mutation({
             query: (data) => getRequest("/CourseQuestion", data),
         }),
@@ -98,6 +101,7 @@ export const applicantApis = emptySplitApi.injectEndpoints({
 export const {
     useStudyMatMutation,
     useSelectedScheduleMutation,
+    useSelectedCourseScheduleMutation,
     usePaymentProofMutation,
     useUpdateProfileMutation,
     useGetCourseQuestionMutation,

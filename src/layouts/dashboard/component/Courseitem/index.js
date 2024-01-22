@@ -66,7 +66,7 @@ function CourseItem({ complete = false, relativeCourse = false, item = {} }) {
               </SoftBox> */}
               {(!complete && !relativeCourse) && <SoftTypography
                 component="a"
-                href={`${location.pathname}/study?course=${item?.courseID}`}
+                href={`/dashboard/study?course=${item?.courseID}`}
                 variant="button"
                 color="text"
                 fontWeight="medium"

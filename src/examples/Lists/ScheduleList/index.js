@@ -11,11 +11,33 @@ import watch from "assets/images/icons/watch.png"
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { setJoinedSession } from "layouts/study/studySlice";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 function ScheduleList({ title, datalist }) {
+
+  const MySwal = withReactContent(Swal);
+  const joinSchedulehandler = async (link) => {
+    const result = await MySwal.fire({
+      icon: 'info',
+      title: 'Join Schedule',
+      text: "Your session will be start in new tab, Press join to continue",
+      confirmButtonText: 'Join',
+      showCancelButton: true,
+    });
+
+    if (result.isConfirmed) {
+      try {
+        // navigate('/test');
+        window.open(link, '_blank');
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
   const dispatch = useDispatch()
-  const renderList = datalist?.map(({ scheduledID, scheduledName, startDate }) => (
-    <SoftBox key={scheduledID} component="li" display="flex" alignItems="center" py={1} mb={1}>
+  const renderList = datalist?.map((item) => (
+    <SoftBox key={item?.scheduledID} component="li" display="flex" alignItems="center" py={1} mb={1}>
       <SoftBox mr={2}>
         <SoftAvatar src={watch} alt="schedule icon" variant="rounded" shadow="md" />
       </SoftBox>
@@ -26,14 +48,15 @@ function ScheduleList({ title, datalist }) {
         justifyContent="center"
       >
         <SoftTypography variant="button" fontWeight="medium">
-          {scheduledName}
+          {item?.scheduledName}
         </SoftTypography>
         <SoftTypography variant="caption" color="text">
-          {moment(startDate).format("DD-MM-YYYY hh:mmA")}
+          {moment(item?.startDate).format("DD-MM-YYYY hh:mmA")}
         </SoftTypography>
       </SoftBox>
       <SoftBox ml="auto">
-        <SoftButton size="small" color="dark" onClick={() => dispatch(setJoinedSession({ scheduledID, scheduledName }))}>
+        <SoftButton size="small" color="dark" onClick={()=>joinSchedulehandler(item?.meetingLink)}>
+        {/* <SoftButton size="small" color="dark" onClick={() => dispatch(setJoinedSession({ scheduledID, scheduledName }))}> */}
           Join Session
         </SoftButton>
       </SoftBox>

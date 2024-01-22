@@ -37,7 +37,8 @@ const DocUpload = () => {
         formData.append("CourseID", parseInt(courseID));
         formData.append("ReceiptImage", file, file.name);
         formData.append("ReceiptID", 123456789);
-        formData.append("ReceiptDate", moment().format('DD-MM-YYYY'));
+        // formData.append("ReceiptDate", moment().format('DD-MM-YYYY'));
+        formData.append("ReceiptDate", moment().format('YYYY-MM-DD'));
         // formData.append("ReceiptDate", moment().format('DD-MM-YYYY'));
         formData.append("AmountPaid", data.amount);
 
@@ -138,6 +139,7 @@ const DocUpload = () => {
                                         error={Boolean(errors.file)}
                                         helperText={errors.file?.message}
                                     />
+                                    {errors?.file && <SoftTypography color="error" variant="caption">{errors.file?.message}</SoftTypography>}
                                 </Grid>
                                 <Grid item xs={12}>
                                     <SoftInput
@@ -147,6 +149,7 @@ const DocUpload = () => {
                                         error={Boolean(errors.amount)}
                                         helperText={errors.amount?.message}
                                     />
+                                     {errors?.amount && <SoftTypography color="error" variant="caption">{errors.amount?.message}</SoftTypography>}
                                 </Grid>
                                 <Grid item xs={12}>
                                     <SoftButton disabled={proofLoading} type="submit" variant="outlined" color="dark">

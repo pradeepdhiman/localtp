@@ -10,6 +10,7 @@ import { SoftUIControllerProvider } from "context";
 import { Provider } from "react-redux";
 import store from "./redux/store"
 import { StyledEngineProvider } from "@mui/styled-engine";
+import "./index.css"
 
 let user = localStorage.getItem("user");
 user = JSON.parse(user);
