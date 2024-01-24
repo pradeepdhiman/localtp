@@ -17,7 +17,7 @@ function Assessment() {
 
   const user = authUser()
   const { data: { data: courses } = {}, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.applicantId })
-  console.log("first", courses)
+  
 
   return (
     <DashboardLayout>

@@ -39,7 +39,7 @@ const Test = () => {
   let user = authUser();
 
   useEffect(() => {
-    const assessmentItem = JSON.parse(getObject("assesItem"));
+    // let assessmentItem = JSON.parse(getObject("assesItem"));
 
     async function fetchAssessmentInfo() {
       if (!Object.keys(assessmentItem).length) return;
@@ -53,8 +53,7 @@ const Test = () => {
     }
 
     fetchAssessmentInfo();
-    console.log(assessmentItem);
-  }, []);
+  }, [assessmentItem]);
 
   useEffect(() => {
     let interval;
@@ -232,6 +231,7 @@ const Test = () => {
   };
 
   useEffect(() => {
+    if(!isActive) return
     if (changeAttamp > 1) {
       alert("Your test is cancelled. Please try next time");
       navigate("/dashboard")

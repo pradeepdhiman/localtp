@@ -106,7 +106,7 @@ function Dashboard() {
             <SoftBox mb={0.5}>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <SoftTypography variant="h6" fontWeight="medium">
-                  Completed Courses
+                  My Assessment
                 </SoftTypography>
                 <SoftButton onClick={() => navigate(`${pathname}/mycourses?complete=true`)} variant="text" color="info">All</SoftButton>
               </Stack>
