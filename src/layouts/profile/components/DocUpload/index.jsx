@@ -12,6 +12,7 @@ import moment from "moment";
 import SoftTypography from "components/SoftTypography";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import { toastHandler } from "utils/utils";
 
 const DocUpload = () => {
     const user = authUser();
@@ -25,6 +26,7 @@ const DocUpload = () => {
     };
 
     const MySwal = withReactContent(Swal)
+    
 
     const submithandler = async (data) => {
         const file = data.file[0];
@@ -44,7 +46,7 @@ const DocUpload = () => {
 
         try {
             const response = await sendpaymentproof(formData);
-
+            toastHandler(response)
             if (response.data.success) {
                 Swal.fire({
                     title: "Successfully send!",

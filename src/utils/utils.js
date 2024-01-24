@@ -285,3 +285,25 @@ export function startAutoLogout(timeoutInMinutes = 1) {
 }
 
 
+export const toastHandler = (response) => {
+  const { data } = response;
+  if (data?.success) {
+    toast.success(data?.message, {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+    });
+  } else {
+    toast.error(data?.errors[0], {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+    });
+  }
+};
