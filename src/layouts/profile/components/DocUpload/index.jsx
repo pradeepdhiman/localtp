@@ -149,11 +149,11 @@ const DocUpload = () => {
                                         error={Boolean(errors.amount)}
                                         helperText={errors.amount?.message}
                                     />
-                                     {errors?.amount && <SoftTypography color="error" variant="caption">{errors.amount?.message}</SoftTypography>}
+                                    {errors?.amount && <SoftTypography color="error" variant="caption">{errors.amount?.message}</SoftTypography>}
                                 </Grid>
                                 <Grid item xs={12}>
                                     <SoftButton disabled={proofLoading} type="submit" variant="outlined" color="dark">
-                                        Upload
+                                        {proofLoading ? "Uploading..." : "Upload"}
                                     </SoftButton>
                                 </Grid>
                             </Grid>

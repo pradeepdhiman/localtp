@@ -14,11 +14,16 @@ import { useDispatch } from "react-redux";
 import SoftSnakBar from "components/SoftSnakbar";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useGetCoursesQuery } from "utils/functions";
+import { useGetCourseswithauthQuery } from "utils/functions";
+import { authUser } from "utils/utils";
 
 
 
 function Courses() {
   const { data: courses, isError, isLoading, isFetching } = useGetCoursesQuery()
+  const { data: courslist, isLoading: listloading } = useGetCourseswithauthQuery()
+
+  let user = authUser()
 
   const navigate = useNavigate();
   const dispatch = useDispatch()
@@ -68,13 +73,19 @@ function Courses() {
             </SoftBox>
           </SoftBox>
           <SoftBox p={2}>
-            <Grid container spacing={3}>
+            {user?.applicantId ? <Grid container spacing={3}>
+              {courslist?.data?.map((courseItem) => (
+                <Grid key={courseItem.courseID} item xs={12} md={6} xl={3}>
+                  <BuildByDevelopers course={courseItem} />
+                </Grid>
+              ))}
+            </Grid> : <Grid container spacing={3}>
               {courses?.data?.map((courseItem) => (
                 <Grid key={courseItem.courseID} item xs={12} md={6} xl={3}>
                   <BuildByDevelopers course={courseItem} />
                 </Grid>
               ))}
-            </Grid>
+            </Grid>}
           </SoftBox>
         </>
       </SoftBox>

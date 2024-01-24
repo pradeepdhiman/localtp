@@ -21,6 +21,9 @@ import { authUser } from "utils/utils";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useGetAppliedCourseQuery } from "utils/functions";
 import AppliedCourse from "./component/Courseitem/appliedCourse";
+import { useEffect } from "react";
+import ResultItem from "./component/ResultItem";
+import { useApplicantAssementListQuery } from "utils/functions";
 
 function Dashboard() {
   const { size } = typography;
@@ -31,6 +34,7 @@ function Dashboard() {
   const { data: completedCourse, isError: completedError, isLoading: completedLoading } = useCompletedCourseQuery({ ApplicantID: user?.applicantId })
   const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.applicantId })
   const { data: appliedCourse, isError: appliedError, isLoading: appliedLoading } = useGetAppliedCourseQuery({ ApplicantID: user?.applicantId })
+  const { data: resultData, isLoading: resultLoading } = useApplicantAssementListQuery({ ApplicantID: user?.applicantId })
 
   return (
     <DashboardLayout>
@@ -114,10 +118,10 @@ function Dashboard() {
             </SoftBox>
           </SoftBox>
           <SoftBox p={2}>
-            {completedLoading && <SoftBarLoader />}
+            {resultLoading && <SoftBarLoader />}
             <Grid container spacing={3}>
-              {completedCourse?.data?.length !== 0 ? <Grid item xs={12} md={6} xl={3}>
-                <CourseItem />
+              {resultData?.data?.length !== 0 ? <Grid item xs={12} md={12} xl={12}>
+                <ResultItem dataList={resultData?.data} />
               </Grid> : <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
                 You have not complete any course yet.
               </SoftTypography></Grid>}

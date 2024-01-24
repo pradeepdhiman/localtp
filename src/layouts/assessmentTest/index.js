@@ -6,10 +6,15 @@ import SoftButton from "components/SoftButton";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { saveObject } from "utils/utils";
 
 
 function AssessmentTest() {
   const navigate = useNavigate();
+  const { assessmentItem } = useSelector(state => state.common);
+
+  
 
   const MySwal = withReactContent(Swal);
   const startTestHandler = async () => {
@@ -24,6 +29,7 @@ function AssessmentTest() {
     if (result.isConfirmed) {
       try {
         navigate('/test');
+        // saveObject("assesItem", JSON.stringify(assessmentItem))
         // window.open('/test', '_blank');
       } catch (err) {
         console.log(err);

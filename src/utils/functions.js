@@ -11,8 +11,11 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         getQuestionsList: build.query({
             query: () => readRequest("/CourseQuestion/List"),
         }),
-        getCourses: build.query({
+        getCourseswithauth: build.query({
             query: () => readRequest("/Course/List"),
+        }),
+        getCourses: build.query({
+            query: () => readRequest("/General/CourseList"),
         }),
         completedCourse: build.query({
             query: (data) => getRequest("/ApplicantCourse/GetAplicantCompletedCourses", data),
@@ -71,6 +74,15 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         courseAssess: build.mutation({
             query: (data) => getRequest("/CourseAssessment", data),
         }),
+        courseAssessList: build.mutation({
+            query: (data) => getRequest("/CourseAssessment/GetCourseAssessmentListbyCourse", data),
+        }),
+        randomQuestion: build.mutation({
+            query: (data) => getRequest("/CourseQuestion/GetCourseQuestionRandomListByCourse", data),
+        }),
+        applicantAssementList: build.query({
+            query: (data) => getRequest("/CandidateAssesment/GetCandidateAssesmentByApplicant", data),
+        }),
         // listApplicant: build.query({
         //     query: () => readRequest("/Applicant/List"),
         // }),
@@ -103,8 +115,10 @@ export const {
     useSelectedScheduleMutation,
     useSelectedCourseScheduleMutation,
     usePaymentProofMutation,
+    useRandomQuestionMutation,
     useUpdateProfileMutation,
     useGetCourseQuestionMutation,
+    useCourseAssessListMutation,
     useGetCourseQuestionListMutation,
     useApplicantRegisterMutation,
     useSubmitAssessmentMutation,
@@ -112,7 +126,9 @@ export const {
     useProfileMutation,
     useLoginMutation,
     useGetQuestionsListQuery,
+    useApplicantAssementListQuery,
     useGetCoursesQuery,
+    useGetCourseswithauthQuery,
     useCompletedCourseQuery,
     useActiveCourseQuery,
     useGetProfileQuery,

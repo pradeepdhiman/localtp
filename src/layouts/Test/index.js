@@ -1,99 +1,124 @@
+import React, { useState, useEffect } from 'react';
+import SoftBox from 'components/SoftBox';
+import { useNavigate } from 'react-router-dom';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+import HomeLayout from './components/homelayout';
+import SoftTypography from 'components/SoftTypography';
+import SoftButton from 'components/SoftButton';
+import { useGetCourseQuestionListMutation } from 'utils/functions';
+import { useCourseAssessMutation } from 'utils/functions';
+import { useSubmitAssessmentMutation } from 'utils/functions';
+import { getObject } from 'utils/utils';
+import { useCourseAssessListMutation } from 'utils/functions';
+import { useRandomQuestionMutation } from 'utils/functions';
+import { useSelector } from 'react-redux';
+import { authUser } from 'utils/utils';
+import { Card, Divider, FormControl, FormControlLabel, Grid, Radio, RadioGroup } from '@mui/material';
+import SoftBarLoader from 'components/SoftLoaders/SoftBarLoader';
+import moment from 'moment';
 
-import curved9 from "assets/images/curved-images/homeBanner.png";
-import HomeLayout from "./components/homelayout";
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-import SoftButton from "components/SoftButton";
-import { useEffect, useRef, useState } from "react";
-import { Card, Checkbox, Divider, FormControl, FormControlLabel, Grid, Radio, RadioGroup } from "@mui/material";
-import { authUser } from "utils/utils";
-import withReactContent from "sweetalert2-react-content";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
-import { useCourseAssessMutation, useGetCourseQuestionListMutation, useSubmitAssessmentMutation } from "../../utils/functions";
-import moment from "moment";
-
-
-function Test() {
-
+const Test = () => {
   const { assessmentItem } = useSelector(state => state.common);
-  const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [changeAttamp, setChangeAttamp] = useState(0);
+  const navigate = useNavigate();
+  const [time, setTime] = useState(600);
+  const [isActive, setIsActive] = useState(false);
+  var MySwal = withReactContent(Swal);
   const [answeerlist, setAnsweerlist] = useState([]);
   const [answer, setAnswer] = useState('');
-  const navigate = useNavigate();
-  const [timeRemaining, setTimeRemaining] = useState(600);
-  const [attemptCount, setAttemptCount] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const [getQuestion, { data: question, isLoading: questionLoading }] = useGetCourseQuestionListMutation();
-  const [courseAssess, { data: assessResp, isLoading: assessLoading }] = useCourseAssessMutation();
+  const [assessmentSubmitted, setAssessmentSubmitted] = useState(false);
+
+  const [getQuestion, { data: question, isLoading: questionLoading }] = useRandomQuestionMutation();
+  const [courseAssess, { data: assessResp, isLoading: assessLoading }] = useCourseAssessListMutation();
+  // const [courseAssess, { data: assessResp, isLoading: assessLoading }] = useCourseAssessMutation();
   const [submitAssessment, { data: submitRes, isLoading: submitLoading }] = useSubmitAssessmentMutation();
-  
+
   const handleContextMenu = (e) => e.preventDefault();
   let user = authUser();
-  const MySwal = withReactContent(Swal);
 
   useEffect(() => {
-    async function fetchQuestion() {
+    const assessmentItem = JSON.parse(getObject("assesItem"));
+
+    async function fetchAssessmentInfo() {
+      if (!Object.keys(assessmentItem).length) return;
+
       try {
-        await courseAssess({ id: assessmentItem?.courseID });
-        const quesRes = await getQuestion({ CourseID: assessmentItem?.courseID });
-        setIsRunning(true);
+        const res = await courseAssess({ CourseID: assessmentItem?.courseID });
+        console.log(res);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    fetchAssessmentInfo();
+    console.log(assessmentItem);
+  }, []);
+
+  useEffect(() => {
+    let interval;
+
+    if (isActive) {
+      interval = setInterval(() => {
+        setTime(prevTime => prevTime - 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isActive]);
+
+  const startCountdown = async () => {
+    if (!assessmentItem) {
+      navigate("/dashboard/assessment")
+    }
+    const result = await MySwal.fire({
+      icon: 'warning',
+      title: 'Important Notes',
+      text: 'Please refrain from refreshing or minimizing the screen. Any ongoing tests will be automatically canceled if you perform these actions. Your cooperation is appreciated to ensure the accuracy and completion of the testing process. Thank you.',
+      confirmButtonText: 'Start Test',
+      showCancelButton: true,
+    });
+
+    if (result.isConfirmed) {
+      try {
+        try {
+          const res = await getQuestion({ CourseID: assessmentItem?.courseID })
+          if (res?.data?.success) {
+            gotFullscreen()
+            setIsActive(true);
+          }
+        } catch (err) { console.log(err) }
       } catch (err) {
         console.log(err);
       }
     }
-    if (assessmentItem?.courseID) {
-      fetchQuestion()
-    }
-  }, [assessmentItem])
 
-
-
-  useEffect(() => {
-    let timer;
-
-    if (isRunning) {
-      timer = setInterval(() => {
-        setTimeRemaining(prevTime => (prevTime > 0 ? prevTime - 1 : clearInterval(timer)));
-      }, 1000);
-    }
-
-    return () => {
-      clearInterval(timer);
-      if (timeRemaining === 0 && answeerlist?.length) {
-      MySwal.fire({
-          icon: 'info',
-          title: 'Assessment result',
-          text: `Dear ${res?.data?.data?.applicantName} you have attemped ${res?.data?.data?.totalQuestions} questions. Correct answer is ${res?.data?.data?.correctAnswers} `,
-          confirmButtonText: 'Ok',
-          showCancelButton: false,
-        }).then(result => {
-          if (result.isConfirmed) {
-            try {
-              navigate("/dashboard");
-            } catch (err) {
-              console.log(err);
-            }
-          }
-        });
-      }
-    };
-  }, [isRunning, timeRemaining]);
-
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
 
-  const nextHandler = async () => {
+  const resetCountdown = () => {
+    setIsActive(false);
+    setTime(600);
+  };
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+
+  function answerChangeHandler(e) {
+    const val = e.target.value
+    setAnswer(val)
+  }
+
+  const nextHandler = async (check) => {
     if (!answer) return;
     let newVal = {
       detailID: 0,
       candidateAssesmentID: 0,
-      questionID: parseInt(question?.data[activeQuestionIndex].questionID),
+      questionID: parseInt(question?.data?.questionID),
       applicantAnswer: answer,
       createdById: parseInt(user?.applicantId),
       remarks: ""
@@ -101,11 +126,13 @@ function Test() {
     setAnsweerlist(prev => ([...prev, newVal]))
     setAnswer("")
 
-    if (activeQuestionIndex === assessResp?.data?.numberofQuestions - 1) {
+    if (check === "submit") {
       return
     }
 
-    setActiveQuestionIndex(activeQuestionIndex + 1)
+    try {
+      const res = await getQuestion({ CourseID: assessmentItem?.courseID })
+    } catch (err) { console.log(err) }
 
   };
 
@@ -125,123 +152,179 @@ function Test() {
     try {
       const res = await submitAssessment(sendAbleData);
       if (res?.data?.success) {
-        const result = await MySwal.fire({
+        resetCountdown()
+        exitFullscreen()
+        MySwal.fire({
           icon: 'info',
           title: 'Assessment result',
-          text: `Dear ${res?.data?.data?.applicantName} you have attemped ${res?.data?.data?.totalQuestions} questions. Correct answer is ${res?.data?.data?.correctAnswers} `,
+          text: `Dear ${res?.data?.data?.applicantName}, you have attempted ${res?.data?.data?.totalQuestions} questions. Correct answers: ${res?.data?.data?.correctAnswers}`,
           confirmButtonText: 'Ok',
           showCancelButton: true,
-        });
-    
-        if (result.isConfirmed) {
-          try {
-            navigate("/dashboard");
-            // window.open('/test', '_blank');
-          } catch (err) {
-            console.log(err);
+        }).then(result => {
+          if (result.isConfirmed) {
+            try {
+              navigate("/dashboard");
+            } catch (err) {
+              console.log(err);
+            }
           }
-        }
-       
+        });
       }
     } catch (err) {
       console.error("Error submitting assessment:", err);
     }
   };
+
   useEffect(() => {
-    if (submitLoading) return
-    if (answeerlist?.length === assessResp?.data?.numberofQuestions) {
-      submitAssessmentData();
+    if (submitLoading || assessmentSubmitted) return;
+
+    if (answeerlist && assessResp && assessResp.data) {
+      const { numberofQuestions } = assessResp.data;
+
+      if (answeerlist.length === parseInt(numberofQuestions)) {
+        submitAssessmentData();
+        setAssessmentSubmitted(true);
+      }
     }
   }, [answeerlist, assessResp, submitAssessmentData]);
 
 
-  function answerChangeHandler(e) {
-    const val = e.target.value
-    setAnswer(val)
-  }
 
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      if (isRunning) {
-        const message = 'Are you sure you want to leave? Your progress will be lost.';
-        event.returnValue = message;
-        return message;
+  // Below down change screen functionality 
+
+
+
+  const gotFullscreen = () => {
+    const element = document.documentElement;
+
+    if (!isFullscreen) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
       }
-    };
+    }
+  };
 
-    const handleVisibilityChange = () => {
-      if (document.hidden && isRunning) {
-        handleAttempt('minimize');
-      }
-    };
+  const exitFullscreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+  };
 
-    const handleResize = () => {
-      if (isRunning) {
-        handleAttempt('resize');
-      }
-    };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('resize', handleResize);
 
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [isRunning, attemptCount]);
-
-  const handleAttempt = (action) => {
-    setAttemptCount((prevCount) => prevCount + 1);
+  const handleFullscreenChange = () => {
+    setIsFullscreen(!!document.fullscreenElement);
+    if (!document.fullscreenElement) {
+      setChangeAttamp(prev => prev + 1);
+    }
   };
 
   useEffect(() => {
-    if (attemptCount === 1) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Test Canceled',
-        text: 'You have exceeded the allowed attempts. Your test is canceled. Please retry next time.',
-      }).then(() => {
-        navigate("/dashboard");
-      });
-    } else if (attemptCount > 1) {
-      setAttemptCount(0);
+    if (changeAttamp > 1) {
+      alert("Your test is cancelled. Please try next time");
+      navigate("/dashboard")
     }
-  }, [attemptCount]);
+
+    if (changeAttamp === 1) {
+      const userConfirmed = window.confirm("You are not allowed to resize, minimize, or change tab. If you do so, your test will be canceled");
+
+      if (userConfirmed) {
+        gotFullscreen()
+      } else {
+        navigate("/dashboard")
+      }
+    }
+  }, [changeAttamp]);
+
+
+  const handleVisibilityChange = () => {
+    if (document.hidden) {
+      if (isActive) {
+        setChangeAttamp(prev => prev + 1)
+      }
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (isFullscreen) {
+      if (event.key === 'Escape' || event.key === 'Esc' || event.code === 'Escape') {
+        exitFullscreen();
+      }
+      if (event.key === 'F12' || event.code === 'F12') {
+        event.preventDefault();
+      }
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('msfullscreenchange', handleFullscreenChange);
+    };
+  }, [isFullscreen]);
 
 
   return (
-    <SoftBox onContextMenu={handleContextMenu} p={3} sx={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      bottom: 0,
-      right: 0,
-      background: "white",
-      zIndex: 1201,
-    }}>
-      <Card elevation={3}>
-        <SoftBox py={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
-          <SoftTypography variant="h5" fontWeight="bold" color="text">
-            Advance Javascript
-          </SoftTypography>
-          <SoftTypography variant="h6" fontWeight="bold" color="error">
-            {formatTime(timeRemaining)}
-          </SoftTypography>
+    <>
+      {!isActive ? <HomeLayout>
+        <SoftBox mt={3}>
+          <SoftTypography variant="h3" fontWeight="bold" color="info" textGradient>Important Information </SoftTypography>
+          <SoftTypography variant="body2" fontWeight="regular" color="text">Do not refresh or move to another page. And you dont have permission to change screen size if you do so your test will be cancelled.</SoftTypography>
+          <SoftBox mt={2}>
+            <SoftButton disabled={assessLoading || questionLoading} color="dark" onClick={startCountdown}>{questionLoading ? "Starting" : "Start Test"}</SoftButton>
+          </SoftBox>
         </SoftBox>
-        <Divider sx={{ margin: 0, width: "100%" }} />
-        <SoftBox py={3} px={3}>
-          <Grid container gap={2} direction="column" alignItems="flex-start">
-            <Grid item>
-              <SoftTypography><b>Question :- </b> {question?.data[activeQuestionIndex]?.questionTitle} </SoftTypography>
-            </Grid>
-            <Grid item>
-              {questionLoading || assessLoading && <SoftBarLoader />}
-              {(question && question.data.length) && (
+      </HomeLayout> : <SoftBox onContextMenu={handleContextMenu} p={3} sx={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        background: "white",
+        zIndex: 1201,
+      }}>
+        <Card elevation={3}>
+          <SoftBox py={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+            <SoftTypography variant="h5" fontWeight="bold" color="text">
+              {assessResp?.data?.courseName}
+            </SoftTypography>
+            <SoftTypography variant="h6" fontWeight="bold" color="error">
+              {formatTime(time)}
+            </SoftTypography>
+          </SoftBox>
+          <Divider sx={{ margin: 0, width: "100%" }} />
+          {questionLoading ? <SoftBarLoader /> : <SoftBox py={3} px={3}>
+            <Grid container gap={2} direction="column" alignItems="flex-start">
+              <Grid item>
+                <SoftTypography><b>Question :- </b> {question?.data?.questionTitle} </SoftTypography>
+              </Grid>
+              <Grid item>
                 <FormControl>
                   <RadioGroup value={answer} onChange={answerChangeHandler}>
-                    {Object.entries(question.data[activeQuestionIndex]).map(([key, value]) => (
+                    {(question && Object.keys(question).length) && Object.entries(question?.data).map(([key, value]) => (
                       key.startsWith('option') && (
                         <FormControlLabel
                           key={key}
@@ -253,27 +336,30 @@ function Test() {
                     ))}
                   </RadioGroup>
                 </FormControl>
-              )}
+
+              </Grid>
 
             </Grid>
+          </SoftBox>}
+          <SoftBox py={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
+            <SoftTypography
+              variant="text"
+              fontWeight="bold"
+              sx={{ cursor: "poiner", userSelect: "none", fontSize: "15px" }}
+            >
+              {answeerlist?.length + 1} &nbsp; of &nbsp;{assessResp?.data?.numberofQuestions || 0}
+            </SoftTypography>
+            {answeerlist?.length + 1 === parseInt(assessResp?.data?.numberofQuestions) ?
+              <SoftButton disabled={!answer} onClick={() => nextHandler("submit")} color="info">{submitLoading ? "Loading..." : "Submit Test"}</SoftButton> :
+              <SoftButton disabled={!answer} onClick={nextHandler} color="info">{submitLoading ? "Loading..." : "Next"}</SoftButton>
+            }
 
-          </Grid>
-        </SoftBox>
-        <SoftBox py={3} px={3} sx={{ display: "flex", justifyContent: "space-between", alignItem: "center" }}>
-          <SoftTypography
-            variant="text"
-            fontWeight="bold"
-            sx={{ cursor: "poiner", userSelect: "none", fontSize: "15px" }}
-          >
-            {activeQuestionIndex + 1} &nbsp; of &nbsp;{assessResp?.data?.numberofQuestions || 0}
-          </SoftTypography>
-          <SoftButton disabled={!answer} onClick={nextHandler} color="info">{submitLoading ? "Loading..." : "Next"}</SoftButton>
-          {/* {activeQuestionIndex + 1 !== assessResp?.data?.numberofQuestions && <SoftButton disabled={!answer} onClick={nextHandler} color="info">Next</SoftButton>}
-          {activeQuestionIndex + 1 === assessResp?.data?.numberofQuestions && <SoftButton disabled={!answer} onClick={submitTesthandler} color="info">Submit</SoftButton>} */}
-        </SoftBox>
-      </Card>
-    </SoftBox>
-  );
-}
+
+          </SoftBox>
+        </Card>
+      </SoftBox>}
+    </>
+  )
+};
 
 export default Test;

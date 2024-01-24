@@ -18,6 +18,8 @@ import SoftTypography from "components/SoftTypography";
 import { useCompletedCourseQuery } from "utils/functions";
 import { useActiveCourseQuery } from "utils/functions";
 import { Card, Stack } from "@mui/material";
+import ResultItem from "layouts/dashboard/component/ResultItem";
+import { useApplicantAssementListQuery } from "utils/functions";
 
 function MyCourses() {
   const { search } = useLocation();
@@ -27,7 +29,7 @@ function MyCourses() {
   let user = authUser()
   const { data: completedCourse, isError: completedError, isLoading: completedLoading } = useCompletedCourseQuery({ ApplicantID: user?.applicantId })
   const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.applicantId })
-
+  const { data: resultData, isLoading: resultLoading } = useApplicantAssementListQuery({ ApplicantID: user?.applicantId })
   const [selectedCourse, setSelectedCourse] = useState({});
 
   const handleCourseSelect = (event, newValue) => {
@@ -72,6 +74,16 @@ function MyCourses() {
             </SoftBox>
           </SoftBox>
           <SoftBox p={2}>
+            {resultLoading && <SoftBarLoader />}
+            <Grid container spacing={3}>
+              {resultData?.data?.length !== 0 ? <Grid item xs={12} md={12} xl={12}>
+                {resultData?.data.length && <ResultItem dataList={resultData?.data} />}
+              </Grid> : <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
+                You dont have completed course.
+              </SoftTypography></Grid>}
+            </Grid>
+          </SoftBox>
+          {/* <SoftBox p={2}>
             {completedLoading && <SoftBarLoader />}
             <Grid container spacing={3}>
               {completedCourse?.data?.length !== 0 ? <Grid item xs={12} md={6} xl={3}>
@@ -80,7 +92,7 @@ function MyCourses() {
                 You dont have completed course.
               </SoftTypography></Grid>}
             </Grid>
-          </SoftBox>
+          </SoftBox> */}
         </Card>}
       </SoftBox>
       <Footer />
