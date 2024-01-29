@@ -8,6 +8,9 @@ import { postForm, userRegister } from "./utils";
 
 export const applicantApis = emptySplitApi.injectEndpoints({
     endpoints: (build) => ({
+        filterCourse: build.query({
+            query: (filters) => createRequest("/Course/GetCourses", filters),
+        }),
         getQuestionsList: build.query({
             query: () => readRequest("/CourseQuestion/List"),
         }),
@@ -126,6 +129,7 @@ export const {
     useProfileMutation,
     useLoginMutation,
     useGetQuestionsListQuery,
+    useFilterCourseQuery,
     useApplicantAssementListQuery,
     useGetCoursesQuery,
     useGetCourseswithauthQuery,
