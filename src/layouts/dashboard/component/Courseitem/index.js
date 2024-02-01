@@ -16,6 +16,7 @@ import SoftButton from "components/SoftButton";
 import { Box, LinearProgress } from "@mui/material";
 import { useState } from "react";
 import SoftProgress from "components/SoftProgress";
+import SoftBadge from "components/SoftBadge";
 
 function CourseItem({ complete = false, relativeCourse = false, item = {} }) {
   const [progress, setProgress] = useState(30);
@@ -51,10 +52,15 @@ function CourseItem({ complete = false, relativeCourse = false, item = {} }) {
           </Grid>
           <Grid item xs={12} lg={6}>
             <SoftBox display="flex" flexDirection="column" height="100%">
-              <SoftBox pt={1} mb={0.5}>
-                <SoftTypography variant="body2" color="text" fontWeight="medium">
-                  {item?.courseStatusName}
-                </SoftTypography>
+              <SoftBox  mb={0.5}>
+                <SoftBadge
+                  variant="contained"
+                  color="success"
+                  size="sm"
+                  badgeContent={item?.courseStatusName}
+                  circular
+                  container
+                />
               </SoftBox>
               <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
                 {item?.courseName}

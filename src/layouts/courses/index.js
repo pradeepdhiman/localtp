@@ -89,11 +89,11 @@ function Courses() {
           </SoftBox>
         </>
       </SoftBox>
-        <SoftBox>
+        {/* <SoftBox>
           <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <Pagination count={10} variant="outlined" shape="rounded" />
           </Stack>
-        </SoftBox>
+        </SoftBox> */}
       </>
         : <SoftTypography variant="button" fontWeight="regular" color="text">
           No Course Available
