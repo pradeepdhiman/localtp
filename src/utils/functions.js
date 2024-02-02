@@ -86,34 +86,14 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         applicantAssementList: build.query({
             query: (data) => getRequest("/CandidateAssesment/GetCandidateAssesmentByApplicant", data),
         }),
-        // listApplicant: build.query({
-        //     query: () => readRequest("/Applicant/List"),
-        // }),
-        // filterApplicant: build.mutation({
-        //     query: (filters) => createRequest("/Applicant/GetApplicants", filters),
-        // }),
-        // createApplicant: build.mutation({
-        //     query: (data) => createRequest("/Applicant", data),
-        // }),
-        // getApplicant: build.mutation({
-        //     query: (data) => getRequest("/Applicant", data),
-        // }),
-        // updateApplicant: build.mutation({
-        //     query: (data) => updateRequest("/Applicant", data),
-        // }),
-        // deleteApplicant: build.mutation({
-        //     query: (id) => deleteRequest("/Applicant", id),
-        // }),
-        // applicantCompleteCourse: build.mutation({
-        //     query: (data) => getRequest("/ApplicantCourse/GetAplicantCompletedCourses", data),
-        // }),
-        // applicantActiveCourse: build.mutation({
-        //     query: (data) => getRequest("/ApplicantCourse/GetAplicantActiveCourses", data),
-        // }),
+        retakeRequest: build.mutation({
+            query: (data) => createRequest("/CandidateReassessment", data),
+        }),
     }),
 });
 
 export const {
+    useRetakeRequestMutation,
     useStudyMatMutation,
     useSelectedScheduleMutation,
     useSelectedCourseScheduleMutation,

@@ -23,7 +23,7 @@ const Test = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [changeAttamp, setChangeAttamp] = useState(0);
   const navigate = useNavigate();
-  const [time, setTime] = useState(600);
+  const [time, setTime] = useState(0);
   const [isActive, setIsActive] = useState(false);
   var MySwal = withReactContent(Swal);
   const [answeerlist, setAnsweerlist] = useState([]);
@@ -46,7 +46,6 @@ const Test = () => {
 
       try {
         const res = await courseAssess({ CourseID: assessmentItem?.courseID });
-        console.log(res);
       } catch (err) {
         console.error(err);
       }
@@ -54,6 +53,13 @@ const Test = () => {
 
     fetchAssessmentInfo();
   }, [assessmentItem]);
+
+  useEffect(() => {
+    if (assessResp?.success) {
+      let testTime = parseInt(assessResp?.data?.duration) * 60
+      setTime(testTime)
+    }
+  }, [assessResp])
 
   useEffect(() => {
     let interval;
@@ -193,18 +199,43 @@ const Test = () => {
 
 
 
+  // const gotFullscreen = () => {
+  //   const element = document.documentElement;
+
+  //   if (!isFullscreen) {
+  //     if (element.requestFullscreen) {
+  //       element.requestFullscreen();
+  //     } else if (element.mozRequestFullScreen) {
+  //       element.mozRequestFullScreen();
+  //     } else if (element.webkitRequestFullscreen) {
+  //       element.webkitRequestFullscreen();
+  //     } else if (element.msRequestFullscreen) {
+  //       element.msRequestFullscreen();
+  //     }
+  //   }
+  // };
+
+
   const gotFullscreen = () => {
     const element = document.documentElement;
-
+  
     if (!isFullscreen) {
       if (element.requestFullscreen) {
-        element.requestFullscreen();
+        element.requestFullscreen().catch((error) => {
+          console.error('Error attempting to enable fullscreen:', error);
+        });
       } else if (element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
+        element.mozRequestFullScreen().catch((error) => {
+          console.error('Error attempting to enable fullscreen:', error);
+        });
       } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
+        element.webkitRequestFullscreen().catch((error) => {
+          console.error('Error attempting to enable fullscreen:', error);
+        });
       } else if (element.msRequestFullscreen) {
-        element.msRequestFullscreen();
+        element.msRequestFullscreen().catch((error) => {
+          console.error('Error attempting to enable fullscreen:', error);
+        });
       }
     }
   };
@@ -231,7 +262,7 @@ const Test = () => {
   };
 
   useEffect(() => {
-    if(!isActive) return
+    if (!isActive) return
     if (changeAttamp > 1) {
       alert("Your test is cancelled. Please try next time");
       navigate("/dashboard")

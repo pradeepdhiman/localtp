@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 const responseInterceptor = (baseQuery) => async (args, api, extraOptions) => {
   try {
     const result = await baseQuery(args, api, extraOptions);
-    console.log(result)
     if (result?.data?.success) {
       toast.success(result?.data?.message, {
         position: toast.POSITION.TOP_RIGHT,
@@ -44,7 +43,8 @@ const responseInterceptor = (baseQuery) => async (args, api, extraOptions) => {
 const baseQuery = fetchBaseQuery({ baseUrl: _apiUrl });
 
 const emptySplitApi = createApi({
-  baseQuery: responseInterceptor(baseQuery),
+  baseQuery: fetchBaseQuery({ baseUrl: _apiUrl }),
+  // baseQuery: responseInterceptor(baseQuery),
   endpoints: () => ({}),
 });
 

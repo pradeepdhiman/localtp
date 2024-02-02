@@ -10,6 +10,7 @@ import { fields } from "layouts/profile/constant";
 import { schema } from "layouts/profile/constant";
 import { authUser } from "utils/utils";
 import { useUpdateProfileMutation } from "utils/functions";
+import { toastHandler } from "utils/utils";
 
 
 
@@ -27,14 +28,25 @@ const ProfileEdit = ({ title, info, formFields }) => {
 
     const submitFormData = async (data) => {
         let newData = {
-            ...data,
+            // ...data,
+            
+            userId: parseInt(data?.userId),
+            userName: data?.userName,
+            firstname: data?.firstname,
+            lastName: data?.lastName,
+            userEmail: data?.userEmail,
+            mobileNo: data?.mobileNo,
+            password: "",
+            passwordHash: "",
+            passwordSalt: "",
+            rightCategoryID: 0,
+            status:parseInt( data?.status),
             updatedById: parseInt(user.id),
-            updatedDate: new Date()
+            remarks: data?.remarks
         }
-        console.log("form data", data)
         try {
             const res = await updateProfile(newData)
-            console.log(res)
+            toastHandler(res)
         } catch (err) {
             console.log(err)
         }

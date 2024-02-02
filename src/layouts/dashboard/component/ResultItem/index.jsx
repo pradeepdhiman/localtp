@@ -24,26 +24,9 @@ function ResultItem({ dataList = [] }) {
                         questionnumber={item?.totalQuestions}
                         correctanswer={item?.correctAnswers}
                         result={item?.result}
+                        dataFields={item}
+                        courseID={item?.courseID}
                     />)}
-                    {/* <ResultItemInfo
-                        name="oliver liam"
-                        company="viking burrito"
-                        email="oliver@burrito.com"
-                        vat="FRB1235476"
-                    />
-                    <ResultItemInfo
-                        name="lucas harper"
-                        company="stone tech zone"
-                        email="lucas@stone-tech.com"
-                        vat="FRB1235476"
-                    />
-                    <ResultItemInfo
-                        name="ethan james"
-                        company="fiber notion"
-                        email="ethan@fiber.com"
-                        vat="FRB1235476"
-                        noGutter
-                    /> */}
                 </SoftBox>
             </SoftBox>
         </Card>

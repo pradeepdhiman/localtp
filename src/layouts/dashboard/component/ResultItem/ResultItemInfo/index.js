@@ -25,9 +25,40 @@ import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton";
 import moment from "moment";
 import SoftBadge from "components/SoftBadge";
+import { useRetakeRequestMutation } from "utils/functions";
+import { authUser } from "utils/utils";
+import { toastHandler } from "utils/utils";
 
+let user = authUser()
 
-function ResultItemInfo({ name, coursename, date, questionnumber, correctanswer, result, noGutter }) {
+function ResultItemInfo({ name, coursename, date, questionnumber, correctanswer, result, courseID, noGutter }) {
+  const [requestRetake, { data: reqRes, isLoading: reqLoading, isError: reqErr }] = useRetakeRequestMutation()
+
+  async function actionhandler(status) {
+    let data = {
+      reassessmentID: 0,
+      courseID: courseID,
+      applicantID: parseInt(user?.applicantId),
+      fee: "",
+      receipt: "",
+      receiptID: "",
+      receiptDate: "",
+      amountPaid: "",
+      paymentStatusID: null,
+      createdById: parseInt(user?.applicantId) || null,
+      remarks: ""
+    }
+    if (status === "Fail") {
+      try {
+        const res = await requestRetake(data)
+        toastHandler(res)
+      } catch (err) {
+        console.log(err)
+      }
+    }else{
+      alert("download certificate")
+    }
+  }
   return (
     <SoftBox
       component="li"
@@ -59,7 +90,10 @@ function ResultItemInfo({ name, coursename, date, questionnumber, correctanswer,
             ml={{ xs: -1.5, sm: 0 }}
           >
             <SoftBox mr={1}>
-              {result !== "Fail" && <SoftButton variant="text" color="success">
+              {result === "Fail" && <SoftButton onClick={() => actionhandler(result)} variant="text" color="error">
+                Request Retake
+              </SoftButton>}
+              {result === "Pass" && <SoftButton onClick={() => actionhandler(result)} variant="text" color="success">
                 Download Certificate
               </SoftButton>}
             </SoftBox>
