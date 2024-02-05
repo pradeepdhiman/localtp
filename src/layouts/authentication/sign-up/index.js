@@ -33,6 +33,9 @@ import { useMasterListByTypeQuery } from "utils/functions";
 import SoftAutoSelect from "examples/AutoSelect";
 import { validateForm } from "utils/utils";
 import SoftAddAbleAutoSelect from "examples/AutoSelect/AddAbleAutoSelect";
+import { useEnrollcourseMutation } from "utils/functions";
+import { toastHandler } from "utils/utils";
+import moment from "moment";
 
 
 
@@ -92,6 +95,8 @@ function SignUp() {
   const { data: qualificationList, isLoading: qualificationErr } = useMasterListByTypeQuery({ TypeID: 3 })
   const { data: desigList, isLoading: desigErr } = useMasterListByTypeQuery({ TypeID: 4 })
   const { data: nationalityList, isLoading: nationalityErr } = useMasterListByTypeQuery({ TypeID: 5 })
+  const [enrollcourse, { data: enrollRes, isLoading: enrollLoading, isError: enrollErr }] = useEnrollcourseMutation()
+
 
   const user = authUser()
   const MySwal = withReactContent(Swal)
@@ -105,7 +110,6 @@ function SignUp() {
     if (user?.id) {
       getProfile({ id: user.id })
         .then((response) => {
-          console.log(response, "response profile")
           if (!response.data.success) {
             console.log("Failed to get profile info")
           }
@@ -128,6 +132,28 @@ function SignUp() {
 
   // courseId scheduleId createdById password nationality designation qualification email firstName
 
+  async function enrollNewCourse() {
+    let newData = {
+      applicantCourseID: 0,
+      applicantID: parseInt(user?.applicantId),
+      courseID: parseInt(courseId),
+      scheduleID: parseInt(session?.scheduledID),
+      enrollmentDate: moment().format("YYYY-MM-DD"),
+      completionDate: moment().format("YYYY-MM-DD"),
+      receiptID: "",
+      receiptDate:null,
+      amountPaid: "",
+      paymentStatus: 7,
+      courseStatus: 9,
+      createdById: parseInt(user?.applicantId),
+      remarks: ""
+    };
+    try {
+      const res = await enrollcourse(newData)
+      toastHandler(res)
+      handleRedirect()
+    } catch (err) { console.log(err) }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -238,7 +264,7 @@ function SignUp() {
                 </h6>
               </SoftBox>
               <SoftBox mt={4} mb={1}>
-                <SoftButton variant="gradient" color="dark" onClick={handleSubmit} fullWidth>
+                <SoftButton variant="gradient" color="dark" onClick={enrollNewCourse} fullWidth>
                   Send Request
                 </SoftButton>
               </SoftBox>

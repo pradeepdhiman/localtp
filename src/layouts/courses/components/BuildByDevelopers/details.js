@@ -60,28 +60,32 @@ function Details(props) {
             <SoftBox display="flex" flexDirection="column" height="100%">
               <SoftBox pt={1} mb={0.5}>
                 <SoftTypography variant="body2" color="text" fontWeight="medium">
-                  By Maximan
+                  {course.categoryName}
                 </SoftTypography>
               </SoftBox>
               <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
                 {course.courseName}
               </SoftTypography>
               <SoftBox mb={2}>
+              <SoftTypography variant="body2" color="text" fontWeight="bold">
+                 Course Content : 
+                </SoftTypography>
                 <SoftTypography variant="body2" color="text">
-                  {course.description}
+                  {/* {course.description} */}
+                  {course.syllabus}
+                </SoftTypography>
+              </SoftBox>
+              <SoftBox >
+                <SoftTypography variant="body2" color="text">
+                  Course Duration : {course.duration} Hours
                 </SoftTypography>
               </SoftBox>
               <SoftBox mb={2}>
                 <SoftTypography variant="body2" color="text">
-                  Course Duration : {course.duration}
-                </SoftTypography>
-              </SoftBox>
-              <SoftBox mb={2}>
-                <SoftTypography variant="body2" color="text">
-                  Total Amount : <SoftTypography variant="body2" component="span" color="info">{course.totalAmount}</SoftTypography>
+                  Total Amount : <SoftTypography variant="body2" component="span" color="info">${course.totalAmount}</SoftTypography>
                 </SoftTypography>
                 <SoftTypography variant="body2" color="text">
-                  Training Fees : <SoftTypography variant="body2" component="span" color="info">{course.trainingfee}</SoftTypography>
+                  Training Fees : <SoftTypography variant="body2" component="span" color="info">${course.trainingfee}</SoftTypography>
                 </SoftTypography>
               </SoftBox>
               <SoftButton variant="gradient" color="dark" onClick={selectHandler}>

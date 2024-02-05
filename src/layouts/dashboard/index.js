@@ -88,16 +88,19 @@ function Dashboard() {
               </SoftTypography>
             </SoftBox>
           </SoftBox>
+
+
           <SoftBox p={2}>
-            {activeLoading && <SoftBarLoader />}
             <Grid container spacing={3}>
-              {activeCourse?.data?.length !== 0 ? <Grid item xs={12} md={6} xl={3}>
-                {activeCourse?.data.length && activeCourse?.data?.map(itemData => <CourseItem key={itemData.applicantCourseI} item={itemData} />)}
-              </Grid> : <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
+              {activeCourse?.data?.length && activeCourse?.data?.map(itemData => <Grid key={itemData.applicantCourseI} item xs={12} md={6} xl={3}>
+                <CourseItem item={itemData} />
+              </Grid>)}
+              {activeCourse?.data?.length === 0 && <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
                 You dont have active course.
               </SoftTypography></Grid>}
             </Grid>
           </SoftBox>
+
         </Card>
       </SoftBox>
       <SoftBox mb={3}>

@@ -36,13 +36,10 @@ const ProfileEdit = ({ title, info, formFields }) => {
             lastName: data?.lastName,
             userEmail: data?.userEmail,
             mobileNo: data?.mobileNo,
-            password: "",
-            passwordHash: "",
-            passwordSalt: "",
-            rightCategoryID: 0,
             status:parseInt( data?.status),
             updatedById: parseInt(user.id),
             remarks: data?.remarks
+
         }
         try {
             const res = await updateProfile(newData)

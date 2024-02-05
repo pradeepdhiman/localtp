@@ -1,6 +1,6 @@
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import SoftBox from "components/SoftBox";
@@ -14,14 +14,57 @@ import { useDispatch } from "react-redux";
 import SoftSnakBar from "components/SoftSnakbar";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useGetCoursesQuery } from "utils/functions";
-import { useGetCourseswithauthQuery } from "utils/functions";
 import { authUser } from "utils/utils";
+import { toastHandler } from "utils/utils";
 
-
+export const initialFilters = {
+  "draw": 0,
+  "start": 0,
+  "length": 10,
+  "columns": [
+    {
+      "data": "CourseName",
+      "name": "CourseName",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": "false"
+      }
+    }
+  ],
+  "search": {
+    "value": "",
+    "regex": "false"
+  },
+  "order": {
+    "orderBy": "Duration",
+    "orderDirection": "asc"
+  },
+  "filter": {
+    "courseID": 0,
+    "courseName": "",
+    "description": "",
+    "duration": "",
+    "categoryID": 0,
+    "categoryName": "",
+    "syllabus": "",
+    "trainingfee": "",
+    "vat": "",
+    "totalAmount": "",
+    "status": 26,
+    "statusName": "",
+    "createdById": 0,
+    "updatedById": 0,
+    "updatedDate": "2024-01-01",
+    "isDeleted": false,
+    "remarks": ""
+  }
+}
 
 function Courses() {
-  const { data: courses, isError, isLoading, isFetching } = useGetCoursesQuery()
-  const { data: courslist, isLoading: listloading } = useGetCourseswithauthQuery()
+  const [filters, setFilters] = useState(initialFilters)
+  const { data: courses, isError, isLoading, refatch: refreshList } = useGetCoursesQuery(filters)
 
   let user = authUser()
 
@@ -36,8 +79,20 @@ function Courses() {
     'password': ''
   });
 
-  // console.log(courses)
+  function pagingHandler(event, value) {
+    const startFrom = (10 * value) - 10;
+    setFilters(prev => ({ ...prev, start: startFrom }));
+  }
 
+  useEffect(() => {
+    async function fatchData() {
+      try {
+        const res = await refreshList(filters)
+        toastHandler(res)
+      } catch (Err) { console.log(Err) }
+    }
+    fatchData()
+  }, [filters])
 
   const renderSearch = (
     <SoftBox component="form" role="form">
@@ -73,27 +128,26 @@ function Courses() {
             </SoftBox>
           </SoftBox>
           <SoftBox p={2}>
-            {user?.applicantId ? <Grid container spacing={3}>
-              {courslist?.data?.map((courseItem) => (
-                <Grid key={courseItem.courseID} item xs={12} md={6} xl={3}>
-                  <BuildByDevelopers course={courseItem} />
-                </Grid>
-              ))}
-            </Grid> : <Grid container spacing={3}>
+            <Grid container spacing={3}>
               {courses?.data?.map((courseItem) => (
                 <Grid key={courseItem.courseID} item xs={12} md={6} xl={3}>
                   <BuildByDevelopers course={courseItem} />
                 </Grid>
               ))}
-            </Grid>}
+            </Grid>
           </SoftBox>
         </>
       </SoftBox>
-        {/* <SoftBox>
+        <SoftBox>
           <Stack spacing={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <Pagination count={10} variant="outlined" shape="rounded" />
+            <Pagination
+              onChange={pagingHandler}
+              count={Math.ceil(courses?.data?.recordsTotal / 10) || 1}
+              variant="outlined"
+              shape="rounded"
+            />
           </Stack>
-        </SoftBox> */}
+        </SoftBox>
       </>
         : <SoftTypography variant="button" fontWeight="regular" color="text">
           No Course Available

@@ -42,9 +42,9 @@ function ResultItemInfo({ name, coursename, date, questionnumber, correctanswer,
       fee: "",
       receipt: "",
       receiptID: "",
-      receiptDate: "",
+      receiptDate: null,
       amountPaid: "",
-      paymentStatusID: null,
+      paymentStatusID: "7",
       createdById: parseInt(user?.applicantId) || null,
       remarks: ""
     }
