@@ -21,12 +21,15 @@ import { useDispatch } from "react-redux";
 import { ReAssessTableHeads } from "../constant";
 import PaymentForm from "./PaymentForm";
 import { generateRows } from "utils/utils";
+import { setAssessmentItem } from "utils/commonSlice";
+import { useNavigate } from "react-router-dom";
 
 // Data
 
 
 
 function RetakeTable(props) {
+    const navigate = useNavigate();
     const dispatch = useDispatch()
     const { list = [], loading = false, changeFilter } = props
 
@@ -41,10 +44,16 @@ function RetakeTable(props) {
     const openMenu = ({ currentTarget }) => setMenu(currentTarget);
     const closeMenu = () => setMenu(null);
 
-    useEffect(() => {
-        const rowList = generateRows(list.data, ReAssessTableHeads, orderby, "asc");
+    function starthandler(itemData) {
+        dispatch(setAssessmentItem(itemData));
+        navigate('/test');
+      }
+      
+      useEffect(() => {
+        const rowList = generateRows(list.data, ReAssessTableHeads, orderby, "asc", { retest: starthandler });
         setRows(rowList);
-    }, [list, orderby]);
+      }, [list, orderby]);
+      
 
     function columnClickhandler(item) {
         if (orderby === item) {
@@ -109,6 +118,8 @@ function RetakeTable(props) {
             </FormControl>
         </SoftBox>
     );
+
+   
 
     return (
         <Card>

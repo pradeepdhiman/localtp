@@ -9,6 +9,7 @@ export const ReAssessTableHeads = [
     { name: "amountPaid", label: "Fee Paid", align: 'left', type: "number" },
     { name: "paymentStatusName", label: "Payment Status", align: 'left', type: "string" },
     { name: "remarks", label: "Remarks", align: 'left', type: "string" },
+    { name: "action", label: "Action", align: 'left', type: "string" },
 ];
 
 

@@ -7,6 +7,7 @@ import SoftBox from "components/SoftBox";
 import { IconButton } from "@mui/material";
 import { toast } from "react-toastify";
 import SoftBadge from "components/SoftBadge";
+import SoftButton from "components/SoftButton";
 
 const createHeaders = (isForm) => {
   const user = authUser();
@@ -256,7 +257,7 @@ export const toastHandler = (response) => {
 
 
 
-export const generateRows = (list, tableheads, orderBy, order = "asc",) => {
+export const generateRows = (list, tableheads, orderBy, order = "asc", action) => {
   let rowArr = Array.isArray(list) ? list : (list?.data || []);
 
   let sortRows = rowArr.slice().sort((a, b) => {
@@ -289,6 +290,17 @@ export const generateRows = (list, tableheads, orderBy, order = "asc",) => {
 
         rowCells[columnName] = (
           <SoftBadge variant="gradient" badgeContent={badgeContent} color={badgeColor} size="xs" container />
+        );
+      } else if (columnName === "action" && rowItem["paymentStatusName"] === "Verified") {
+        rowCells[columnName] = (
+          <SoftButton
+            variant="outlined"
+            size="small"
+            color="info"
+            onClick={() => action.retest(rowItem)}
+          >
+            Re Test
+          </SoftButton>
         );
       } else {
         rowCells[columnName] = (
