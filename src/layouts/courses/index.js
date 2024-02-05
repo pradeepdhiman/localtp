@@ -11,7 +11,6 @@ import PageCoverLayout from "examples/LayoutContainers/PageLayoutCover";
 import BuildByDevelopers from "./components/BuildByDevelopers";
 import { Card, Grid, Pagination, Stack } from "@mui/material";
 import { useDispatch } from "react-redux";
-import SoftSnakBar from "components/SoftSnakbar";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useGetCoursesQuery } from "utils/functions";
 import { authUser } from "utils/utils";
