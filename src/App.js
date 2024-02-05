@@ -26,6 +26,7 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "contex
 
 import brand from "assets/images/logo-ct.png";
 import { SnackbarProvider } from "notistack";
+import { ToastContainer } from "react-toastify";
 
 
 function App() {
@@ -96,37 +97,11 @@ function App() {
     });
 
 
-  return direction === "rtl" ? (
-    <CacheProvider value={rtlCache}>
-      <ThemeProvider theme={themeRTL}>
+    return (
+      <ThemeProvider theme={theme}>
         <CssBaseline />
-        {/* {layout === "dashboard" && (
-          <>
-            <Sidenav
-              color={sidenavColor}
-              brand={brand}
-              brandName="Soft UI Dashboard"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-            {configsButton}
-          </>
-        )}
-        {layout === "vr" && <Configurator />} */}
-        <Routes>
-          {getRoutes(routes)}
-          <Route path="/" element={<Navigate to="/" />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </ThemeProvider>
-    </CacheProvider>
-  ) : (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {layout === "dashboard" && (
-        <>
+        <ToastContainer />
+        {layout === "dashboard" && (
           <Sidenav
             color={sidenavColor}
             brand={brand}
@@ -135,18 +110,14 @@ function App() {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
-          {/* <Configurator />
-          {configsButton} */}
-        </>
-      )}
-      {/* {layout === "vr" && <Configurator />} */}
-      <Routes>
-        {getRoutes(routes)}
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="*" element={<Navigate to="/home" />} />
-      </Routes>
-    </ThemeProvider>
-  );
+        )}
+        <Routes>
+          {getRoutes(routes)}
+          <Route path="/" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </ThemeProvider>
+    );
 }
 
 export default function IntegrationNotistack() {

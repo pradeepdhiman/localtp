@@ -23,12 +23,12 @@ import colors from "assets/theme/base/colors";
 import typography from "assets/theme/base/typography";
 import borders from "assets/theme/base/borders";
 
-function Table({ columns, rows }) {
+function Table({ columns, rows, columnFunc, rowFunc }) {
   const { light } = colors;
   const { size, fontWeightBold } = typography;
   const { borderWidth } = borders;
 
-  const renderColumns = columns.map(({ name, align, width }, key) => {
+  const renderColumns = columns.map(({ name, label, align, width }, key) => {
     let pl;
     let pr;
 
@@ -55,11 +55,12 @@ function Table({ columns, rows }) {
         textAlign={align}
         fontSize={size.xxs}
         fontWeight={fontWeightBold}
-        color="secondary"
+        color="white"
         opacity={0.7}
         borderBottom={`${borderWidth[1]} solid ${light.main}`}
+        onClick={() => columnFunc(name)}
       >
-        {name.toUpperCase()}
+        {label.toUpperCase()}
       </SoftBox>
     );
   });
@@ -67,7 +68,7 @@ function Table({ columns, rows }) {
   const renderRows = rows.map((row, key) => {
     const rowKey = `row-${key}`;
 
-    const tableRow = columns.map(({ name, align }) => {
+    const tableRow = columns.map(({ name, align }, columnIndex) => {
       let template;
 
       if (Array.isArray(row[name])) {
@@ -89,38 +90,61 @@ function Table({ columns, rows }) {
           </SoftBox>
         );
       } else {
-        template = (
-          <SoftBox
-            key={uuidv4()}
-            component="td"
-            p={1}
-            textAlign={align}
-            borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
-          >
-            <SoftTypography
-              variant="button"
-              fontWeight="regular"
-              color="secondary"
-              sx={{ display: "inline-block", width: "max-content" }}
+        if (columnIndex === 0 && typeof rowFunc === 'function') {
+          template = (
+            <SoftBox
+              key={uuidv4()}
+              component="td"
+              p={1}
+              textAlign={align}
+              borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
+              onClick={() => rowFunc(key)}
+              style={{ cursor: 'pointer' }}
             >
-              {row[name]}
-            </SoftTypography>
-          </SoftBox>
-        );
+              <SoftTypography
+                variant="button"
+                sx={{ display: "inline-block", width: "max-content" }}
+                color="info"
+              fontWeight="bold"
+              >
+                {row[name]}
+              </SoftTypography>
+            </SoftBox>
+          );
+        } else {
+          template = (
+            <SoftBox
+              key={uuidv4()}
+              component="td"
+              p={1}
+              textAlign={align}
+              borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}
+            >
+              <SoftTypography
+                variant="button"
+                fontWeight="regular"
+                color="secondary"
+                sx={{ display: "inline-block", width: "max-content" }}
+              >
+                {row[name]}
+              </SoftTypography>
+            </SoftBox>
+          );
+        }
       }
 
       return template;
     });
 
-    return <TableRow key={rowKey}>{tableRow}</TableRow>;
+    return <TableRow key={rowKey} >{tableRow}</TableRow>;
   });
 
   return useMemo(
     () => (
       <TableContainer>
         <MuiTable>
-          <SoftBox component="thead">
-            <TableRow>{renderColumns}</TableRow>
+          <SoftBox component="thead" >
+            <TableRow sx={{ backgroundColor: "#5a5a5a" }}>{renderColumns}</TableRow>
           </SoftBox>
           <TableBody>{renderRows}</TableBody>
         </MuiTable>
@@ -134,12 +158,16 @@ function Table({ columns, rows }) {
 Table.defaultProps = {
   columns: [],
   rows: [{}],
+  columnFunc: () => { },
+  // rowFunc: () => { }
 };
 
 // Typechecking props for the Table
 Table.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object),
   rows: PropTypes.arrayOf(PropTypes.object),
+  columnFunc: PropTypes.func,
+  // rowFunc: PropTypes.func
 };
 
 export default Table;

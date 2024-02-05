@@ -77,6 +77,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         paymentProof: build.mutation({
             query: (data) => postForm("/ApplicantCourse/ApplicantCoursePaymentUpload", data),
         }),
+        reAsspaymentProof: build.mutation({
+            query: (data) => postForm("/CandidateReassessment/CandidateReassessmentPaymentUpload", data),
+        }),
         courseAssess: build.mutation({
             query: (data) => getRequest("/CourseAssessment", data),
         }),
@@ -92,6 +95,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         retakeRequest: build.mutation({
             query: (data) => createRequest("/CandidateReassessment", data),
         }),
+        getReassessList: build.mutation({
+            query: (filter) => createRequest("/CandidateReassessment/GetCandidateReassessments", filter),
+        }),
     }),
 });
 
@@ -102,6 +108,7 @@ export const {
     useSelectedScheduleMutation,
     useSelectedCourseScheduleMutation,
     usePaymentProofMutation,
+    useReAsspaymentProofMutation,
     useRandomQuestionMutation,
     useUpdateProfileMutation,
     useGetCourseQuestionMutation,
@@ -109,6 +116,7 @@ export const {
     useGetCourseQuestionListMutation,
     useApplicantRegisterMutation,
     useSubmitAssessmentMutation,
+    useGetReassessListMutation,
     useCourseAssessMutation,
     useProfileMutation,
     useLoginMutation,

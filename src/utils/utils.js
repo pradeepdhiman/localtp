@@ -202,61 +202,7 @@ export const validateForm = (formData, rules) => {
   return errors;
 };
 
-export const generateRows = (list, tableheads, onEdit, onDelete) => {
-  let rowArr = Array.isArray(list) ? list : (list?.data || []);
 
-  return rowArr.map((rowItem, rowIndex) => {
-    let rowCells = {};
-    let rowId = "";
-
-    tableheads.forEach((column, colIndex) => {
-      const columnName = column.name;
-      const columnValue = rowItem[columnName];
-      rowId = colIndex === 0 ? columnValue : rowId;
-      if (columnName === "status" || columnName === "isDeleted") {
-        const badgeContent = columnValue === 1 ? "Active" : "Deactive";
-        const badgeColor = columnValue === 1 ? "success" : "secondary";
-
-        rowCells[columnName] = (
-          <SoftBadge variant="gradient" badgeContent={badgeContent} color={badgeColor} size="xs" container />
-        );
-      } else if (columnName === "action") {
-        rowCells[columnName] = (<SoftBox width="8rem" textAlign="left">
-          <IconButton
-            size="small"
-            color="inherit"
-            aria-controls="edit"
-            aria-haspopup="true"
-            variant="contained"
-            onClick={() => onEdit(rowId)}
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            size="small"
-            color="error"
-            aria-controls="delete"
-            aria-haspopup="true"
-            variant="contained"
-            onClick={() => onDelete(rowId)}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </SoftBox>)
-      } else {
-        rowCells[columnName] = (
-          <SoftTypography variant="caption" color="text" fontWeight="medium">
-            {columnValue}
-          </SoftTypography>
-        );
-      }
-    });
-
-    return rowCells;
-  });
-
-
-};
 
 export const logout = () => {
   clearTimeout(logoutTimer);
@@ -306,4 +252,55 @@ export const toastHandler = (response) => {
       draggable: false,
     });
   }
+};
+
+
+
+export const generateRows = (list, tableheads, orderBy, order = "asc",) => {
+  let rowArr = Array.isArray(list) ? list : (list?.data || []);
+
+  let sortRows = rowArr.slice().sort((a, b) => {
+    const aValue = a[orderBy];
+    const bValue = b[orderBy];
+
+    if (typeof aValue === 'string' || typeof bValue === 'string') {
+      // If values are strings, perform case-insensitive comparison
+      return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+    } else {
+      // If values are numbers, perform numeric comparison
+      return order === 'asc' ? aValue - bValue : bValue - aValue;
+    }
+  });
+
+  return sortRows?.map((rowItem, rowIndex) => {
+    let rowCells = {};
+    let rowId = "";
+
+    tableheads.forEach((column, colIndex) => {
+      const columnName = column.name;
+      const columnType = column.type;
+      const columnValue = rowItem[columnName];
+      rowId = colIndex === 0 ? columnValue : rowId;
+
+
+      if (columnName === "statusName" || columnName === "isDeleted") {
+        const badgeContent = columnValue === "Active" ? "Active" : "Deactive";
+        const badgeColor = columnValue === "Active" ? "success" : "secondary";
+
+        rowCells[columnName] = (
+          <SoftBadge variant="gradient" badgeContent={badgeContent} color={badgeColor} size="xs" container />
+        );
+      } else {
+        rowCells[columnName] = (
+          <SoftTypography variant="caption" color="inharit" fontWeight="inharit">
+            {columnType === "string" ? columnValue : null}
+            {columnType === "number" ? parseInt(columnValue) : null}
+            {columnType === "date" ? formatDateString(columnValue) : null}
+          </SoftTypography>
+        );
+      }
+    });
+
+    return rowCells;
+  });
 };
