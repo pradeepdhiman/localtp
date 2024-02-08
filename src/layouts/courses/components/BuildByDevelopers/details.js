@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 function Details(props) {
   const { course = {} } = props
   const Navigate = useNavigate()
+  const [showFee, setShowFee] = useState(false)
   const { session } = useSelector(state => state.common)
 
   function selectHandler() {
@@ -67,8 +68,8 @@ function Details(props) {
                 {course.courseName}
               </SoftTypography>
               <SoftBox mb={2}>
-              <SoftTypography variant="body2" color="text" fontWeight="bold">
-                 Course Content : 
+                <SoftTypography variant="body2" color="text" fontWeight="bold">
+                  Course Content :
                 </SoftTypography>
                 <SoftTypography variant="body2" color="text">
                   {/* {course.description} */}
@@ -80,13 +81,24 @@ function Details(props) {
                   Course Duration : {course.duration} Hours
                 </SoftTypography>
               </SoftBox>
+
               <SoftBox mb={2}>
-                <SoftTypography variant="body2" color="text">
-                  Total Amount : <SoftTypography variant="body2" component="span" color="info">${course.totalAmount}</SoftTypography>
-                </SoftTypography>
-                <SoftTypography variant="body2" color="text">
-                  Training Fees : <SoftTypography variant="body2" component="span" color="info">${course.trainingfee}</SoftTypography>
-                </SoftTypography>
+                {!showFee && <>
+                  <SoftTypography variant="body2" color="text">
+                    Chceck Course Fee
+                  </SoftTypography>
+                  <SoftTypography variant="body2" color="text">
+                    <SoftTypography onClick={() => setShowFee(!showFee)} sx={{ cursor: "pointer" }} variant="body2" component="span" color="info">Click here to View</SoftTypography>
+                  </SoftTypography>
+                </>}
+                {showFee && <>
+                  <SoftTypography variant="body2" color="text">
+                    Total Amount : <SoftTypography variant="body2" component="span" color="info">${course.totalAmount}</SoftTypography>
+                  </SoftTypography>
+                  <SoftTypography variant="body2" color="text">
+                    Training Fees : <SoftTypography variant="body2" component="span" color="info">${course.trainingfee}</SoftTypography>
+                  </SoftTypography>
+                </>}
               </SoftBox>
               <SoftButton variant="gradient" color="dark" onClick={selectHandler}>
                 {session.length !== 0 ? "Countinue" : "Select session to countinue"}

@@ -98,6 +98,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         getReassessList: build.mutation({
             query: (filter) => createRequest("/CandidateReassessment/GetCandidateReassessments", filter),
         }),
+        postMaster: build.mutation({
+            query: (data) => createRequest("/MasterCode", data),
+        }),
     }),
 });
 
@@ -106,6 +109,7 @@ export const {
     useRetakeRequestMutation,
     useStudyMatMutation,
     useSelectedScheduleMutation,
+    usePostMasterMutation,
     useSelectedCourseScheduleMutation,
     usePaymentProofMutation,
     useReAsspaymentProofMutation,

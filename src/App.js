@@ -27,6 +27,7 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "contex
 import brand from "assets/images/logo-ct.png";
 import { SnackbarProvider } from "notistack";
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -97,10 +98,11 @@ function App() {
     });
 
 
-    return (
+  return (
+    <>
+      <ToastContainer />
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <ToastContainer />
         {layout === "dashboard" && (
           <Sidenav
             color={sidenavColor}
@@ -113,11 +115,12 @@ function App() {
         )}
         <Routes>
           {getRoutes(routes)}
-          <Route path="/" element={<Navigate to="/" />} />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
       </ThemeProvider>
-    );
+    </>
+  );
 }
 
 export default function IntegrationNotistack() {

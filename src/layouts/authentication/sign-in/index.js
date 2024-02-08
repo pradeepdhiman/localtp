@@ -59,7 +59,7 @@ function SignIn() {
       if(res?.data?.success){
         const userString = JSON.stringify(res.data.data || {});
         saveObject("user", userString);
-        startAutoLogout(10)
+        // startAutoLogout(10)
         navigate("/dashboard");
       }
     } catch (err) {

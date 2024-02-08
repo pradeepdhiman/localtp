@@ -13,6 +13,8 @@ import SoftTypography from "components/SoftTypography";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import { toastHandler } from "utils/utils";
+import { useMasterListByTypeQuery } from "utils/functions";
+import { masterType } from "common/constant";
 
 const DocUpload = () => {
     const user = authUser();
@@ -20,39 +22,42 @@ const DocUpload = () => {
     const { data: appliedCourse, isError: appliedError, isLoading: appliedLoading } = useGetAppliedCourseQuery({ ApplicantID: user?.applicantId });
     const [sendpaymentproof, { data: proofData, isError: proofErr, isLoading: proofLoading }] = usePaymentProofMutation()
     const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
+    const { data: docType, isLoading: docTypeLoading } = useMasterListByTypeQuery({ TypeID: masterType.DocumentType })
 
     const handleCourseSelect = (event, newValue) => {
         setSelectedCourse(newValue);
     };
 
     const MySwal = withReactContent(Swal)
-    
 
     const submithandler = async (data) => {
-        const file = data.file[0];
-        const binaryData = await readFileAsync(file);
+        let files = data.file; // Assuming data.file is a FileList object
+    
         const { applicantCourseID, applicantID, courseID, receiptID } = selectedCourse;
-
+    
         const formData = new FormData();
         formData.append("ApplicantCourseID", parseInt(applicantCourseID));
         formData.append("ApplicantID", parseInt(user?.applicantId) || parseInt(applicantID));
         formData.append("CourseID", parseInt(courseID));
-        formData.append("ReceiptImage", file, file.name);
-        formData.append("ReceiptID", 123456789);
-        // formData.append("ReceiptDate", moment().format('DD-MM-YYYY'));
+        formData.append("DocumentTypeID", parseInt(docType?.data[0].masterCodeID) || 35);
+        
+        for (let i = 0; i < files.length; i++) {
+            formData.append(`SupportFile`, files[i]);
+        }
+        
+        formData.append("ReceiptID", parseInt(receiptID) || 5454);
         formData.append("ReceiptDate", moment().format('YYYY-MM-DD'));
-        // formData.append("ReceiptDate", moment().format('DD-MM-YYYY'));
-        formData.append("AmountPaid", data.amount);
-
+        formData.append("AmountPaid", parseInt(data.amount) || 500);
+    
         try {
             const response = await sendpaymentproof(formData);
-            toastHandler(response)
+            toastHandler(response);
             if (response.data.success) {
                 Swal.fire({
                     title: "Successfully send!",
                     text: "Your course will activate within 24 hours."
-                })
-                reset()
+                });
+                reset();
             } else {
                 console.error("Submission failed");
             }
@@ -60,6 +65,11 @@ const DocUpload = () => {
             console.error("Error sending request:", error);
         }
     };
+    
+    
+    
+    
+
 
 
 
@@ -135,7 +145,8 @@ const DocUpload = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <SoftInput
+                                    <input
+                                        multiple
                                         type="file"
                                         {...register('file', { required: 'File is required' })}
                                         error={Boolean(errors.file)}

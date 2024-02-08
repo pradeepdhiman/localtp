@@ -15,6 +15,7 @@ import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useGetCoursesQuery } from "utils/functions";
 import { authUser } from "utils/utils";
 import { toastHandler } from "utils/utils";
+import { ToastContainer, toast } from "react-toastify";
 
 export const initialFilters = {
   "draw": 0,
@@ -60,7 +61,6 @@ export const initialFilters = {
     "remarks": ""
   }
 }
-
 function Courses() {
   const [filters, setFilters] = useState(initialFilters)
   const { data: courses, isError, isLoading, refatch: refreshList } = useGetCoursesQuery(filters)
@@ -108,6 +108,7 @@ function Courses() {
       description="Lorm ipsum doller sit amet dummy cntent rfjjd remedies parlo gaibi"
       image={curved9}
     >
+      
       {isLoading && <SoftBarLoader />}
       {courses?.data?.length ? <><SoftBox mb={3}>
         <>

@@ -36,6 +36,9 @@ import SoftAddAbleAutoSelect from "examples/AutoSelect/AddAbleAutoSelect";
 import { useEnrollcourseMutation } from "utils/functions";
 import { toastHandler } from "utils/utils";
 import moment from "moment";
+import { toast } from "react-toastify";
+import { usePostMasterMutation } from "utils/functions";
+import { masterType } from "common/constant";
 
 
 
@@ -82,6 +85,10 @@ function SignUp() {
   const [designation, setDesignation] = useState({});
   const [qualification, setQualification] = useState({});
   const [nationality, setNationality] = useState({});
+  const [localLoading, setLocalLoading] = useState({
+    qualificationLoad: false,
+    desgLoad: false
+  });
 
 
   const location = useLocation();
@@ -92,11 +99,11 @@ function SignUp() {
   const coursename = queryStringObject.coursename;
   const [register, { data: regData, error: regErr, isLoading: regLoading }] = useApplicantRegisterMutation()
   const [getProfile, { data: profileData, isError: profileErr, isLoading: profileLoading }] = useProfileMutation()
-  const { data: qualificationList, isLoading: qualificationErr } = useMasterListByTypeQuery({ TypeID: 3 })
-  const { data: desigList, isLoading: desigErr } = useMasterListByTypeQuery({ TypeID: 4 })
-  const { data: nationalityList, isLoading: nationalityErr } = useMasterListByTypeQuery({ TypeID: 5 })
+  const { data: qualificationList, isLoading: qualificationErr, refetch: refreshQualification } = useMasterListByTypeQuery({ TypeID: masterType.Qualification })
+  const { data: desigList, isLoading: desigErr, refetch: refreshDesg } = useMasterListByTypeQuery({ TypeID: masterType.Designation })
+  const { data: nationalityList, isLoading: nationalityErr } = useMasterListByTypeQuery({ TypeID: masterType.Nationality })
   const [enrollcourse, { data: enrollRes, isLoading: enrollLoading, isError: enrollErr }] = useEnrollcourseMutation()
-
+  const [addMaster, { isLoading: masterLoading }] = usePostMasterMutation()
 
   const user = authUser()
   const MySwal = withReactContent(Swal)
@@ -141,7 +148,7 @@ function SignUp() {
       enrollmentDate: moment().format("YYYY-MM-DD"),
       completionDate: moment().format("YYYY-MM-DD"),
       receiptID: "",
-      receiptDate:null,
+      receiptDate: null,
       amountPaid: "",
       paymentStatus: 7,
       courseStatus: 9,
@@ -229,6 +236,89 @@ function SignUp() {
     setNationality(newValue)
   };
 
+  async function saveQuelification(data) {
+    if (qualificationList?.data?.find(x => x.value === data)) {
+      toast.error('Duplicate not allowed', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+      });
+      return null;
+    }
+    setLocalLoading(prev => ({ ...prev, qualificationLoad: true }));
+    const newData = {
+      masterCodeID: 0,
+      code: 0,
+      value: data,
+      fixedColumnName: null,
+      description: null,
+      masterCodeTypeID: masterType.Qualification
+    };
+
+    try {
+      const res = await addMaster(newData);
+      toastHandler(res);
+      if (res?.data?.success) {
+        setQualification(res?.data?.data);
+        refreshQualification();
+        setLocalLoading(prev => ({ ...prev, qualificationLoad: false }));
+        return res;
+      } else {
+        console.error("Unsuccessful response:", res);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error adding master:", error);
+      setLocalLoading(prev => ({ ...prev, qualificationLoad: false }));
+      return null;
+    }
+  }
+
+  async function saveDesgnation(data) {
+    if (desigList?.data?.find(x => x.value === data)) {
+      toast.error('Duplicate not allowed', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+      });
+      return null;
+    }
+    setLocalLoading(prev => ({ ...prev, desgLoad: true }));
+    const newData = {
+      masterCodeID: 0,
+      code: 0,
+      value: data,
+      fixedColumnName: null,
+      description: null,
+      masterCodeTypeID: masterType.Designation
+    };
+
+    try {
+      const res = await addMaster(newData);
+      toastHandler(res);
+      if (res?.data?.success) {
+        setDesignation(res?.data?.data);
+        refreshDesg();
+        setLocalLoading(prev => ({ ...prev, desgLoad: false }));
+        return res;
+      } else {
+        console.error("Unsuccessful response:", res);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error adding master:", error);
+      setLocalLoading(prev => ({ ...prev, desgLoad: false }));
+      return null;
+    }
+  }
+
+
   return (
     <BasicLayout
       title="Welcome!"
@@ -264,8 +354,8 @@ function SignUp() {
                 </h6>
               </SoftBox>
               <SoftBox mt={4} mb={1}>
-                <SoftButton variant="gradient" color="dark" onClick={enrollNewCourse} fullWidth>
-                  Send Request
+                <SoftButton disabled={enrollLoading} variant="gradient" color="dark" onClick={enrollNewCourse} fullWidth>
+                  {enrollLoading ? "Enrolling" : "Send Request"}
                 </SoftButton>
               </SoftBox>
             </SoftBox>
@@ -284,6 +374,17 @@ function SignUp() {
                 />
                 {formerror?.firstName ? <SoftTypography color="error" variant="button" fontWeight="medium">
                   {formerror?.firstName}
+                </SoftTypography> : null}
+              </SoftBox>
+              <SoftBox mb={2}>
+                <SoftInput
+                  type="text"
+                  name="lastName"
+                  placeholder="Last name"
+                  onChange={handleFormData}
+                />
+                {formerror?.lastName ? <SoftTypography color="error" variant="button" fontWeight="medium">
+                  {formerror?.lastName}
                 </SoftTypography> : null}
               </SoftBox>
               <SoftBox mb={2}>
@@ -324,8 +425,11 @@ function SignUp() {
                   selectHandler={qualificationSelectHandler}
                   label={null}
                   placeholder="Select Qualification"
-                  isEditable={false}
+                  saveHandler={saveQuelification}
+                  loading={localLoading.qualificationLoad}
+                  isEditable={true}
                 />
+
                 {formerror?.qualification ? <SoftTypography color="error" variant="button" fontWeight="medium">
                   {formerror?.qualification}
                 </SoftTypography> : null}
@@ -337,7 +441,9 @@ function SignUp() {
                   selectHandler={designationSelectHandler}
                   label={null}
                   placeholder="Select Designation"
-                  isEditable={false}
+                  saveHandler={saveDesgnation}
+                  loading={localLoading.desgLoad}
+                  isEditable={true}
                 />
                 {formerror?.designation ? <SoftTypography color="error" variant="button" fontWeight="medium">
                   {formerror?.designation}
