@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.5e091996.css",
-    "main.js": "/static/js/main.9af4e991.js",
+    "main.css": "/static/css/main.8d6bcf01.css",
+    "main.js": "/static/js/main.305ce872.js",
     "static/media/homeBanner.png": "/static/media/homeBanner.db225b1f05ad42e61329.png",
     "static/media/aboutBanner.png": "/static/media/aboutBanner.c96b6ee54d5375c55591.png",
     "static/media/curved0.jpg": "/static/media/curved0.d146ec6e9401aa9d52c5.jpg",
@@ -29,7 +29,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.5e091996.css",
-    "static/js/main.9af4e991.js"
+    "static/css/main.8d6bcf01.css",
+    "static/js/main.305ce872.js"
   ]
 }

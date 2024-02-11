@@ -49,7 +49,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Study",
+    name: "Academic Zone",
     key: "study",
     route: "/dashboard/study",
     icon: <VideoFileIcon size="12px" />,

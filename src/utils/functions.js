@@ -26,6 +26,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         activeCourse: build.query({
             query: (data) => getRequest("/ApplicantCourse/GetAplicantActiveCourses", data),
         }),
+        getApplicant: build.query({
+            query: (data) => getRequest("/Applicant", data),
+        }),
         getProfile: build.query({
             query: (data) => getRequest("/User", data),
         }),
@@ -55,6 +58,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         }),
         updateProfile: build.mutation({
             query: (data) => updateRequest("/User", data),
+        }),
+        updateApplicant: build.mutation({
+            query: (data) => postForm("/Applicant", data),
         }),
         login: build.mutation({
             query: (data) => createRequest("/Authentication/authenticate", data),
@@ -105,6 +111,7 @@ export const applicantApis = emptySplitApi.injectEndpoints({
 });
 
 export const {
+    useUpdateApplicantMutation,
     useEnrollcourseMutation,
     useRetakeRequestMutation,
     useStudyMatMutation,
@@ -125,6 +132,7 @@ export const {
     useProfileMutation,
     useLoginMutation,
     useGetQuestionsListQuery,
+    useGetApplicantQuery,
     useFilterCourseQuery,
     useApplicantAssementListQuery,
     useGetCoursesQuery,

@@ -15,4 +15,5 @@ export const masterType = {
     TrainingMaterialType: 14,
     QuestionType: 15,
     DocumentType: 16
+
 }

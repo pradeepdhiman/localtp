@@ -1,45 +1,42 @@
 
-// "userId": 0,
-//   "": "string",
-//   "": "string",
-//   "": "string",
-//   "": "string",
-//   "": "string",
-//   "": "string",
-//   "passwordHash": "string",
-//   "passwordSalt": "string",
-//   "rightCategoryID": 0,
-//   "status": 0,
-//   "updatedById": 0,
-//   "": "string"
 import * as yup from 'yup';
 export const fields = {
-    userName: { label: "User name", placeholder: "User name" },
-    firstname: { label: "First name", placeholder: "First name" },
-    lastName: { label: "Last name", placeholder: "Last name", hidden: false },
-    userEmail: { label: "User email", placeholder: "User email" },
-    mobileNo: { label: "Contact No", placeholder: "Contact No" },
-    password: { label: "Password", placeholder: "Password" },
-    remarks: { label: "Remarks", placeholder: "Remarks" }
+    firstName: { label: "First name", placeholder: "First name", type: "text" },
+    lastName: { label: "Last name", placeholder: "Last name", hidden: false, type: "text" },
+    email: { label: "User email", placeholder: "User email", type: "text" },
+    phone: { label: "Contact No", placeholder: "Contact No", type: "number" },
+    address: { label: "Address", placeholder: "Address", type: "text" },
+    qualification: { label: "Qualification", placeholder: "Qualification", type: "text" },
+    qualificationName: { label: "qualificationName", placeholder: "qualificationName", type: "text" },
+    designation: { label: "Designation", placeholder: "Designation", type: "text" },
+    dob: { label: "Date of birth", placeholder: "DOB", type: "date" },
+    nationality: { label: "Nationality", placeholder: "Nationality", type: "text" },
+    nationalityName: { label: "nationalityName", placeholder: "nationalityName", type: "text" },
+    companyName: { label: "CompanyName", placeholder: "CompanyName", type: "text" },
+    companyContactNumber: { label: "CompanyContactNumber", placeholder: "CompanyContactNumber", type: "number" },
+    companyAddress: { label: "CompanyAddress", placeholder: "CompanyAddress", type: "text" },
+    status: { label: "status", placeholder: "status", type: "number" },
+    statusName: { label: "statusName", placeholder: "statusName", type: "text" },
+    createdById: { label: "createdById", placeholder: "createdById", type: "number" },
+    updatedById: { label: "updatedById", placeholder: "updatedById", type: "number" },
+    updatedDate: { label: "updatedDate", placeholder: "updatedDate", type: "date" },
+    file: { label: "file", placeholder: "file", type: "file" },
+    isDeleted: { label: "isDeleted", placeholder: "isDeleted", type: "text" },
+    remarks: { label: "Remarks", placeholder: "Remarks", type: "text" }
 };
 
+
+
 export const schema = yup.object().shape({
-    userName: yup.string().required('User Name is required'),
-    firstname: yup.string().required('First Name is required'),
-    lastName: yup.string(),
-    userEmail: yup.string().email('Invalid email').required('Email is required'),
-    mobileNo: yup.string()
-        .matches(/^\d{10}$/, 'Mobile number must be 10 digits')
-        .required('Contact number is required'),
-    // password: yup.string().required('Password is required'),
-    // passwordHash: yup.string(),
-    // passwordSalt: yup.string(),
-    // rightCategoryID: yup.number(),
-    // status: yup.number(),
-    // createdById: yup.number(),
-    // updatedById: yup.number(),
-    // updatedDate: yup.date(),
-    // isDeleted: yup.boolean(),
-    // remarks: yup.string(),
+    firstName: yup.string().required('First Name is required'),
+    lastName: yup.string().required('Last Name is required'),
+    email: yup.string().email('Invalid email').required('Email is required'),
+    file: yup.mixed().required('File is required'),
+    phone: yup.string()
+        .matches(/^[0-9]+$/, 'Phone number must contain only digits')
+        .required('Phone is required')
+        .min(10, 'Phone number must be at least 10 digits')
+        .max(10, 'Phone number must not exceed 10 digits')
 });
+
 

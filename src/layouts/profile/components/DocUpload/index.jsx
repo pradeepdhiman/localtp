@@ -31,7 +31,7 @@ const DocUpload = () => {
     const MySwal = withReactContent(Swal)
 
     const submithandler = async (data) => {
-        let files = data.file; // Assuming data.file is a FileList object
+        let files = data.file; 
     
         const { applicantCourseID, applicantID, courseID, receiptID } = selectedCourse;
     
@@ -88,7 +88,7 @@ const DocUpload = () => {
             <SoftBox p={2} >
                 <form onSubmit={handleSubmit(submithandler)}>
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        {/* <Grid item xs={6}>
                             <SoftBox display="flex" py={1} pr={2}>
                                 <SoftTypography variant="button" fontWeight="regular" color="text">
                                     Payment on the below detail then take screeshot and upload.
@@ -126,8 +126,8 @@ const DocUpload = () => {
                                     &nbsp;HDFC48000
                                 </SoftTypography>
                             </SoftBox>
-                        </Grid>
-                        <Grid item xs={6}>
+                        </Grid> */}
+                        <Grid item xs={12}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <Autocomplete

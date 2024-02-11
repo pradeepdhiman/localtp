@@ -14,19 +14,21 @@ import Swal from "sweetalert2";
 import { toastHandler } from "utils/utils";
 import { useReAsspaymentProofMutation } from "utils/functions";
 import CloseIcon from '@mui/icons-material/Close';
+import { useMasterListByTypeQuery } from "utils/functions";
+import { masterType } from "common/constant";
 
 const PaymentForm = (props) => {
     const { activeAssess, exit } = props
     const user = authUser();
     const [sendpaymentproof, { data: proofData, isError: proofErr, isLoading: proofLoading }] = useReAsspaymentProofMutation()
     const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
-
+    const { data: docType, isLoading: docTypeLoading } = useMasterListByTypeQuery({ TypeID: masterType.DocumentType })
 
     const MySwal = withReactContent(Swal)
 
 
     const submithandler = async (data) => {
-        const file = data.file[0];
+        let files = data.file;
         const { reassessmentID, applicantID, courseID } = activeAssess;
 
         const formData = new FormData();
@@ -34,10 +36,14 @@ const PaymentForm = (props) => {
         formData.append("ReassessmentID", parseInt(reassessmentID))
         formData.append("ApplicantID", parseInt(applicantID))
         formData.append("CourseID", parseInt(courseID))
-        formData.append("ReceiptImage", file, file.name)
+        formData.append("DocumentTypeID", parseInt(docType?.data[0].masterCodeID) || 41);
         formData.append("ReceiptID", "4545454")
         formData.append("ReceiptDate", moment().format('YYYY-MM-DD'))
         formData.append("AmountPaid", data?.amount)
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append(`SupportFile`, files[i]);
+        }
 
         try {
             const response = await sendpaymentproof(formData);
@@ -93,7 +99,8 @@ const PaymentForm = (props) => {
                                     />
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <SoftInput
+                                    <input
+                                        multiple
                                         type="file"
                                         {...register('file', { required: 'File is required' })}
                                         error={Boolean(errors.file)}

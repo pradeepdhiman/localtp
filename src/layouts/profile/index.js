@@ -28,6 +28,7 @@ import { Stack, Tab, Tabs } from "@mui/material";
 import SoftButton from "components/SoftButton";
 import DocUpload from "./components/DocUpload";
 import SoftTypography from "components/SoftTypography";
+import { useGetApplicantQuery } from "utils/functions";
 
 const formInfo = {
   title: "profile information",
@@ -48,12 +49,17 @@ function Overview() {
   const [show, setShow] = useState(false)
   const [tabValue, setTabValue] = useState(0);
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
-  const { data: { data: profile } = {}, isError: profileErr, isLoading: profileLoading } = useGetProfileQuery({ id: user?.id }) || {};
+  // const { data: { data: profile } = {}, isError: profileErr, isLoading: profileLoading } = useGetProfileQuery({ id: user?.applicantId }) || {};
+  const { data: { data: profile } = {}, isError: profileErr, isLoading: profileLoading } = useGetApplicantQuery({ id: user?.applicantId })
 
   function editClickhandler() {
-    dispatch(setProfileInfo(profile))
-    // setShow(!show)
+    if (Object.keys(profileInfo).length) {
+      dispatch(setProfileInfo({}));
+    } else {
+      dispatch(setProfileInfo(profile));
+    }
   }
+
   function toogleSetting() {
     // dispatch(setProfileInfo({}))
     setShow(!show)
@@ -63,33 +69,36 @@ function Overview() {
     <DashboardLayout>
       {profileLoading ? <SoftBarLoader /> : <>
         <Header name={profile?.firstname + profile?.lastName} email={profile?.userEmail} showAction={toogleSetting} />
-        <SoftBox mt={5}>
-          {/* <SoftButton color="dark">Upload Document</SoftButton> */}
-          <SoftBox>
-            <SoftBox px={2}>
-              <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-                Upload payment proof
-              </SoftTypography>
-            </SoftBox>
-            <DocUpload />
-          </SoftBox>
-        </SoftBox>
+
         <SoftBox mt={2} mb={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md xl>
+            <Grid item xs={12} md={6}>
               <ProfileInfoCard
                 title="profile information"
                 description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
                 info={{
-                  fullName: profile?.firstname + profile?.lastName,
-                  mobile: profile?.mobileNo,
-                  email: profile?.userEmail,
-                  location: "USA",
+                  fullName: profile?.firstName + " " + profile?.lastName,
+                  mobile: profile?.phone,
+                  email: profile?.email,
+                  nationality: profile?.nationalityName,
                 }}
                 action={{ route: "", tooltip: "Edit Profile", edithandler: editClickhandler }}
               />
             </Grid>
-            {profileInfo?.userId && <Grid item xs={12} xl={6}>
+            <Grid item xs={12} md={6}>
+              <SoftBox mt={5}>
+                {/* <SoftButton color="dark">Upload Document</SoftButton> */}
+                <SoftBox>
+                  <SoftBox px={2}>
+                    <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
+                      Upload payment proof
+                    </SoftTypography>
+                  </SoftBox>
+                  <DocUpload />
+                </SoftBox>
+              </SoftBox>
+            </Grid>
+            {profileInfo?.applicantID && <Grid item xs={12} xl={12}>
               <ProfileEdit title="Edit Profile" info={formInfo} formFields={profile} />
             </Grid>}
             {show && <Grid item xs={12} xl={6}>

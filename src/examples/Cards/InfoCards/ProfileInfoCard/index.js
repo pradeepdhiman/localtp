@@ -97,12 +97,12 @@ function ProfileInfoCard({ title, description, info, social, action }) {
         </SoftBox>
         <SoftBox>
           {renderItems}
-          <SoftBox display="flex" py={1} pr={2}>
+          {/* <SoftBox display="flex" py={1} pr={2}>
             <SoftTypography variant="button" fontWeight="bold" textTransform="capitalize">
               social: &nbsp;
             </SoftTypography>
             {renderSocial}
-          </SoftBox>
+          </SoftBox> */}
         </SoftBox>
       </SoftBox>
     </Card>

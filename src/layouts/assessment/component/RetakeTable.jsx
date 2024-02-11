@@ -23,6 +23,7 @@ import PaymentForm from "./PaymentForm";
 import { generateRows } from "utils/utils";
 import { setAssessmentItem } from "utils/commonSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // Data
 
@@ -47,13 +48,13 @@ function RetakeTable(props) {
     function starthandler(itemData) {
         dispatch(setAssessmentItem(itemData));
         navigate('/test');
-      }
-      
-      useEffect(() => {
+    }
+
+    useEffect(() => {
         const rowList = generateRows(list.data, ReAssessTableHeads, orderby, "asc", { retest: starthandler });
         setRows(rowList);
-      }, [list, orderby]);
-      
+    }, [list, orderby]);
+
 
     function columnClickhandler(item) {
         if (orderby === item) {
@@ -67,7 +68,18 @@ function RetakeTable(props) {
 
     function rowClickhandler(item) {
         const activeRow = list.data[item]
-        setActiveItem(activeRow)
+        if (activeRow.fee) {
+            setActiveItem(activeRow)
+        } else {
+            toast.error("Payment not active", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: false,
+            });
+        }
     }
     function handlerRowperpagechange(event) {
         changeFilter(prev => ({ ...prev, start: 0, length: event.target.value }))
@@ -119,11 +131,11 @@ function RetakeTable(props) {
         </SoftBox>
     );
 
-   
+
 
     return (
         <Card>
-            {activeItem && <PaymentForm activeAssess={activeItem} exit={setActiveItem}/>}
+            {activeItem && <PaymentForm activeAssess={activeItem} exit={setActiveItem} />}
             {!activeItem && <>
                 <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
                     <SoftBox>

@@ -45,7 +45,7 @@ function Dashboard() {
             <SoftBox mb={0.5}>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <SoftTypography variant="h6" fontWeight="medium">
-                  Applied Course
+                  Applied Courses
                 </SoftTypography>
                 {/* <SoftButton onClick={() => navigate(`${pathname}/mycourses`)} variant="text" color="info">
                   All
@@ -75,7 +75,7 @@ function Dashboard() {
             <SoftBox mb={0.5}>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <SoftTypography variant="h6" fontWeight="medium">
-                  My Courses
+                  My Active Courses
                 </SoftTypography>
                 <SoftButton onClick={() => navigate(`${pathname}/mycourses`)} variant="text" color="info">
                   All
@@ -84,7 +84,7 @@ function Dashboard() {
             </SoftBox>
             <SoftBox mb={1}>
               <SoftTypography variant="button" fontWeight="regular" color="text">
-                Start learning your course.
+                Start Learning.
               </SoftTypography>
             </SoftBox>
           </SoftBox>
@@ -96,7 +96,7 @@ function Dashboard() {
                 <CourseItem item={itemData} />
               </Grid>)}
               {activeCourse?.data?.length === 0 && <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
-                You dont have active course.
+                You don’t have any active courses.
               </SoftTypography></Grid>}
             </Grid>
           </SoftBox>
@@ -109,7 +109,7 @@ function Dashboard() {
             <SoftBox mb={0.5}>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <SoftTypography variant="h6" fontWeight="medium">
-                  My Assessment
+                  Assessment Details
                 </SoftTypography>
                 <SoftButton onClick={() => navigate(`${pathname}/mycourses?complete=true`)} variant="text" color="info">All</SoftButton>
               </Stack>
@@ -126,7 +126,7 @@ function Dashboard() {
               {resultData?.data?.length !== 0 ? <Grid item xs={12} md={12} xl={12}>
                 <ResultItem dataList={resultData?.data} />
               </Grid> : <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
-                You have not complete any course yet.
+                You have not completed any courses
               </SoftTypography></Grid>}
             </Grid>
           </SoftBox>
@@ -145,7 +145,7 @@ function Dashboard() {
             </SoftBox>
             <SoftBox mb={1}>
               <SoftTypography variant="button" fontWeight="regular" color="text">
-                You may learn these courses related to your purchesed courses.
+                You can discover related courses to the ones you've bought.
               </SoftTypography>
             </SoftBox>
           </SoftBox>

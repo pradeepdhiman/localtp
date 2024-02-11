@@ -8,6 +8,7 @@ import { IconButton } from "@mui/material";
 import { toast } from "react-toastify";
 import SoftBadge from "components/SoftBadge";
 import SoftButton from "components/SoftButton";
+import moment from "moment";
 
 const createHeaders = (isForm) => {
   const user = authUser();
@@ -306,7 +307,7 @@ export const generateRows = (list, tableheads, orderBy, order = "asc", action) =
         rowCells[columnName] = (
           <SoftTypography variant="caption" color="inharit" fontWeight="inharit">
             {columnType === "string" ? columnValue : null}
-            {columnType === "number" ? parseInt(columnValue) : null}
+            {columnType === "number" ? (isNaN(parseInt(columnValue)) ? "" : parseInt(columnValue)) : null}
             {columnType === "date" ? formatDateString(columnValue) : null}
           </SoftTypography>
         );
@@ -315,4 +316,20 @@ export const generateRows = (list, tableheads, orderBy, order = "asc", action) =
 
     return rowCells;
   });
+};
+
+const convertToDateObject = (value, type) => {
+  return type === "date" ? moment(value).format("YYYY-MM-DD") : value;
+};
+
+export const formatDateFields = (activeRow, fields) => {
+  if (activeRow && fields) {
+    const result = {};
+    for (const key in fields) {
+      if (fields.hasOwnProperty(key)) {
+        result[key] = convertToDateObject(activeRow[key], fields[key].type);
+      }
+    }
+    return result;
+  }
 };
