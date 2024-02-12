@@ -1,17 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
@@ -28,11 +14,32 @@ import SoftBadge from "components/SoftBadge";
 import { useRetakeRequestMutation } from "utils/functions";
 import { authUser } from "utils/utils";
 import { toastHandler } from "utils/utils";
+import { _reportPath } from "config/constant";
+import { useNavigate } from "react-router-dom";
 
 let user = authUser()
 
 function ResultItemInfo({ name, coursename, date, questionnumber, correctanswer, result, courseID, noGutter }) {
   const [requestRetake, { data: reqRes, isLoading: reqLoading, isError: reqErr }] = useRetakeRequestMutation()
+  // const [getUser, { data: userinfo, isLoading: userLoading, isError: userErr }] = useGetApplicantinfoMutation()
+
+  const navigate = useNavigate();
+
+  async function downloadHandler() {
+    const reportPath = 'CertificateReport';
+    const courseName = coursename;
+    const certificateDate = date;
+    const applicantName = "abc";
+
+    const reportUrl = `${_reportPath}?name=${reportPath}&courseName=${courseName}&certificateDate=${certificateDate}&applicantName=${applicantName}`;
+
+    const newTab = window.open(reportUrl, '_blank');
+    if (newTab) {
+      newTab.focus();
+    } else {
+      navigate(reportUrl);
+    }
+  }
 
   async function actionhandler(status) {
     let data = {
@@ -55,7 +62,7 @@ function ResultItemInfo({ name, coursename, date, questionnumber, correctanswer,
       } catch (err) {
         console.log(err)
       }
-    }else{
+    } else {
       alert("download certificate")
     }
   }
@@ -90,10 +97,10 @@ function ResultItemInfo({ name, coursename, date, questionnumber, correctanswer,
             ml={{ xs: -1.5, sm: 0 }}
           >
             <SoftBox mr={1}>
-              {result === "Fail" && <SoftButton onClick={() => actionhandler(result)} variant="text" color="error">
-                Request Retake
+              {result === "Fail" && <SoftButton disabled={isLoading} onClick={() => actionhandler(result)} variant="text" color="error">
+                {isLoading ? "Sending Request" : "Request Retake"}
               </SoftButton>}
-              {result === "Pass" && <SoftButton onClick={() => actionhandler(result)} variant="text" color="success">
+              {result === "Pass" && <SoftButton  onClick={() => downloadHandler()} variant="text" color="success">
                 Download Certificate
               </SoftButton>}
             </SoftBox>

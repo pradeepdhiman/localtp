@@ -59,6 +59,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         updateProfile: build.mutation({
             query: (data) => updateRequest("/User", data),
         }),
+        getApplicantinfo: build.mutation({
+            query: (data) => getRequest("/Applicant", data),
+        }),
         updateApplicant: build.mutation({
             query: (data) => postForm("/Applicant", data),
         }),
@@ -114,6 +117,7 @@ export const {
     useUpdateApplicantMutation,
     useEnrollcourseMutation,
     useRetakeRequestMutation,
+    useGetApplicantinfoMutation,
     useStudyMatMutation,
     useSelectedScheduleMutation,
     usePostMasterMutation,

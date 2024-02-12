@@ -19,6 +19,8 @@ import { masterType } from "common/constant";
 import { useGetApplicantQuery } from "utils/functions";
 import { formatDateFields } from "utils/utils";
 import { useUpdateApplicantMutation } from "utils/functions";
+import { useDispatch } from "react-redux";
+import { setProfileInfo } from "layouts/profile/profileSlice";
 
 
 
@@ -28,6 +30,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
     const [qualification, setQualification] = useState({});
     const [nationality, setNationality] = useState({});
     const [docType, setDocType] = useState({});
+    const dispatch = useDispatch()
     const { data: qualificationList, isLoading: qualificationErr, refetch: refreshQualification } = useMasterListByTypeQuery({ TypeID: masterType.Qualification })
     const { data: desigList, isLoading: desigErr, refetch: refreshDesg } = useMasterListByTypeQuery({ TypeID: masterType.Designation })
     const { data: nationalityList, isLoading: nationalityErr } = useMasterListByTypeQuery({ TypeID: masterType.Nationality })
@@ -97,6 +100,14 @@ const ProfileEdit = ({ title, info, formFields }) => {
         try {
             const res = await updateProfile(formData)
             toastHandler(res)
+            if (res?.data?.success) {
+                reset()
+                setQualification({})
+                setDesignation({})
+                setNationality({})
+                setDocType({})
+                dispatch(setProfileInfo({}));
+            }
         } catch (err) {
             console.log(err)
         }
