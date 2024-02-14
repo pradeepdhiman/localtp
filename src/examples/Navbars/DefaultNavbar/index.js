@@ -92,17 +92,17 @@ function DefaultNavbar({ transparent, light, action }) {
           />}
           <DefaultNavbarLink name="home" route="/home" light={light} />
           <DefaultNavbarLink name="our courses" route="/courses" light={light} />
-          <DefaultNavbarLink
+          {/* <DefaultNavbarLink
 
             name="about us"
             route="/aboutus"
             light={light}
-          />
-          <DefaultNavbarLink
+          /> */}
+          {/* <DefaultNavbarLink
             name="contact us"
             route="/contectus"
             light={light}
-          />
+          /> */}
           {!user && <DefaultNavbarLink
             name="Sign in"
             route="/authentication/sign-in"

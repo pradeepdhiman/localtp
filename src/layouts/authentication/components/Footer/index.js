@@ -177,8 +177,7 @@ Footer.defaultProps = {
   company: { href: "", name: "Bilberry Solution" },
   links: [
     { href: "/aboutus", name: "About Us" },
-    { href: "/courses", name: "Courses" },
-    { href: "/faq", name: "Faq" },
+    { href: "/FAQ", name: "Faq" },
     { href: "/contectus", name: "Contact us" },
     { href: "/privacypolicy", name: " Privacy Policy" },
   ],
