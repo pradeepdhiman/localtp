@@ -1,10 +1,6 @@
 
 import Grid from "@mui/material/Grid";
 
-// @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
 
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
@@ -68,14 +64,14 @@ function Overview() {
   return (
     <DashboardLayout>
       {profileLoading ? <SoftBarLoader /> : <>
-        <Header name={profile?.firstname + profile?.lastName} email={profile?.userEmail} showAction={toogleSetting} />
+        <Header name={profile?.firstName + " " + profile?.lastName} email={profile?.userEmail} showAction={toogleSetting} />
 
-        <SoftBox mt={2} mb={3}>
-          <Grid container spacing={3}>
+        <SoftBox mt={4} mb={3}>
+          <Grid container spacing={3} >
             <Grid item xs={12} md={6}>
               <ProfileInfoCard
                 title="profile information"
-                description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+                description=""
                 info={{
                   fullName: profile?.firstName + " " + profile?.lastName,
                   mobile: profile?.phone,
@@ -86,16 +82,8 @@ function Overview() {
               />
             </Grid>
             <Grid item xs={12} md={6}>
-              <SoftBox mt={5}>
-                {/* <SoftButton color="dark">Upload Document</SoftButton> */}
-                <SoftBox>
-                  <SoftBox px={2}>
-                    <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-                      Upload payment proof
-                    </SoftTypography>
-                  </SoftBox>
-                  <DocUpload />
-                </SoftBox>
+              <SoftBox >
+                <DocUpload />
               </SoftBox>
             </Grid>
             {profileInfo?.applicantID && <Grid item xs={12} xl={12}>

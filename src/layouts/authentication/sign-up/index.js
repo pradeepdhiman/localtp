@@ -18,7 +18,8 @@ import SoftButton from "components/SoftButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
-import curved6 from "assets/images/curved-images/curved14.jpg";
+import curved6 from "assets/images/banners/27323.jpg";
+// import curved6 from "assets/images/curved-images/curved14.jpg";
 
 import AuthApi from "../../../api/auth";
 
@@ -42,6 +43,26 @@ import { masterType } from "common/constant";
 
 
 
+// const rawFields = {
+//   applicantID: 0,
+//   firstName: "",
+//   lastName: "",
+//   email: "",
+//   phone: "",
+//   address: "",
+//   qualification: "",
+//   designation: "",
+//   dob: new Date(),
+//   nationality: "",
+//   companyName: "",
+//   companyContactNumber: "",
+//   companyAddress: "",
+//   password: "",
+//   courseId: 0,
+//   scheduleId: 0,
+//   createdById: 0,
+//   remarks: ""
+// }
 const rawFields = {
   applicantID: 0,
   firstName: "",
@@ -49,16 +70,15 @@ const rawFields = {
   email: "",
   phone: "",
   address: "",
-  qualification: "",
-  designation: "",
-  dob: new Date(),
-  nationality: "",
+  qualification: 0,
+  designation: 0,
+  dob: null,
+  nationality: 0,
   companyName: "",
   companyContactNumber: "",
   companyAddress: "",
   password: "",
   courseId: 0,
-  scheduleId: 0,
   createdById: 0,
   remarks: ""
 }
@@ -70,13 +90,16 @@ const formRule = {
   designation: { required: true },
   nationality: { required: true },
   password: { required: true },
+  course: { required: true },
 }
+
+
 
 
 
 function SignUp() {
   const navigate = useNavigate();
-  const { session } = useSelector(state => state.common)
+  // const { session } = useSelector(state => state.common)
 
   const [agreement, setAgremment] = useState(true);
   const [formData, setFormData] = useState(rawFields);
@@ -144,7 +167,8 @@ function SignUp() {
       applicantCourseID: 0,
       applicantID: parseInt(user?.applicantId),
       courseID: parseInt(courseId),
-      scheduleID: parseInt(session?.scheduledID),
+      scheduleID: 0,
+      // scheduleID: parseInt(session?.scheduledID),
       enrollmentDate: moment().format("YYYY-MM-DD"),
       completionDate: moment().format("YYYY-MM-DD"),
       receiptID: "",
@@ -155,6 +179,7 @@ function SignUp() {
       createdById: parseInt(user?.applicantId),
       remarks: ""
     };
+
     try {
       const res = await enrollcourse(newData)
       toastHandler(res)
@@ -167,30 +192,15 @@ function SignUp() {
 
 
     try {
-      let newData = {};
-
-      if (user?.applicantId) {
-        newData = {
-          ...formData,
-          courseId: parseInt(courseId),
-          applicantID: parseInt(user.applicantId),
-          firstName: user.userName,
-          email: user.email,
-          password: JSON.stringify(formData.password),
-          createdById: parseInt(user.applicantId),
-          scheduleId: parseInt(session?.scheduledID),
-        };
-      } else {
-        newData = {
-          ...formData,
-          courseId: parseInt(courseId),
-          createdById: 1,
-          scheduleId: parseInt(session?.scheduledID),
-          nationality: nationality.masterCodeID,
-          designation: designation.masterCodeID,
-          qualification: qualification.masterCodeID,
-        };
-      }
+      let newData = {
+        ...formData,
+        courseId: parseInt(courseId),
+        createdById: 1,
+        scheduleId: parseInt(session?.scheduledID),
+        nationality: nationality.masterCodeID,
+        designation: designation.masterCodeID,
+        qualification: qualification.masterCodeID,
+      };
 
       let err = validateForm(newData, formRule)
       if (Object.keys(err).length > 0) {
@@ -203,7 +213,7 @@ function SignUp() {
       if (response.data.success) {
         Swal.fire({
           title: "Successfully register!",
-          text: "Please check your email we will send you payment link.",
+          text: "Thank you for registering with us. Your Registration details have been successfully submitted to the admin. We will contact you shortaly with the next steps. Meanwhile, please check your email regularly for further updates.",
           confirmButtonText: "Ok",
         }).then((result) => {
           if (result.isConfirmed) {
@@ -321,8 +331,8 @@ function SignUp() {
 
   return (
     <BasicLayout
-      title="Welcome!"
-      description="Use these awesome forms to login or create new account in your project for free."
+      title="Enroll"
+      description="Provide the necessary information to register for the selected course."
       image={curved6}
     >
       {user && user.token ? (
@@ -416,7 +426,11 @@ function SignUp() {
                   name="course"
                   placeholder="Course"
                   value={coursename}
+                  disabled
                 />
+                {formerror?.course ? <SoftTypography color="error" variant="button" fontWeight="medium">
+                  {formerror?.course}
+                </SoftTypography> : null}
               </SoftBox>
               <SoftBox mb={2}>
                 <SoftAddAbleAutoSelect

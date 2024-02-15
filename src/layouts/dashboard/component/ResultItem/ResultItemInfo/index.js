@@ -97,8 +97,8 @@ function ResultItemInfo({ name, coursename, date, questionnumber, correctanswer,
             ml={{ xs: -1.5, sm: 0 }}
           >
             <SoftBox mr={1}>
-              {result === "Fail" && <SoftButton disabled={isLoading} onClick={() => actionhandler(result)} variant="text" color="error">
-                {isLoading ? "Sending Request" : "Request Retake"}
+              {result === "Fail" && <SoftButton disabled={reqLoading} onClick={() => actionhandler(result)} variant="text" color="error">
+                {reqLoading ? "Sending Request" : "Request Retake"}
               </SoftButton>}
               {result === "Pass" && <SoftButton  onClick={() => downloadHandler()} variant="text" color="success">
                 Download Certificate

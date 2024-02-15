@@ -31,31 +31,31 @@ const DocUpload = () => {
     const MySwal = withReactContent(Swal)
 
     const submithandler = async (data) => {
-        let files = data.file; 
-    
+        let files = data.file;
+
         const { applicantCourseID, applicantID, courseID, receiptID } = selectedCourse;
-    
+
         const formData = new FormData();
         formData.append("ApplicantCourseID", parseInt(applicantCourseID));
         formData.append("ApplicantID", parseInt(user?.applicantId) || parseInt(applicantID));
         formData.append("CourseID", parseInt(courseID));
         formData.append("DocumentTypeID", parseInt(docType?.data[0].masterCodeID) || 35);
-        
+
         for (let i = 0; i < files.length; i++) {
             formData.append(`SupportFile`, files[i]);
         }
-        
+
         formData.append("ReceiptID", parseInt(receiptID) || 5454);
         formData.append("ReceiptDate", moment().format('YYYY-MM-DD'));
         formData.append("AmountPaid", parseInt(data.amount) || 500);
-    
+
         try {
             const response = await sendpaymentproof(formData);
             toastHandler(response);
             if (response.data.success) {
                 Swal.fire({
                     title: "Successfully send!",
-                    text: "Your course will activate within 24 hours."
+                    text: "Documents have been successfully submitted. Your course will be activated within 24 hours."
                 });
                 reset();
             } else {
@@ -65,10 +65,10 @@ const DocUpload = () => {
             console.error("Error sending request:", error);
         }
     };
-    
-    
-    
-    
+
+
+
+
 
 
 
@@ -86,6 +86,11 @@ const DocUpload = () => {
     return (
         <Card>
             <SoftBox p={2} >
+                <SoftBox px={2} mb={2}>
+                    <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
+                        Upload payment proof
+                    </SoftTypography>
+                </SoftBox>
                 <form onSubmit={handleSubmit(submithandler)}>
                     <Grid container spacing={2}>
                         {/* <Grid item xs={6}>

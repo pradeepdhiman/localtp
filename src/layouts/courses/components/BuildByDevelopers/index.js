@@ -55,7 +55,7 @@ function BuildByDevelopers(props) {
               <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
                 {course.courseName}
               </SoftTypography>
-              <SoftBox mb={2}>
+              {/* <SoftBox mb={2}>
                 <SoftTypography
                   variant="body2"
                   color="text"
@@ -69,8 +69,8 @@ function BuildByDevelopers(props) {
                   {course.description}
                 </SoftTypography>
 
-              </SoftBox>
-              <SoftButton onClick={() => navigate(`${location.pathname}/${course.courseID}`)} size="small" variant="text" color="dark">Read More</SoftButton>
+              </SoftBox> */}
+              <SoftButton onClick={() => navigate(`${location.pathname}/${course.courseID}`)} size="small" variant="text" color="info">Read More</SoftButton>
               
             </SoftBox>
           </Grid>

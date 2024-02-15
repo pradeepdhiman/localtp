@@ -27,7 +27,8 @@ import breakpoints from "assets/theme/base/breakpoints";
 
 // Images
 import burceMars from "assets/images/bruce-mars.jpg";
-import curved0 from "assets/images/curved-images/curved0.jpg";
+import curved0 from "assets/images/banners/profileBanner.jpg";
+// import curved0 from "assets/images/curved-images/curved0.jpg";
 
 function Header({ name = "Applicant Name", email = "", showAction }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
@@ -78,7 +79,7 @@ function Header({ name = "Applicant Name", email = "", showAction }) {
           backgroundColor: ({ functions: { rgba }, palette: { white } }) => rgba(white.main, 0.8),
           boxShadow: ({ boxShadows: { navbarBoxShadow } }) => navbarBoxShadow,
           position: "relative",
-          mt: -8,
+          mt: -10,
           mx: 3,
           py: 2,
           px: 2,
@@ -104,7 +105,7 @@ function Header({ name = "Applicant Name", email = "", showAction }) {
               </SoftTypography>
             </SoftBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={2} sx={{ ml: "auto" }}>
+          {/* <Grid item xs={12} md={6} lg={2} sx={{ ml: "auto" }}>
             <AppBar position="static">
               <Tabs
                 orientation={tabsOrientation}
@@ -115,7 +116,7 @@ function Header({ name = "Applicant Name", email = "", showAction }) {
                 <Tab onClick={() => showAction()} icon={<Settings />} />
               </Tabs>
             </AppBar>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Card>
     </SoftBox>

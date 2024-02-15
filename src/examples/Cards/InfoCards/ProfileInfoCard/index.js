@@ -80,21 +80,16 @@ function ProfileInfoCard({ title, description, info, social, action }) {
         <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
           {title}
         </SoftTypography>
-        <SoftTypography sx={{cursor:"pointer"}} onClick={action.edithandler} variant="body2" color="secondary">
-          <Tooltip title={action.tooltip} placement="top">
-            <Icon><EditIcon /></Icon>
-          </Tooltip>
-        </SoftTypography>
       </SoftBox>
       <SoftBox p={2}>
-        <SoftBox mb={2} lineHeight={1}>
+        {/* <SoftBox mb={2} lineHeight={1}>
           <SoftTypography variant="button" color="text" fontWeight="regular">
             {description}
           </SoftTypography>
-        </SoftBox>
-        <SoftBox opacity={0.3}>
+        </SoftBox> */}
+        {/* <SoftBox opacity={0.3}>
           <Divider />
-        </SoftBox>
+        </SoftBox> */}
         <SoftBox>
           {renderItems}
           {/* <SoftBox display="flex" py={1} pr={2}>
@@ -104,6 +99,14 @@ function ProfileInfoCard({ title, description, info, social, action }) {
             {renderSocial}
           </SoftBox> */}
         </SoftBox>
+      </SoftBox>
+      <SoftBox display="flex" justifyContent="end" alignItems="center" px={2}>
+        <SoftTypography sx={{ cursor: "pointer" }} onClick={action.edithandler} variant="body2" color="info">
+          Edit / View &nbsp;
+          <Tooltip title={action.tooltip} placement="top">
+            <Icon><EditIcon /></Icon>
+          </Tooltip>
+        </SoftTypography>
       </SoftBox>
     </Card>
   );

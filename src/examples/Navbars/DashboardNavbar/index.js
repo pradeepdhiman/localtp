@@ -159,12 +159,21 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </SoftBox>
         {isMini ? null : (
           <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <SoftBox pr={1}>
+            {/* <SoftBox pr={1}>
               <SoftInput
                 placeholder="Type here..."
                 icon={{ component: <SearchIcon />, direction: "left" }}
               />
-            </SoftBox>
+            </SoftBox> */}
+            {user && user?.userName ? <SoftBox pr={1}>
+              <SoftTypography
+                variant="button"
+                fontWeight="medium"
+                color={light ? "white" : "dark"}
+              >
+                {user?.userName}
+              </SoftTypography>
+            </SoftBox> : null}
             <SoftBox color={light ? "white" : "inherit"}>
               {(user && user.token) && <IconButton
                 size="small"

@@ -461,7 +461,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                         <SoftBox>
                             <SoftBox mb={1} ml={0.5}>
                                 <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                    Support File
+                                    Select Files
                                 </SoftTypography>
                             </SoftBox>
                             <input

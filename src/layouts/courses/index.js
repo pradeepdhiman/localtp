@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
-import curved9 from "assets/images/curved-images/aboutBanner.png";
+import curved9 from "assets/images/banners/full-shot-people-correcting-grammar-mistakes.jpg";
+// import curved9 from "assets/images/curved-images/aboutBanner.png";
 import PageCoverLayout from "examples/LayoutContainers/PageLayoutCover";
 import BuildByDevelopers from "./components/BuildByDevelopers";
 import { Card, Grid, Pagination, Stack } from "@mui/material";
@@ -105,7 +106,9 @@ function Courses() {
   return (
     <PageCoverLayout
       title="Our Courses"
-      description="Lorm ipsum doller sit amet dummy cntent rfjjd remedies parlo gaibi"
+      description="We “Compliance360” is your Trusted AML Partner Embark on this thrilling journey of learning and 
+      growth. With Compliance360, you'll not only master AML/CFT compliance – you'll become a 
+      champion for financial security and integrity."
       image={curved9}
     >
       
@@ -116,15 +119,10 @@ function Courses() {
             <SoftBox >
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <SoftTypography variant="h6" fontWeight="medium" >
-                  Courses
+                Active Courses
                 </SoftTypography>
                 {renderSearch}
               </Stack>
-            </SoftBox>
-            <SoftBox mb={1}>
-              <SoftTypography variant="button" fontWeight="regular" color="text">
-                Here is our best course for you.
-              </SoftTypography>
             </SoftBox>
           </SoftBox>
           <SoftBox p={2}>

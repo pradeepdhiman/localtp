@@ -18,7 +18,8 @@ import SoftButton from "components/SoftButton";
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
-import curved9 from "assets/images/curved-images/curved-6.jpg";
+// import curved9 from "assets/images/curved-images/curved-6.jpg";
+import curved9 from "assets/images/banners/2150970187.jpg";
 
 
 import { getObject } from "utils/utils";
@@ -83,8 +84,8 @@ function SignIn() {
 
   return (
     <CoverLayout
-      title="Welcome back"
-      description="Login through provided email and password to sign in"
+      title="Learner's Dashboard"
+      description="Please sign in by using the provided email and password."
       image={curved9}
     >
       {isLoading ? (

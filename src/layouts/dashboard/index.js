@@ -52,11 +52,6 @@ function Dashboard() {
                 </SoftButton> */}
               </Stack>
             </SoftBox>
-            <SoftBox mb={1}>
-              <SoftTypography variant="button" fontWeight="regular" color="text">
-                Your applied course.
-              </SoftTypography>
-            </SoftBox>
           </SoftBox>
           <SoftBox p={2}>
             {appliedCourse?.data?.length !== 0 ?
@@ -81,11 +76,6 @@ function Dashboard() {
                   All
                 </SoftButton>
               </Stack>
-            </SoftBox>
-            <SoftBox mb={1}>
-              <SoftTypography variant="button" fontWeight="regular" color="text">
-                Start Learning.
-              </SoftTypography>
             </SoftBox>
           </SoftBox>
 
