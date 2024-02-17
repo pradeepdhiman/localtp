@@ -10,9 +10,11 @@ import SoftTypography from "components/SoftTypography";
 
 // Images
 import wavesWhite from "assets/images/shapes/waves-white.svg";
-import rocketWhite from "assets/images/illustrations/rocket-white.png";
+// import rocketWhite from "assets/images/illustrations/rocket-white.png";
+import rocketWhite from "assets/images/banners/profileBanner.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
 import SoftButton from "components/SoftButton";
+import { _sourcePath } from "config/constant";
 
 function BuildByDevelopers(props) {
   const { course = {} } = props
@@ -28,21 +30,22 @@ function BuildByDevelopers(props) {
               display="grid"
               justifyContent="center"
               alignItems="center"
-              bgColor="info"
+              // bgColor="info"
               borderRadius="lg"
               variant="gradient"
             >
               <SoftBox
                 component="img"
-                src={wavesWhite}
-                alt="waves"
+                src={_sourcePath + "Content/CourseImage/" + course.courseImage}
+                alt={course.courseName}
                 display="block"
                 position="absolute"
                 left={0}
                 width="100%"
                 height="100%"
               />
-              <SoftBox component="img" src={rocketWhite} alt="rocket" width="100%" pt={3} />
+              <SoftBox component="img" src={_sourcePath + "Content/CourseImage/" + course.courseImage} alt={course.courseName} width="100%" pt={3} />
+
             </SoftBox>
           </Grid>
           <Grid item xs={12} lg={6}>
@@ -55,21 +58,6 @@ function BuildByDevelopers(props) {
               <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
                 {course.courseName}
               </SoftTypography>
-              {/* <SoftBox mb={2}>
-                <SoftTypography
-                  variant="body2"
-                  color="text"
-                  sx={{
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {course.description}
-                </SoftTypography>
-
-              </SoftBox> */}
               <SoftButton onClick={() => navigate(`${location.pathname}/${course.courseID}`)} size="small" variant="text" color="info">Read More</SoftButton>
               
             </SoftBox>

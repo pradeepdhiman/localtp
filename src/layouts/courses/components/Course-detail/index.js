@@ -11,7 +11,6 @@ import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import SessionList from "examples/Lists/SessionList";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedSession } from "utils/commonSlice";
-import { useAssociatedScheduleQuery } from "utils/functions";
 import { useGetCourseQuery } from "utils/functions";
 
 function CourseDetail() {
@@ -20,18 +19,13 @@ function CourseDetail() {
   const navigate = useNavigate();
   const { courseid } = useParams()
   const { data: course, isError, isLoading } = useGetCourseQuery({ id: courseid })
-  const { data: assosSchedule, isError: assosErr, isLoading: assosLoading } = useAssociatedScheduleQuery({ CourseID: courseid })
+ 
 
 
   useEffect(() => {
     dispatch(setSelectedSession([]));
   }, [courseid]);
 
-
-
-  function selecthandler(selectedItem) {
-    dispatch(setSelectedSession(selectedItem));
-  }
 
 
   return (
@@ -41,10 +35,6 @@ function CourseDetail() {
           <Grid item xs={12}>
             {(isLoading) && <SoftBarLoader />}
             {course && <Details course={course?.data} />}
-          </Grid>
-          <Grid item xs={12}>
-            {(assosLoading) && <SoftBarLoader />}
-            <SessionList title="Availabe Session" list={assosSchedule?.data || []} action={selecthandler} />
           </Grid>
         </Grid>
       </SoftBox>

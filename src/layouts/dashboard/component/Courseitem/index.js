@@ -17,8 +17,10 @@ import { Box, LinearProgress } from "@mui/material";
 import { useState } from "react";
 import SoftProgress from "components/SoftProgress";
 import SoftBadge from "components/SoftBadge";
+import { _sourcePath } from "config/constant";
 
 function CourseItem({ complete = false, relativeCourse = false, item = {} }) {
+
   const [progress, setProgress] = useState(30);
 
   const location = useLocation()
@@ -39,7 +41,7 @@ function CourseItem({ complete = false, relativeCourse = false, item = {} }) {
             >
               <SoftBox
                 component="img"
-                src={wavesWhite}
+                src={_sourcePath + "Content/CourseImage/" + item.courseImage}
                 alt="waves"
                 display="block"
                 position="absolute"
@@ -47,7 +49,7 @@ function CourseItem({ complete = false, relativeCourse = false, item = {} }) {
                 width="100%"
                 height="100%"
               />
-              <SoftBox component="img" src={rocketWhite} alt="rocket" width="100%" pt={3} />
+              <SoftBox component="img" src={_sourcePath + "Content/CourseImage/" + item.courseImage} alt="rocket" width="100%" pt={3} />
             </SoftBox>
           </Grid>
           <Grid item xs={12} lg={6}>

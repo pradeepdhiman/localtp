@@ -14,6 +14,7 @@ import SoftButton from "components/SoftButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { _sourcePath } from "config/constant";
 
 function Details(props) {
   const { course = {} } = props
@@ -22,9 +23,9 @@ function Details(props) {
   const { session } = useSelector(state => state.common)
 
   function selectHandler() {
-    if (session.length === 0) {
-      return;
-    }
+    // if (session.length === 0) {
+    //   return;
+    // }
 
     Navigate("/authentication/sign-up?courseid=" + course.courseID + "&coursename=" + course.courseName);
   }
@@ -46,7 +47,7 @@ function Details(props) {
             >
               <SoftBox
                 component="img"
-                src={wavesWhite}
+                src={_sourcePath + "Content/CourseImage/" + course.courseImage}
                 alt="waves"
                 display="block"
                 position="absolute"
@@ -54,7 +55,7 @@ function Details(props) {
                 width="100%"
                 height="100%"
               />
-              <SoftBox component="img" src={rocketWhite} alt="rocket" width="100%" pt={3} />
+              <SoftBox component="img" src={_sourcePath + "Content/CourseImage/" + course.courseImage} alt="rocket" width="100%" pt={3} />
             </SoftBox>
           </Grid>
           <Grid item xs={12} lg={8}>
@@ -101,7 +102,8 @@ function Details(props) {
                 </>}
               </SoftBox>
               <SoftButton variant="gradient" color="dark" onClick={selectHandler}>
-                {session.length !== 0 ? "Countinue" : "Select session to countinue"}
+                {/* {session.length !== 0 ? "Countinue" : "Select session to countinue"} */}
+                Countinue
               </SoftButton>
             </SoftBox>
           </Grid>

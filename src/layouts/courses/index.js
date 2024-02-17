@@ -53,6 +53,7 @@ export const initialFilters = {
     "trainingfee": "",
     "vat": "",
     "totalAmount": "",
+    "courseImage": "",
     "status": 26,
     "statusName": "",
     "createdById": 0,
@@ -65,7 +66,7 @@ export const initialFilters = {
 function Courses() {
   const [filters, setFilters] = useState(initialFilters)
   const { data: courses, isError, isLoading, refatch: refreshList } = useGetCoursesQuery(filters)
-
+  let debounceTimer;
   let user = authUser()
 
   const navigate = useNavigate();
@@ -94,10 +95,26 @@ function Courses() {
     fatchData()
   }, [filters])
 
+  const changeSearch = (e) => {
+    const searchValue = e.target.value;
+    clearTimeout(debounceTimer);
+
+    debounceTimer = setTimeout(() => {
+      setFilters(prev => ({
+        ...prev,
+        filter: {
+          ...prev.filter,
+          courseName: searchValue
+        }
+      }));
+    }, 300);
+  };
+
+
   const renderSearch = (
     <SoftBox component="form" role="form">
       <SoftBox>
-        <SoftInput type="text" name="search" value={formData?.search} placeholder="Search" />
+        <SoftInput type="text" name="search" onChange={changeSearch} value={formData?.search} placeholder="Search" />
       </SoftBox>
     </SoftBox>
   )
@@ -111,7 +128,7 @@ function Courses() {
       champion for financial security and integrity."
       image={curved9}
     >
-      
+
       {isLoading && <SoftBarLoader />}
       {courses?.data?.length ? <><SoftBox mb={3}>
         <>
@@ -119,7 +136,7 @@ function Courses() {
             <SoftBox >
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <SoftTypography variant="h6" fontWeight="medium" >
-                Active Courses
+                  Active Courses
                 </SoftTypography>
                 {renderSearch}
               </Stack>

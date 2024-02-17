@@ -14,11 +14,22 @@ import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { useState } from "react";
 
 function SessionList({ title, list, action }) {
-  
+  const [selected, setSelected] = useState(false)
 
   const { session } = useSelector(state => state.common)
+
+  function selecthandler(item) {
+    if (selected) {
+      setSelected(false)
+      action()
+    } else {
+      setSelected(true)
+      action(item)
+    }
+  }
 
   const renderlist = list.length > 0 ? (
     list.map((item) => (
@@ -65,7 +76,7 @@ function SessionList({ title, list, action }) {
           </SoftTypography>
         </SoftBox>
         <SoftBox ml="auto">
-          <SoftButton onClick={() => action(item)} component="button" variant="text" color={session?.scheduledID === item?.scheduledID ? "success" : "info"}>
+          <SoftButton onClick={() => selecthandler(item)} component="button" variant="gradient" size="small" color={selected ? "success" : "info"}>
             {session?.scheduledID === item?.scheduledID ? "Unselect" : "Select"}
           </SoftButton>
         </SoftBox>

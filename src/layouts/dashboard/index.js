@@ -122,7 +122,7 @@ function Dashboard() {
           </SoftBox>
         </Card>
       </SoftBox>
-      <SoftBox mb={3}>
+      {/* <SoftBox mb={3}>
         <Card>
           <SoftBox pt={2} px={2}>
             <SoftBox mb={0.5}>
@@ -156,7 +156,7 @@ function Dashboard() {
             </Grid>
           </SoftBox>
         </Card>
-      </SoftBox>
+      </SoftBox> */}
       <Footer />
     </DashboardLayout>
   );

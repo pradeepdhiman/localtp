@@ -166,7 +166,7 @@ function Footer({ company, links }) {
             &nbsp;{name}&nbsp;
           </SoftTypography>
         </Link>
-        - Coded by AppSeed.
+        - Coded by Bilberry.
       </SoftBox>
     </SoftBox>
   );

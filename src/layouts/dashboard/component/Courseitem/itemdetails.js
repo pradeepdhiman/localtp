@@ -11,6 +11,7 @@ import SoftTypography from "components/SoftTypography";
 import wavesWhite from "assets/images/shapes/waves-white.svg";
 import rocketWhite from "assets/images/illustrations/rocket-white.png";
 import SoftButton from "components/SoftButton";
+import { _sourcePath } from "config/constant";
 
 function ItemDetails() {
   
@@ -33,7 +34,7 @@ function ItemDetails() {
             >
               <SoftBox
                 component="img"
-                src={wavesWhite}
+                // src={_sourcePath + "Content/CourseImage/" + course.courseImage}
                 alt="waves"
                 display="block"
                 position="absolute"
@@ -41,7 +42,7 @@ function ItemDetails() {
                 width="100%"
                 height="100%"
               />
-              <SoftBox component="img" src={rocketWhite} alt="rocket" width="100%" pt={3} />
+              {/* <SoftBox component="img" src={_sourcePath + "Content/CourseImage/" + course.courseImage} alt="rocket" width="100%" pt={3} /> */}
             </SoftBox>
           </Grid>
           <Grid item xs={12} lg={8}>

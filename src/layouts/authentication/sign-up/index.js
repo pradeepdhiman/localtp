@@ -90,7 +90,7 @@ const formRule = {
   designation: { required: true },
   nationality: { required: true },
   password: { required: true },
-  course: { required: true },
+  // course: { required: true },
 }
 
 
@@ -163,11 +163,21 @@ function SignUp() {
   // courseId scheduleId createdById password nationality designation qualification email firstName
 
   async function enrollNewCourse() {
+
+    if (!coursename) {
+      Swal.fire({
+        title: "Error!",
+        text: "Please select any course from course page to enroll.",
+        confirmButtonText: "Ok",
+      })
+      return
+    }
+
     let newData = {
       applicantCourseID: 0,
       applicantID: parseInt(user?.applicantId),
       courseID: parseInt(courseId),
-      scheduleID: 0,
+      scheduleID: null,
       // scheduleID: parseInt(session?.scheduledID),
       enrollmentDate: moment().format("YYYY-MM-DD"),
       completionDate: moment().format("YYYY-MM-DD"),
@@ -183,20 +193,38 @@ function SignUp() {
     try {
       const res = await enrollcourse(newData)
       toastHandler(res)
-      handleRedirect()
+      if (res?.data?.success) {
+        Swal.fire({
+          title: "Successfully Enroll!",
+          text: "You have Successfully enroll course.",
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            return navigate("/dashboard");
+          }
+        });
+      }
     } catch (err) { console.log(err) }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (!coursename) {
+      Swal.fire({
+        title: "Error!",
+        text: "Please select any course from course page to enroll.",
+        confirmButtonText: "Ok",
+      })
+      return
+    }
 
     try {
       let newData = {
         ...formData,
         courseId: parseInt(courseId),
         createdById: 1,
-        scheduleId: parseInt(session?.scheduledID),
+        scheduleId: null,
+        // scheduleId: parseInt(session?.scheduledID),
         nationality: nationality.masterCodeID,
         designation: designation.masterCodeID,
         qualification: qualification.masterCodeID,
@@ -345,7 +373,6 @@ function SignUp() {
                   type="text"
                   readonly
                   name="course"
-                  onChange={handleFormData}
                   placeholder="Course"
                   value={coursename}
                 />
@@ -379,7 +406,7 @@ function SignUp() {
                 <SoftInput
                   type="text"
                   name="firstName"
-                  placeholder="first name"
+                  placeholder="First name"
                   onChange={handleFormData}
                 />
                 {formerror?.firstName ? <SoftTypography color="error" variant="button" fontWeight="medium">
@@ -426,7 +453,6 @@ function SignUp() {
                   name="course"
                   placeholder="Course"
                   value={coursename}
-                  disabled
                 />
                 {formerror?.course ? <SoftTypography color="error" variant="button" fontWeight="medium">
                   {formerror?.course}

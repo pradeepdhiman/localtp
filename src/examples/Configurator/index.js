@@ -202,7 +202,7 @@ function Configurator() {
           <SoftBox mb={2}>
             <SoftButton
               component={Link}
-              href="https://appseed.us/product/node-js-react-soft-dashboard"
+              href=""
               target="_blank"
               rel="noreferrer"
               color="dark"
@@ -214,7 +214,7 @@ function Configurator() {
           </SoftBox>
           <SoftButton
             component={Link}
-            href="https://appseed.us/support/"
+            href=""
             target="_blank"
             rel="noreferrer"
             color="dark"
@@ -227,7 +227,7 @@ function Configurator() {
         <SoftBox display="flex" justifyContent="center">
           <a
             className="github-button"
-            href="https://github.com/app-generator/react-soft-ui-dashboard"
+            href=""
             data-icon="octicon-star"
             data-size="large"
             data-show-count="true"

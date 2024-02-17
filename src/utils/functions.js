@@ -35,9 +35,6 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         getAppliedCourse: build.query({
             query: (data) => getRequest("/ApplicantCourse/GetAplicantAppliedCourse", data),
         }),
-        associatedSchedule: build.query({
-            query: (data) => getRequest("/Schedule/GetScheduleListByCourse", data),
-        }),
         selectedSchedule: build.mutation({
             query: (data) => getRequest("/Schedule", data),
         }),
@@ -64,6 +61,9 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         }),
         updateApplicant: build.mutation({
             query: (data) => postForm("/Applicant", data),
+        }),
+        associatedSchedule: build.mutation({
+            query: (data) => getRequest("/Schedule/GetScheduleListByCourse", data),
         }),
         login: build.mutation({
             query: (data) => createRequest("/Authentication/authenticate", data),
@@ -132,6 +132,7 @@ export const {
     useApplicantRegisterMutation,
     useSubmitAssessmentMutation,
     useGetReassessListMutation,
+    useAssociatedScheduleMutation,
     useCourseAssessMutation,
     useProfileMutation,
     useLoginMutation,
@@ -145,7 +146,6 @@ export const {
     useActiveCourseQuery,
     useGetProfileQuery,
     useGetAppliedCourseQuery,
-    useAssociatedScheduleQuery,
     useGetCourseQuery,
     useMasterListByTypeQuery,
 } = applicantApis;

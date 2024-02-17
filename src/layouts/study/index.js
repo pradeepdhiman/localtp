@@ -27,9 +27,10 @@ import { useActiveCourseQuery } from "utils/functions";
 import { authUser } from "utils/utils";
 import { useStudyMatMutation } from "utils/functions";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
-import { useSelectedScheduleMutation } from "utils/functions";
 import { useSelector } from "react-redux";
 import { useSelectedCourseScheduleMutation } from "utils/functions";
+import SessionList from "examples/Lists/SessionList";
+import { useAssociatedScheduleMutation } from "utils/functions";
 
 function Study() {
   const { joinedSession } = useSelector(state => state.study)
@@ -44,6 +45,7 @@ function Study() {
   const [getMat, { data: material, isError: matError, isLoading: matLoading }] = useStudyMatMutation()
   // const [getSch, { data: schList, isLoading: schLoading }] = useSelectedScheduleMutation()
   const [getSch, { data: schList, isLoading: schLoading }] = useSelectedCourseScheduleMutation()
+  const [getSchedule, { data: assosSchedule, isError: assosErr, isLoading: assosLoading }] = useAssociatedScheduleMutation()
 
   useEffect(() => {
     if (!courseParam) {
@@ -58,6 +60,7 @@ function Study() {
     async function fetchData() {
       try {
         if (selectedCourse?.courseID !== undefined && selectedCourse?.courseID !== null) {
+          await getSchedule({ CourseID: selectedCourse?.courseID });
           await getMat({ CourseID: selectedCourse.courseID });
           // await getSch({ id: selectedCourse.scheduleID });
           await getSch({ ScheduledID: selectedCourse.scheduleID, CourseID: selectedCourse?.courseID });
@@ -77,6 +80,11 @@ function Study() {
   };
 
   const videoVSlive = () => setIsLive(!isLive);
+
+  function selecthandler(selectedItem) {
+    console.log(selectedItem)
+    // dispatch(setSelectedSession(selectedItem));
+  }
 
 
   return (
@@ -143,6 +151,10 @@ function Study() {
       </SoftBox> : null}
       <SoftBox pb={3} mt={3}>
         <Grid container gap={2}>
+          <Grid item xs={12}>
+            {(assosLoading) && <SoftBarLoader />}
+            <SessionList title="Availabe Session" list={assosSchedule?.data || []} action={selecthandler} />
+          </Grid>
           <Grid item xs={12} md>
             {matLoading && <SoftBarLoader />}
             {material?.data?.length && <StudyMaterialList title="Study Material" datalist={material?.data || []} />}
