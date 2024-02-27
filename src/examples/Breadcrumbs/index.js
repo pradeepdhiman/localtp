@@ -1,17 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 // react-router-dom components
 import { Link } from "react-router-dom";
@@ -32,7 +18,7 @@ function Breadcrumbs({ icon, title, route, light }) {
 
   return (
     <SoftBox mr={{ xs: 0, xl: 8 }}>
-      <MuiBreadcrumbs
+      {/* <MuiBreadcrumbs
         sx={{
           "& .MuiBreadcrumbs-separator": {
             color: ({ palette: { white, grey } }) => (light ? white.main : grey[600]),
@@ -74,7 +60,7 @@ function Breadcrumbs({ icon, title, route, light }) {
         >
           {title.replace("-", " ")}
         </SoftTypography>
-      </MuiBreadcrumbs>
+      </MuiBreadcrumbs> */}
       <SoftTypography
         fontWeight="bold"
         textTransform="capitalize"

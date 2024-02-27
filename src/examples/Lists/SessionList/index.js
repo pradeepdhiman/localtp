@@ -22,13 +22,15 @@ function SessionList({ title, list, action }) {
   const { session } = useSelector(state => state.common)
 
   function selecthandler(item) {
-    if (selected) {
-      setSelected(false)
-      action()
-    } else {
-      setSelected(true)
-      action(item)
-    }
+    setSelected(item)
+    action(item)
+    // if (selected) {
+    //   setSelected(false)
+    //   action()
+    // } else {
+    //   setSelected(true)
+    //   action(item)
+    // }
   }
 
   const renderlist = list.length > 0 ? (
@@ -76,7 +78,7 @@ function SessionList({ title, list, action }) {
           </SoftTypography>
         </SoftBox>
         <SoftBox ml="auto">
-          <SoftButton onClick={() => selecthandler(item)} component="button" variant="gradient" size="small" color={selected ? "success" : "info"}>
+          <SoftButton onClick={() => selecthandler(item)} component="button" variant="gradient" size="small" color="info">
             {session?.scheduledID === item?.scheduledID ? "Unselect" : "Select"}
           </SoftButton>
         </SoftBox>

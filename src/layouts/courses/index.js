@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
-import curved9 from "assets/images/banners/full-shot-people-correcting-grammar-mistakes.jpg";
+import curved9 from "assets/images/banners/2149241013.jpg";
 // import curved9 from "assets/images/curved-images/aboutBanner.png";
 import PageCoverLayout from "examples/LayoutContainers/PageLayoutCover";
 import BuildByDevelopers from "./components/BuildByDevelopers";
@@ -17,6 +17,7 @@ import { useGetCoursesQuery } from "utils/functions";
 import { authUser } from "utils/utils";
 import { toastHandler } from "utils/utils";
 import { ToastContainer, toast } from "react-toastify";
+import HomeLayout from "./components/homelayout";
 
 export const initialFilters = {
   "draw": 0,
@@ -121,7 +122,7 @@ function Courses() {
 
 
   return (
-    <PageCoverLayout
+    <HomeLayout
       title="Our Courses"
       description="We “Compliance360” is your Trusted AML Partner Embark on this thrilling journey of learning and 
       growth. With Compliance360, you'll not only master AML/CFT compliance – you'll become a 
@@ -135,7 +136,7 @@ function Courses() {
           <SoftBox px={4} mt={2}>
             <SoftBox >
               <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <SoftTypography variant="h6" fontWeight="medium" >
+                <SoftTypography variant="h3" fontWeight="medium" >
                   Active Courses
                 </SoftTypography>
                 {renderSearch}
@@ -167,7 +168,7 @@ function Courses() {
         : <SoftTypography variant="button" fontWeight="regular" color="text">
           No Course Available
         </SoftTypography>}
-    </PageCoverLayout>
+    </HomeLayout>
   );
 }
 

@@ -28,6 +28,7 @@ import brand from "assets/images/logo-ct.png";
 import { SnackbarProvider } from "notistack";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import "./App.css"
 
 
 function App() {
@@ -105,9 +106,9 @@ function App() {
         <CssBaseline />
         {layout === "dashboard" && (
           <Sidenav
-            color={sidenavColor}
+            color="secondary"
             brand={brand}
-            brandName="Training Portal"
+            brandName="Compliance 360"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

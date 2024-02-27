@@ -21,10 +21,13 @@ import { formatDateFields } from "utils/utils";
 import { useUpdateApplicantMutation } from "utils/functions";
 import { useDispatch } from "react-redux";
 import { setProfileInfo } from "layouts/profile/profileSlice";
+import PhoneInput from "react-phone-number-input";
+import 'react-phone-number-input/style.css';
 
 
 
 const ProfileEdit = ({ title, info, formFields }) => {
+    const [values, setValues] = useState();
 
     const [designation, setDesignation] = useState({});
     const [qualification, setQualification] = useState({});
@@ -230,10 +233,15 @@ const ProfileEdit = ({ title, info, formFields }) => {
                                             Phone
                                         </SoftTypography>
                                     </SoftBox>
-                                    <SoftInput
-                                        type="number"
+                                    {/* <SoftInput
+                                        type="tel"
                                         {...field}
-                                        placeholder="Phone"
+                                        placeholder="40-(770)-888-444"
+                                    /> */}
+                                    <PhoneInput
+                                        placeholder="(770)-888-444"
+                                        {...field}
+                                        defaultCountry="US" 
                                     />
                                     {errors.phone && (
                                         <SoftTypography component="label" variant="caption" color="error">
@@ -510,7 +518,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                                 <SoftBox mb={2}>
                                     <SoftBox mb={1} ml={0.5}>
                                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                            remarks
+                                            Remarks
                                         </SoftTypography>
                                     </SoftBox>
                                     <SoftBox>
@@ -534,7 +542,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
 
 
                 <SoftBox mt={4} mb={1}>
-                    <SoftButton variant="gradient" color="info" type="submit" fullWidth>
+                    <SoftButton variant="gradient" color="dark" type="submit" fullWidth>
                         {(loadingUpdate) ? 'Loading..' : 'Update'}
                     </SoftButton>
                 </SoftBox>

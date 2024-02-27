@@ -31,6 +31,101 @@ import { useSelector } from "react-redux";
 import { useSelectedCourseScheduleMutation } from "utils/functions";
 import SessionList from "examples/Lists/SessionList";
 import { useAssociatedScheduleMutation } from "utils/functions";
+import moment from "moment";
+import { useAssignScheduleMutation } from "utils/functions";
+import { useGetApplicantinfoMutation } from "utils/functions";
+import { useApplicantCourseMutation } from "utils/functions";
+import { useScheduleFilterMutation } from "utils/functions";
+
+const scheduleinitialfilter = {
+  "draw": 0,
+  "start": 0,
+  "length": 1000,
+  "columns": [
+    {
+      "data": "scheduledName",
+      "name": "scheduledName",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": ""
+      }
+    }
+  ],
+  "search": {
+    "value": "",
+    "regex": ""
+  },
+  "order": {
+    "orderBy": "UpdatedDate",
+    "orderDirection": "desc"
+  },
+  "filter": {
+    "scheduledID": 0,
+    "scheduledName": "",
+    "courseID": 0,
+    "courseName": "",
+    "startDate": null,
+    "endDate": null,
+    "scheduleCreatedDateTime": null,
+    "validityDateTime": null,
+    "location": 0,
+    "locationName": "",
+    "instructor": 0,
+    "instructorName": "",
+    "status": 0,
+    "statusName": "Active",
+    "createdById": 0,
+    "updatedById": 0,
+    "updatedDate": null,
+    "isDeleted": false,
+    "remarks": ""
+  }
+}
+
+const schedulelinkinitialfilter = {
+  "draw": 0,
+  "start": 0,
+  "length": 100,
+  "columns": [
+    {
+      "data": "string",
+      "name": "string",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": ""
+      }
+    }
+  ],
+  "search": {
+    "value": "",
+    "regex": ""
+  },
+  "order": {
+    "orderBy": "UpdatedDate",
+    "orderDirection": "desc"
+  },
+  "filter": {
+    "courseScheduleID": 0,
+    "scheduledID": 0,
+    "scheduledName": "",
+    "courseID": 0,
+    "courseName": "",
+    "meetingLink": "",
+    "courseScheduleStatus": 0,
+    "courseScheduleStatusName": "",
+    "status": 0,
+    "statusName": "",
+    "createdById": 0,
+    "updatedById": 0,
+    "updatedDate": null,
+    "isDeleted": false,
+    "remarks": ""
+  }
+}
 
 function Study() {
   const { joinedSession } = useSelector(state => state.study)
@@ -44,8 +139,11 @@ function Study() {
   const { data: activeCourse, isError: activeError, isLoading: activeLoading } = useActiveCourseQuery({ ApplicantID: user?.applicantId })
   const [getMat, { data: material, isError: matError, isLoading: matLoading }] = useStudyMatMutation()
   // const [getSch, { data: schList, isLoading: schLoading }] = useSelectedScheduleMutation()
-  const [getSch, { data: schList, isLoading: schLoading }] = useSelectedCourseScheduleMutation()
+  const [getSch, { data: schList, isLoading: schLoading }] = useScheduleFilterMutation()
+  // const [getSchedule, { data: assosSchedule, isError: assosErr, isLoading: assosLoading }] = useAssociatedScheduleMutation()
   const [getSchedule, { data: assosSchedule, isError: assosErr, isLoading: assosLoading }] = useAssociatedScheduleMutation()
+  const [asignSchedule, { data: asignSch, isError: asignErr, isLoading: asignLoading }] = useAssignScheduleMutation()
+  const [applicant, { data: appli, isError: appliErr, isLoading: appliLoading }] = useApplicantCourseMutation()
 
   useEffect(() => {
     if (!courseParam) {
@@ -59,11 +157,13 @@ function Study() {
   useEffect(() => {
     async function fetchData() {
       try {
-        if (selectedCourse?.courseID !== undefined && selectedCourse?.courseID !== null) {
-          await getSchedule({ CourseID: selectedCourse?.courseID });
-          await getMat({ CourseID: selectedCourse.courseID });
-          // await getSch({ id: selectedCourse.scheduleID });
-          await getSch({ ScheduledID: selectedCourse.scheduleID, CourseID: selectedCourse?.courseID });
+        if (selectedCourse && selectedCourse.courseID) {
+          const courseID = selectedCourse.courseID;
+          await Promise.all([
+            getMat({ CourseID: courseID }),
+            getSchedule({ ...scheduleinitialfilter, filter: { ...scheduleinitialfilter.filter, courseID: courseID } }),
+            getSch({ ...schedulelinkinitialfilter, filter: { ...schedulelinkinitialfilter.filter, courseID: courseID, scheduledID: selectedCourse.scheduleID } })
+          ]);
         }
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -71,7 +171,6 @@ function Study() {
     }
 
     fetchData();
-
   }, [selectedCourse]);
 
 
@@ -81,10 +180,33 @@ function Study() {
 
   const videoVSlive = () => setIsLive(!isLive);
 
-  function selecthandler(selectedItem) {
-    console.log(selectedItem)
-    // dispatch(setSelectedSession(selectedItem));
+  async function selecthandler(selectedItem) {
+    try {
+      let data = {
+        applicantCourseID: parseInt(selectedCourse?.applicantCourseID),
+        applicantID: parseInt(selectedCourse?.applicantID),
+        courseID: parseInt(selectedCourse?.courseID),
+        scheduleID: parseInt(selectedItem?.scheduledID),
+        enrollmentDate: selectedCourse?.enrollmentDate,
+        completionDate: selectedCourse?.completionDate,
+        receiptID: selectedCourse?.receiptID,
+        receiptDate: selectedCourse?.receiptDate,
+        amountPaid: selectedCourse?.amountPaid,
+        paymentStatus: parseInt(selectedCourse?.paymentStatus),
+        courseStatus: parseInt(selectedCourse?.courseStatus),
+        status: parseInt(selectedCourse?.status),
+        updatedById: parseInt(selectedCourse?.updatedById),
+        remarks: selectedCourse?.remarks
+      };
+      const response = await asignSchedule(data);
+      if (response?.data?.success) {
+        await getSch({ ...schedulelinkinitialfilter, filter: { ...schedulelinkinitialfilter.filter, courseID: selectedItem?.courseID, scheduledID: selectedItem?.scheduledID } })
+      }
+    } catch (err) {
+      console.error("Error occurred:", err);
+    }
   }
+
 
 
   return (
@@ -153,17 +275,30 @@ function Study() {
         <Grid container gap={2}>
           <Grid item xs={12}>
             {(assosLoading) && <SoftBarLoader />}
-            <SessionList title="Availabe Session" list={assosSchedule?.data || []} action={selecthandler} />
+            <SessionList title="Availabe Schedules" list={assosSchedule?.data || []} action={selecthandler} />
           </Grid>
           <Grid item xs={12} md>
-            {matLoading && <SoftBarLoader />}
-            {material?.data?.length && <StudyMaterialList title="Study Material" datalist={material?.data || []} />}
+            {matLoading ? <SoftBarLoader /> : (
+              !material || !material.data || material.data.length === 0 ? (
+                <Card><SoftTypography>Study Material Not Availabe</SoftTypography></Card>
+              ) : (
+                <StudyMaterialList title="Study Material" datalist={material.data} />
+              )
+            )}
           </Grid>
+
           <Grid item xs={12} md={8}>
-            {schLoading && <SoftBarLoader />}
-            {schList && Object.keys(schList?.data).length && <ScheduleList title="Course Schedules" datalist={schList?.data || []} />}
+            {schLoading ? <SoftBarLoader /> : (
+              !schList || !schList.data || Object.keys(schList.data).length === 0 ? (
+                <Card><SoftTypography>Schedule Unavailable.</SoftTypography></Card>
+              ) : (
+                <ScheduleList title="Course Schedules" datalist={schList.data} />
+              )
+            )}
           </Grid>
+
         </Grid>
+
       </SoftBox>
       <Footer />
     </DashboardLayout>

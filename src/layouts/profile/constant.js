@@ -33,10 +33,7 @@ export const schema = yup.object().shape({
     email: yup.string().email('Invalid email').required('Email is required'),
     file: yup.mixed().required('File is required'),
     phone: yup.string()
-        .matches(/^[0-9]+$/, 'Phone number must contain only digits')
         .required('Phone is required')
-        .min(10, 'Phone number must be at least 10 digits')
-        .max(10, 'Phone number must not exceed 10 digits')
 });
 
 

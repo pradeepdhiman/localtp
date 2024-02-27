@@ -65,8 +65,8 @@ function Header({ name = "Applicant Name", email = "", showAction }) {
         sx={{
           backgroundImage: ({ functions: { rgba, linearGradient }, palette: { gradients } }) =>
             `${linearGradient(
-              rgba(gradients.info.main, 0.6),
-              rgba(gradients.info.state, 0.6)
+              rgba(gradients.secondary.main, 0.6),
+              rgba(gradients.secondary.state, 0.6)
             )}, url(${curved0})`,
           backgroundSize: "cover",
           backgroundPosition: "50%",

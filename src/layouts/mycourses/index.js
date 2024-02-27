@@ -43,7 +43,7 @@ function MyCourses() {
       <DashboardNavbar />
       <SoftBox mb={3}>
         {!completeParam && <Card>
-          <SoftBox pt={2} px={2}>
+          {/* <SoftBox pt={2} px={2}>
             <SoftBox mb={0.5}>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <SoftTypography variant="h6" fontWeight="medium">
@@ -51,7 +51,7 @@ function MyCourses() {
                 </SoftTypography>
               </Stack>
             </SoftBox>
-          </SoftBox>
+          </SoftBox> */}
           <SoftBox p={2}>
             {activeLoading && <SoftBarLoader />}
             <Grid container spacing={3}>

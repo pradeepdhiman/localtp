@@ -1,16 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.8d6bcf01.css",
-    "main.js": "/static/js/main.305ce872.js",
+    "main.css": "/static/css/main.309e2685.css",
+    "main.js": "/static/js/main.13d621f2.js",
+    "static/media/office-workers-using-finance-graphs.jpg": "/static/media/office-workers-using-finance-graphs.1d5ecbe4b7dfc49442fd.jpg",
+    "static/media/vecteezy_asesor-financiero-contable-de-inversiones-consultando-con_7359372.JPG": "/static/media/vecteezy_asesor-financiero-contable-de-inversiones-consultando-con_7359372.7633d5766b8ac0572d9d.JPG",
+    "static/media/vecteezy_arabic-business-man-at-meeting_12107251.jpg": "/static/media/vecteezy_arabic-business-man-at-meeting_12107251.c0281ae8f99c0e111d2a.jpg",
+    "static/media/2149241013.jpg": "/static/media/2149241013.8ce196345c5aa2501699.jpg",
+    "static/media/happy-muslim-woman-home-during-online-lesson-technologies-remote-education-ethnicity-concept.jpg": "/static/media/happy-muslim-woman-home-during-online-lesson-technologies-remote-education-ethnicity-concept.f91c179249a6c7485615.jpg",
+    "static/media/profileBanner.jpg": "/static/media/profileBanner.2ddbbd07ddbc2216cb4e.jpg",
     "static/media/homeBanner.png": "/static/media/homeBanner.db225b1f05ad42e61329.png",
-    "static/media/aboutBanner.png": "/static/media/aboutBanner.c96b6ee54d5375c55591.png",
-    "static/media/curved0.jpg": "/static/media/curved0.d146ec6e9401aa9d52c5.jpg",
+    "static/media/27323.jpg": "/static/media/27323.1a25d2e656901bb5e068.jpg",
+    "static/media/2150970187.jpg": "/static/media/2150970187.1704683ecf8097039cfa.jpg",
     "static/media/curved14.jpg": "/static/media/curved14.12c9ea54425c4f1bc1d7.jpg",
     "static/media/waves-white.svg": "/static/media/waves-white.eac3c8078f7e1e28ef33f010c9782f40.svg",
     "static/media/marie.jpg": "/static/media/marie.1c6828424a074f143c2d.jpg",
     "static/media/rocket-white.png": "/static/media/rocket-white.de5786399f850a27a362.png",
-    "static/media/curved-6.jpg": "/static/media/curved-6.71ee1d1cc8196ed2126b.jpg",
     "static/media/white-curved.jpeg": "/static/media/white-curved.a5b7db662b0b14ab5534.jpeg",
+    "static/media/ALN-UAE-ACH-LOGO-White.png": "/static/media/ALN-UAE-ACH-LOGO-White.645123c4903496f6f64e.png",
     "static/media/team-1.jpg": "/static/media/team-1.c821a2730a9c8e3f68eb.jpg",
     "static/media/kal-visuals-square.jpg": "/static/media/kal-visuals-square.22829a59e2c6afb94b7a.jpg",
     "static/media/team-3.jpg": "/static/media/team-3.b75146da5bfdf9d8ae61.jpg",
@@ -19,7 +25,9 @@
     "static/media/bruce-mars.jpg": "/static/media/bruce-mars.45f6477957606abd2f24.jpg",
     "static/media/team-2.jpg": "/static/media/team-2.e725aef8c892cb21f262.jpg",
     "static/media/watch.png": "/static/media/watch.36362d3f3769592a7b93.png",
+    "static/media/logo-ct.png": "/static/media/logo-ct.32ffa461bfd51296e4f1.png",
     "static/media/pdf.png": "/static/media/pdf.6279a47b4effd0a7eae7.png",
+    "static/media/rakicc-logo-white.svg": "/static/media/rakicc-logo-white.461c318a80f170a931ecbd5fb4558f42.svg",
     "static/media/logo-slack.svg": "/static/media/logo-slack.d8feb9c5b2a92c377e8c5b7a10faabc9.svg",
     "static/media/logo-xd.svg": "/static/media/logo-xd.77e7dd1528183ab292936e4f91241cf0.svg",
     "static/media/logo-invision.svg": "/static/media/logo-invision.f3413d25dc0761bcc615835e48482191.svg",
@@ -29,7 +37,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.8d6bcf01.css",
-    "static/js/main.305ce872.js"
+    "static/css/main.309e2685.css",
+    "static/js/main.13d621f2.js"
   ]
 }

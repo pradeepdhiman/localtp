@@ -11,7 +11,7 @@ import SoftTypography from "components/SoftTypography";
 // Images
 import wavesWhite from "assets/images/shapes/waves-white.svg";
 import rocketWhite from "assets/images/illustrations/rocket-white.png";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SoftButton from "components/SoftButton";
 import { Box, LinearProgress } from "@mui/material";
 import { useState } from "react";
@@ -20,6 +20,8 @@ import SoftBadge from "components/SoftBadge";
 import { _sourcePath } from "config/constant";
 
 function CourseItem({ complete = false, relativeCourse = false, item = {} }) {
+
+  const navigate = useNavigate()
 
   const [progress, setProgress] = useState(30);
 
@@ -54,7 +56,7 @@ function CourseItem({ complete = false, relativeCourse = false, item = {} }) {
           </Grid>
           <Grid item xs={12} lg={6}>
             <SoftBox display="flex" flexDirection="column" height="100%">
-              <SoftBox  mb={0.5}>
+              <SoftBox mb={0.5}>
                 <SoftBadge
                   variant="contained"
                   color="success"
@@ -72,58 +74,10 @@ function CourseItem({ complete = false, relativeCourse = false, item = {} }) {
                   From colors, cards, typography to complex elements
                 </SoftTypography>
               </SoftBox> */}
-              {(!complete && !relativeCourse) && <SoftTypography
-                component="a"
-                href={`/dashboard/study?course=${item?.courseID}`}
-                variant="button"
-                color="text"
-                fontWeight="medium"
-                sx={{
-                  mt: "auto",
-                  mr: "auto",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  cursor: "pointer",
+              {(!complete && !relativeCourse) && <SoftButton onClick={() => navigate(`/dashboard/study?course=${item?.courseID}`)} color="dark" variant="outlined" size="small">Start Learning</SoftButton>}
 
-                  "& .material-icons-round": {
-                    fontSize: "1.125rem",
-                    transform: `translate(2px, -0.5px)`,
-                    transition: "transform 0.2s cubic-bezier(0.34,1.61,0.7,1.3)",
-                  },
+              {relativeCourse && <SoftButton onClick={() => navigate("/courses/1")} color="info" variant="outlined" size="small">Read more</SoftButton>}
 
-                  "&:hover .material-icons-round, &:focus  .material-icons-round": {
-                    transform: `translate(6px, -0.5px)`,
-                  },
-                }}
-              >
-                Start Learning
-              </SoftTypography>}
-              {relativeCourse && <SoftTypography
-                component="a"
-                href="/courses/1"
-                variant="button"
-                color="text"
-                fontWeight="medium"
-                sx={{
-                  mt: "auto",
-                  mr: "auto",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  cursor: "pointer",
-
-                  "& .material-icons-round": {
-                    fontSize: "1.125rem",
-                    transform: `translate(2px, -0.5px)`,
-                    transition: "transform 0.2s cubic-bezier(0.34,1.61,0.7,1.3)",
-                  },
-
-                  "&:hover .material-icons-round, &:focus  .material-icons-round": {
-                    transform: `translate(6px, -0.5px)`,
-                  },
-                }}
-              >
-                Read more
-              </SoftTypography>}
               {complete && <Box mt={2}><SoftButton size="small" color="dark">Download</SoftButton></Box>}
               {(!complete && !relativeCourse) &&
                 <SoftBox width="100%" textAlign="left" mt={2} >

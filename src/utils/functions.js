@@ -63,7 +63,8 @@ export const applicantApis = emptySplitApi.injectEndpoints({
             query: (data) => postForm("/Applicant", data),
         }),
         associatedSchedule: build.mutation({
-            query: (data) => getRequest("/Schedule/GetScheduleListByCourse", data),
+            // query: (data) => getRequest("/Schedule/GetScheduleListByCourse", data),
+            query: (data) => createRequest("/Schedule/GetSchedules", data),
         }),
         login: build.mutation({
             query: (data) => createRequest("/Authentication/authenticate", data),
@@ -73,6 +74,12 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         }),
         enrollcourse: build.mutation({
             query: (data) => createRequest("/ApplicantCourse", data),
+        }),
+        assignSchedule: build.mutation({
+            query: (data) => updateRequest("/ApplicantCourse", data),
+        }),
+        applicantCourse: build.mutation({
+            query: (data) => getRequest("/ApplicantCourse", data),
         }),
         submitAssessment: build.mutation({
             query: (data) => createRequest("/CandidateAssesment", data),
@@ -110,10 +117,14 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         postMaster: build.mutation({
             query: (data) => createRequest("/MasterCode", data),
         }),
+        scheduleFilter: build.mutation({
+            query: (data) => createRequest("/CourseSchedule/GetCourseSchedules", data),
+        }),
     }),
 });
 
 export const {
+    useScheduleFilterMutation,
     useUpdateApplicantMutation,
     useEnrollcourseMutation,
     useRetakeRequestMutation,
@@ -126,10 +137,12 @@ export const {
     useReAsspaymentProofMutation,
     useRandomQuestionMutation,
     useUpdateProfileMutation,
+    useAssignScheduleMutation,
     useGetCourseQuestionMutation,
     useCourseAssessListMutation,
     useGetCourseQuestionListMutation,
     useApplicantRegisterMutation,
+    useApplicantCourseMutation,
     useSubmitAssessmentMutation,
     useGetReassessListMutation,
     useAssociatedScheduleMutation,

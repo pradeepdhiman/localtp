@@ -115,7 +115,7 @@ function Footer({ company, links }) {
   const renderLinks = () =>
     links.map((link) => (
       <SoftBox key={link.name} component="li" px={2} lineHeight={1}>
-        <Link href={link.href} target="_blank">
+        <Link href={link.href} >
           <SoftTypography variant="button" fontWeight="regular" color="text">
             {link.name}
           </SoftTypography>
@@ -161,7 +161,7 @@ function Footer({ company, links }) {
         mt={2}
       >
         &copy; {new Date().getFullYear()}
-        <Link href={href} target="_blank">
+        <Link href={href} >
           <SoftTypography variant="button" fontWeight="medium">
             &nbsp;{name}&nbsp;
           </SoftTypography>
@@ -177,7 +177,7 @@ Footer.defaultProps = {
   company: { href: "", name: "Bilberry Solution" },
   links: [
     { href: "/aboutus", name: "About Us" },
-    { href: "/FAQ", name: "Faq" },
+    { href: "/FAQ", name: "FAQ" },
     { href: "/contectus", name: "Contact us" },
     { href: "/privacypolicy", name: " Privacy Policy" },
   ],

@@ -170,7 +170,7 @@ const DocUpload = () => {
                                     {errors?.amount && <SoftTypography color="error" variant="caption">{errors.amount?.message}</SoftTypography>}
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <SoftButton disabled={proofLoading} type="submit" variant="outlined" color="dark">
+                                    <SoftButton disabled={proofLoading} type="submit" variant="outlined" color="secondary">
                                         {proofLoading ? "Uploading..." : "Upload"}
                                     </SoftButton>
                                 </Grid>

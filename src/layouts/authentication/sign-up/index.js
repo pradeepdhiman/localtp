@@ -240,7 +240,7 @@ function SignUp() {
 
       if (response.data.success) {
         Swal.fire({
-          title: "Successfully register!",
+          title: "Successfully Registered!",
           text: "Thank you for registering with us. Your Registration details have been successfully submitted to the admin. We will contact you shortaly with the next steps. Meanwhile, please check your email regularly for further updates.",
           confirmButtonText: "Ok",
         }).then((result) => {

@@ -58,10 +58,20 @@ export const postForm = (endpoint, data) => ({
   headers: createHeaders(true),
 });
 
+// export const getRequest = (endpoint, queryParam) => {
+//   const [a, b] = Object.entries(queryParam)[0];
+//   return {
+//     url: Object.keys(queryParam).length ? `${endpoint}?${a}=${b}` : endpoint,
+//     headers: createHeaders(),
+//   };
+// };
 export const getRequest = (endpoint, queryParam) => {
-  const [a, b] = Object.entries(queryParam)[0];
+  const queryParams = new URLSearchParams(queryParam).toString();
+
+  const url = queryParams ? `${endpoint}?${queryParams}` : endpoint;
+
   return {
-    url: Object.keys(queryParam).length ? `${endpoint}?${a}=${b}` : endpoint,
+    url,
     headers: createHeaders(),
   };
 };

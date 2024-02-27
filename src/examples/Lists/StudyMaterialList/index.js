@@ -36,7 +36,7 @@ function StudyMaterialList({ title, datalist }) {
           </SoftTypography>
         </SoftBox>
         <SoftBox ml="auto">
-          <SoftButton sx={{cursor:"pointer"}}  onClick={() => window.open(`${_sourcePath}Content/TrainingMaterial/${filePath}`, "_blank")} variant="text" color="info">
+          <SoftButton sx={{cursor:"pointer"}}  onClick={() => window.open(`${_sourcePath}Content/TrainingMaterial/${filePath}`, "_blank")} variant="text" color="secondary">
             Read
           </SoftButton>
           {/* <SoftButton component={Link} to={filePath} target="_blank" variant="text" color="info">

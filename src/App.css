@@ -1,0 +1,37 @@
+
+.phone-input-container {
+    width: 100%;
+  }
+  
+  .PhoneInput {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .PhoneInputCountryIcon {
+    width: 30px;
+    height: auto;
+  }
+  
+  .PhoneInputCountry {
+    font-size: 16px;
+    padding: 12px;
+  }
+  
+  .PhoneInputInput {
+    width: calc(100% - 40px);
+    margin-left: 10px;
+    padding: 12px 0px;
+    border: none;
+  }
+
+  .PhoneInputInput:focus-visible {outline: none; border: none;}
+  
+  .PhoneInputCountrySelect {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }

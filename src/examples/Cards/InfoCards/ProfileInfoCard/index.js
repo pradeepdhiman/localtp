@@ -101,7 +101,7 @@ function ProfileInfoCard({ title, description, info, social, action }) {
         </SoftBox>
       </SoftBox>
       <SoftBox display="flex" justifyContent="end" alignItems="center" px={2}>
-        <SoftTypography sx={{ cursor: "pointer" }} onClick={action.edithandler} variant="body2" color="info">
+        <SoftTypography sx={{ cursor: "pointer" }} onClick={action.edithandler} variant="body2" color="secondary">
           Edit / View &nbsp;
           <Tooltip title={action.tooltip} placement="top">
             <Icon><EditIcon /></Icon>

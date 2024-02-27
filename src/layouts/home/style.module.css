@@ -1,0 +1,50 @@
+.bannerbox {
+    background-color: rgb(217 255 255 / 53%);
+    width: 50%;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.gridbox {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 100%;
+    background: #00000093;
+}
+
+.absolutenavbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+}
+
+.bannerContentbox {
+    width: 70%;
+}
+
+.fluidImage {
+    width: 100%
+}
+
+.centerHeading {
+    width: 100%;
+    text-align: center;
+}
+.darkContainer{
+    background-color: #212121;
+}
+
+@media (max-width: 768px) {
+
+    .bannerbox,
+    .bannerContentbox {
+        width: 100%;
+    }
+}

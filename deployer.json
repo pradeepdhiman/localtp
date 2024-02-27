@@ -1,6 +1,6 @@
 {
     "api-server":"https://api-server-nodejs.appseed.us/api/",
-    "name":"Training Portal",
+    "name":"Compliance 360",
     "framework": "react",
     "type": "static",
     "build": {
