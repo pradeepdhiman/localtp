@@ -2,8 +2,6 @@ import { Box, Card, Grid } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftTypography from "components/SoftTypography";
-import wavesWhite from "assets/images/shapes/waves-white.svg";
-import rocketWhite from "assets/images/illustrations/rocket-white.png";
 import SoftProgress from "components/SoftProgress";
 import { useDispatch } from "react-redux";
 import { setAssessmentItem } from "utils/commonSlice";

@@ -1,5 +1,5 @@
 
-import curved9 from "assets/images/curved-images/homeBanner.png";
+
 import HomeLayout from "./components/homelayout";
 import SoftTypography from "components/SoftTypography";
 import { Card } from "@mui/material";

@@ -18,8 +18,6 @@ import { useEffect, useState } from "react";
 import CompleteCourse from "./component/CompleteCourse";
 import Projects from "layouts/courses/components/Projects";
 import { CardCover } from "@mui/joy";
-import VideoList from "examples/Lists/VideoLIst";
-import profilesListData from "./data/profilesListData";
 import StudyMaterialList from "examples/Lists/StudyMaterialList";
 import ScheduleList from "examples/Lists/ScheduleList";
 import { useLocation } from "react-router-dom";
@@ -267,7 +265,7 @@ function Study() {
             </Card>
           </Grid>
           <Grid item xs={12} md>
-            <VideoList title="Video List" videolist={profilesListData} />
+            {/* <VideoList title="Video List" videolist={profilesListData} /> */}
           </Grid>
         </Grid>
       </SoftBox> : null}

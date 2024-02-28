@@ -22,9 +22,6 @@ import HomePagelayout from "examples/LayoutContainers/HomePageLayout";
 import CustomeNavbar from "examples/Navbars/CustomeNavbar";
 import styles from "../style.module.css"
 
-import curved9 from "assets/images/banners/vecteezy_arabic-business-man-at-meeting_12107251.jpg"
-import curved10 from "assets/images/banners/office-workers-using-finance-graphs.jpg"
-import curved11 from "assets/images/banners/vecteezy_arabic-business-man-at-meeting_12107251.jpg"
 
 function HomeLayout({ color, header, title, description, image, top, children }) {
   const navigate = useNavigate()

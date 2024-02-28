@@ -30,10 +30,56 @@ export const fields = {
 export const schema = yup.object().shape({
     firstName: yup.string().required('First Name is required'),
     lastName: yup.string().required('Last Name is required'),
+    DocumentTypeID: yup.string().required('Document Id is required'),
     email: yup.string().email('Invalid email').required('Email is required'),
-    file: yup.mixed().required('File is required'),
+    // file: yup.mixed().required('File is required'),
     phone: yup.string()
         .required('Phone is required')
 });
 
 
+export const documentFilter = {
+    "draw": 0,
+    "start": 0,
+    "length": 100,
+    "columns": [
+        {
+            "data": "applicantName",
+            "name": "applicantName",
+            "searchable": true,
+            "orderable": true,
+            "search": {
+                "value": "",
+                "regex": ""
+            }
+        }
+    ],
+    "search": {
+        "value": "",
+        "regex": ""
+    },
+    "order": {
+        "orderBy": "CreatedDate",
+        "orderDirection": "desc"
+    },
+    "filter": {
+        "documentID": 0,
+        "applicantCourseID": 0,
+        "reassessmentID": 0,
+        "applicantID": 0,
+        "applicantName": "",
+        "courseID": 0,
+        "courseName": "",
+        "document": "",
+        "documentTypeID": 0,
+        "documentTypeName": "",
+        "status": 0,
+        "statusName": "",
+        "createdById": 0,
+        "createdDate": null,
+        "updatedById": 0,
+        "updatedDate": null,
+        "isDeleted": false,
+        "remarks": ""
+    }
+}

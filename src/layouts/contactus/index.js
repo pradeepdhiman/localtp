@@ -17,7 +17,7 @@ import SoftButton from "components/SoftButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
-import curved6 from "assets/images/curved-images/curved14.jpg";
+import curved6 from "assets/images/banners/bookSelf.webp";
 
 import AuthApi from "../../api/auth";
 

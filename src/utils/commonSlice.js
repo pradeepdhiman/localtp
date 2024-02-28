@@ -6,6 +6,7 @@ const initialState = {
     activeCourse: {},
     assessmentItem:{},
     session:{},
+    selectedCourse:{}
 };
 
 const commonSlice = createSlice({
@@ -24,8 +25,11 @@ const commonSlice = createSlice({
         setSelectedSession: (state, { payload }) => {
             state.session = payload
         },
+        setSelectedCourse: (state, { payload }) => {
+            state.selectedCourse = payload
+        },
     },
 });
 
-export const {setSelectedSession, setCourseList, setActiveCourse, setAssessmentItem } = commonSlice.actions;
+export const {setSelectedSession, setSelectedCourse, setCourseList, setActiveCourse, setAssessmentItem } = commonSlice.actions;
 export default commonSlice;

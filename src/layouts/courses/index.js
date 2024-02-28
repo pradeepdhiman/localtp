@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
-import curved9 from "assets/images/banners/2149241013.jpg";
+import curved9 from "assets/images/banners/2149241013.webp";
 // import curved9 from "assets/images/curved-images/aboutBanner.png";
 import PageCoverLayout from "examples/LayoutContainers/PageLayoutCover";
 import BuildByDevelopers from "./components/BuildByDevelopers";

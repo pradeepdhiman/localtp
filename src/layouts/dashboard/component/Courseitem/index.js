@@ -9,8 +9,6 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 // Images
-import wavesWhite from "assets/images/shapes/waves-white.svg";
-import rocketWhite from "assets/images/illustrations/rocket-white.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import SoftButton from "components/SoftButton";
 import { Box, LinearProgress } from "@mui/material";

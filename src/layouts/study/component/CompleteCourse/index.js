@@ -13,11 +13,10 @@ import SoftTypography from "components/SoftTypography";
 
 // Soft UI Dashboard Materail-UI example components
 import Table from "examples/Tables/Table";
-import data from "./data";
 
 
 function CompleteCourse() {
-  const { columns, rows } = data();
+  let columns, rows;
   const [menu, setMenu] = useState(null);
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);

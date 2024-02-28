@@ -22,12 +22,10 @@ import HomePagelayout from "examples/LayoutContainers/HomePageLayout";
 import CustomeNavbar from "examples/Navbars/CustomeNavbar";
 import styles from "../style.module.css"
 
-import curved9 from "assets/images/banners/vecteezy_arabic-business-man-at-meeting_12107251.jpg"
+import curved9 from "assets/images/banners/vecteezy_arabic-business-man-at-meeting_12107251.webp"
 import curved10 from "assets/images/partners/ALN-UAE-ACH-LOGO-White.png"
 import curved11 from "assets/images/partners/Adili-Logo-180x60-1.png"
 import curved12 from "assets/images/partners/rakicc-logo-white.svg"
-import curved13 from "assets/images/banners/happy-muslim-woman-home-during-online-lesson-technologies-remote-education-ethnicity-concept.jpg"
-
 function HomeLayout({ color, header, title, description, image, top, children }) {
   const navigate = useNavigate()
 

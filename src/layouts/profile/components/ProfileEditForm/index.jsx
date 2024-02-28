@@ -23,6 +23,10 @@ import { useDispatch } from "react-redux";
 import { setProfileInfo } from "layouts/profile/profileSlice";
 import PhoneInput from "react-phone-number-input";
 import 'react-phone-number-input/style.css';
+import { documentFilter } from "layouts/profile/constant";
+import { useDocFilterMutation } from "utils/functions";
+import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
+import { _sourcePath } from "config/constant";
 
 
 
@@ -33,6 +37,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
     const [qualification, setQualification] = useState({});
     const [nationality, setNationality] = useState({});
     const [docType, setDocType] = useState({});
+    const [docFilter, setDocFilter] = useState(documentFilter);
     const dispatch = useDispatch()
     const { data: qualificationList, isLoading: qualificationErr, refetch: refreshQualification } = useMasterListByTypeQuery({ TypeID: masterType.Qualification })
     const { data: desigList, isLoading: desigErr, refetch: refreshDesg } = useMasterListByTypeQuery({ TypeID: masterType.Designation })
@@ -41,6 +46,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
 
     const { data: applicantData, isLoading: appliLoading, isError: appliErr } = useGetApplicantQuery({ id: formFields?.applicantID })
     const [updateProfile, { data: resUpdate, isError: errUpdate, isLoading: loadingUpdate }] = useUpdateApplicantMutation()
+    const [getDocument, { data: documentList, isError: docmentErr, isLoading: documentLoading }] = useDocFilterMutation()
 
 
 
@@ -69,6 +75,34 @@ const ProfileEdit = ({ title, info, formFields }) => {
         }
     }, [qualificationList, desigList, nationalityList, applicantData, setValue]);
 
+
+    useEffect(() => {
+        console.log(docTypeList)
+        const foundType = docTypeList?.data?.find(x => x.value === "Profile Docs")
+        if (foundType) {
+            setDocFilter(prev => ({
+                ...prev,
+                filter: {
+                    ...prev.filter,
+                    applicantID: applicantData?.data?.applicantID || 0,
+                    documentTypeID: foundType?.masterCodeID || 0,
+                    documentTypeName: foundType?.value
+                }
+            }));
+            setValue('DocumentTypeID', parseInt(foundType.masterCodeID));
+            setDocType(foundType)
+        }
+    }, [applicantData, docTypeList]);
+
+
+    useEffect(() => {
+        async function profileDocument() {
+            await getDocument(docFilter)
+        }
+        if (docFilter?.filter.applicantID && docFilter?.filter?.documentTypeID) {
+            profileDocument(docFilter)
+        }
+    }, [docFilter])
 
     const user = authUser()
 
@@ -132,7 +166,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
         setNationality(newValue)
     };
     const docTypeHandler = (event, newValue) => {
-        setValue('nationality', parseInt(newValue.masterCodeID));
+        setValue('DocumentTypeID', parseInt(newValue.masterCodeID));
         setDocType(newValue)
     };
 
@@ -147,7 +181,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                 role="form"
                 onSubmit={handleSubmit(submitFormData)}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6} >
+                    <Grid item xs={4}  >
                         <Controller
                             name="firstName"
                             control={control}
@@ -155,7 +189,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                                 <SoftBox mb={2}>
                                     <SoftBox mb={1} ml={0.5}>
                                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                            First name
+                                            First name *
                                         </SoftTypography>
                                     </SoftBox>
                                     <SoftInput
@@ -172,7 +206,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} >
+                    <Grid item xs={4}  >
                         <Controller
                             name="lastName"
                             control={control}
@@ -180,7 +214,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                                 <SoftBox mb={2}>
                                     <SoftBox mb={1} ml={0.5}>
                                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                            LastName
+                                            LastName *
                                         </SoftTypography>
                                     </SoftBox>
                                     <SoftInput
@@ -197,7 +231,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} >
+                    <Grid item xs={4}  >
                         <Controller
                             name="email"
                             control={control}
@@ -205,7 +239,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                                 <SoftBox mb={2}>
                                     <SoftBox mb={1} ml={0.5}>
                                         <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                            Email
+                                            Email *
                                         </SoftTypography>
                                     </SoftBox>
                                     <SoftInput
@@ -222,7 +256,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} >
+                    <Grid item xs={4}  >
                         <Controller
                             name="phone"
                             control={control}
@@ -241,7 +275,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                                     <PhoneInput
                                         placeholder="(770)-888-444"
                                         {...field}
-                                        defaultCountry="US" 
+                                        defaultCountry="US"
                                     />
                                     {errors.phone && (
                                         <SoftTypography component="label" variant="caption" color="error">
@@ -252,7 +286,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} >
+                    <Grid item xs={4}  >
                         <Controller
                             name="address"
                             control={control}
@@ -277,7 +311,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} >
+                    <Grid item xs={4}  >
                         <Controller
                             name="dob"
                             control={control}
@@ -302,7 +336,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} >
+                    <Grid item xs={4}  >
                         <Controller
                             name="companyName"
                             control={control}
@@ -327,7 +361,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} >
+                    <Grid item xs={4}  >
                         <Controller
                             name="companyContactNumber"
                             control={control}
@@ -338,10 +372,15 @@ const ProfileEdit = ({ title, info, formFields }) => {
                                             Company contact number
                                         </SoftTypography>
                                     </SoftBox>
-                                    <SoftInput
+                                    {/* <SoftInput
                                         type="number"
                                         {...field}
                                         placeholder="Company contact number"
+                                    /> */}
+                                    <PhoneInput
+                                        placeholder="(770)-888-444"
+                                        {...field}
+                                        defaultCountry="US"
                                     />
                                     {errors.companyContactNumber && (
                                         <SoftTypography component="label" variant="caption" color="error">
@@ -352,7 +391,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} >
+                    <Grid item xs={4}  >
                         <Controller
                             name="companyAddress"
                             control={control}
@@ -377,7 +416,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} >
+                    <Grid item xs={4}  >
                         <SoftBox mb={2}>
                             <SoftBox mb={1} ml={0.5}>
                                 <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -399,7 +438,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                             )}
                         </SoftBox>
                     </Grid>
-                    <Grid item xs={12} sm={6} >
+                    <Grid item xs={4}  >
                         <SoftBox mb={2}>
                             <SoftBox mb={1} ml={0.5}>
                                 <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -421,7 +460,7 @@ const ProfileEdit = ({ title, info, formFields }) => {
                             )}
                         </SoftBox>
                     </Grid>
-                    <Grid item xs={12} sm={6} >
+                    <Grid item xs={4}  >
                         <SoftBox mb={2}>
                             <SoftBox mb={1} ml={0.5}>
                                 <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -442,73 +481,6 @@ const ProfileEdit = ({ title, info, formFields }) => {
                                 </SoftTypography>
                             )}
                         </SoftBox>
-                    </Grid>
-                    <Grid item xs={12} sm={6} >
-                        <SoftBox mb={2}>
-                            <SoftBox mb={1} ml={0.5}>
-                                <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                    Document Type
-                                </SoftTypography>
-                            </SoftBox>
-                            <SoftAddAbleAutoSelect
-                                dataList={docTypeList?.data || []}
-                                selectedValue={docType}
-                                selectHandler={docTypeHandler}
-                                label={null}
-                                placeholder="Document Type"
-                                isEditable={false}
-                            />
-                            {errors.DocumentTypeID && (
-                                <SoftTypography component="label" variant="caption" color="error">
-                                    {errors.DocumentTypeID.message}
-                                </SoftTypography>
-                            )}
-                        </SoftBox>
-                    </Grid>
-                    <Grid item xs={6}  >
-                        <SoftBox>
-                            <SoftBox mb={1} ml={0.5}>
-                                <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                    Select Files
-                                </SoftTypography>
-                            </SoftBox>
-                            <input
-                                multiple
-                                type="file"
-                                {...register('file', { required: 'File is required' })}
-                                error={Boolean(errors.file)}
-                                helperText={errors.file?.message}
-                            />
-                            {errors.file && (
-                                <SoftTypography component="label" variant="caption" color="error">
-                                    {errors.file.message}
-                                </SoftTypography>
-                            )}
-                        </SoftBox>
-                        {/* <Controller
-                            name="file"
-                            control={control}
-                            render={({ field }) => (
-                                <SoftBox mb={2}>
-                                    <SoftBox mb={1} ml={0.5}>
-                                        <SoftTypography component="label" variant="caption" fontWeight="bold">
-                                            Support File
-                                        </SoftTypography>
-                                    </SoftBox>
-                                    <input
-                                        multiple
-                                        type="file"
-                                        {...field}
-                                        placeholder="Support File"
-                                    />
-                                    {errors.supportFile && (
-                                        <SoftTypography component="label" variant="caption" color="error">
-                                            {errors.supportFile.message}
-                                        </SoftTypography>
-                                    )}
-                                </SoftBox>
-                            )}
-                        /> */}
                     </Grid>
                     <Grid item xs={12}  >
                         <Controller
@@ -537,6 +509,77 @@ const ProfileEdit = ({ title, info, formFields }) => {
                             )}
                         />
                     </Grid>
+                    <Grid item xs={12} sm={3} >
+                        <SoftBox mb={2}>
+                            <SoftBox mb={1} ml={0.5}>
+                                <SoftTypography component="label" variant="caption" fontWeight="bold">
+                                    Document Type *
+                                </SoftTypography>
+                            </SoftBox>
+                            <SoftAddAbleAutoSelect
+                                dataList={docTypeList?.data || []}
+                                selectedValue={docType}
+                                selectHandler={docTypeHandler}
+                                label={null}
+                                placeholder="Document Type"
+                                isEditable={false}
+                            />
+                            {errors.DocumentTypeID && (
+                                <SoftTypography component="label" variant="caption" color="error">
+                                    {errors.DocumentTypeID.message}
+                                </SoftTypography>
+                            )}
+                        </SoftBox>
+                        <SoftBox>
+                            <SoftBox mb={1} ml={0.5}>
+                                <SoftTypography component="label" variant="caption" fontWeight="bold">
+                                    Select Files
+                                </SoftTypography>
+                            </SoftBox>
+                            <input
+                                multiple
+                                type="file"
+                                {...register('file', { required: 'File is required' })}
+                                error={Boolean(errors.file)}
+                                helperText={errors.file?.message}
+                            />
+                            {errors.file && (
+                                <SoftTypography component="label" variant="caption" color="error">
+                                    {errors.file.message}
+                                </SoftTypography>
+                            )}
+                        </SoftBox>
+                    </Grid>
+                    <Grid item xs={9}>
+                        <SoftBox>
+                            <Grid container spacing={1}>
+                                {documentLoading && <Grid item xs={12}><SoftBarLoader /></Grid>}
+                                {documentList?.data?.map(item => (
+                                    <Grid key={item?.documentID} item xs={3} style={{ position: "relative", marginLeft: "auto" }} > {/* Corrected typo sx to style and ml to marginLeft */}
+                                        <SoftBox
+                                            height="100%"
+                                            display="grid"
+                                            justifyContent="center"
+                                            alignItems="center"
+                                        >
+                                            <SoftBox
+                                                component="img"
+                                                src={_sourcePath + "Content/ApplicantDocs/" + item.document}
+                                                alt={item.document}
+                                                display="block"
+                                                position="absolute"
+                                                left={0}
+                                                width="100%"
+                                                height="100%"
+                                            />
+                                            <SoftBox component="img" src={_sourcePath + "Content/ApplicantDocs/" + item.document} alt={item.document} width="100%" pt={3} />
+                                        </SoftBox>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </SoftBox>
+                    </Grid>
+
 
                 </Grid>
 

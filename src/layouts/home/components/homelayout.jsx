@@ -22,9 +22,10 @@ import HomePagelayout from "examples/LayoutContainers/HomePageLayout";
 import CustomeNavbar from "examples/Navbars/CustomeNavbar";
 import styles from "../style.module.css"
 
-import curved9 from "assets/images/banners/vecteezy_arabic-business-man-at-meeting_12107251.jpg"
-import curved10 from "assets/images/banners/office-workers-using-finance-graphs.jpg"
-import curved11 from "assets/images/banners/vecteezy_arabic-business-man-at-meeting_12107251.jpg"
+import curved9 from "assets/images/banners/vecteezy_arabic-business-man-at-meeting_12107251.webp"
+import curved10 from "assets/images/banners/office-workers-using-finance-graphs.webp"
+import curved11 from "assets/images/banners/vecteezy_arabic-business-man-at-meeting_12107251.webp"
+import curved12 from "assets/images/banners/pexels-mikhail-nilov-7582655.webp"
 
 function HomeLayout({ color, header, title, description, image, top, children }) {
   const navigate = useNavigate()
@@ -233,7 +234,7 @@ function HomeLayout({ color, header, title, description, image, top, children })
       <SoftBox>
         <Grid container spacing={2} alignItems="center" mt={3}>
           <Grid xs={12} sm={6} >
-            <SoftBox className={styles.fluidImage} component="img" src={curved11} alt={curved9} />
+            <SoftBox className={styles.fluidImage} component="img" src={curved12} alt={curved9} />
           </Grid>
           <Grid xs={12} sm={6}>
             <SoftBox ml={3}>

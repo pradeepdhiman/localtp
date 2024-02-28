@@ -18,41 +18,60 @@ import PageLayout from "examples/LayoutContainers/PageLayout";
 import Footer from "layouts/authentication/components/Footer";
 import SoftButton from "components/SoftButton";
 import { useNavigate } from "react-router-dom";
+import HomePagelayout from "examples/LayoutContainers/HomePageLayout";
+import CustomeNavbar from "examples/Navbars/CustomeNavbar";
+import styles from "../style.module.css"
+
+import curved9 from "assets/images/banners/vecteezy_arabic-business-man-at-meeting_12107251.webp"
+import curved10 from "assets/images/banners/office-workers-using-finance-graphs.webp"
+import curved11 from "assets/images/banners/vecteezy_arabic-business-man-at-meeting_12107251.webp"
+import curved12 from "assets/images/banners/pexels-mikhail-nilov-7582655.webp"
 
 function HomeLayout({ color, header, title, description, image, top, children }) {
-const navigate = useNavigate()
+  const navigate = useNavigate()
 
 
   return (
-    <PageLayout background="white">
-      <DefaultNavbar />
-      <Grid
-        container
-        justifyContent="center"
-        sx={{
-          minHeight: "75vh",
-          margin: 0,
-        }}
-      >
-        <Grid item xs={11} sm={8}>
-          <SoftBox mt={top}>
-            <SoftBox pt={3} px={3}>
-              {children}
+    <HomePagelayout background="white" >
+      <SoftBox className={styles.absolutenavbox}><CustomeNavbar /></SoftBox>
+      
+      <SoftBox>
+        <Grid container spacing={2} alignItems="center" mt={3}>
+          <Grid xs={12} >
+            <SoftBox p={4} mt={4}>
+              <SoftBox mb={1}>
+                <SoftTypography variant="h2" fontWeight="bold" color="dark">
+                  Privacy Policy
+                </SoftTypography>
+              </SoftBox>
+              {/* <SoftBox>
+                <SoftTypography variant="body2" fontWeight="regular" color="dark">
+                  Your Trusted AML Partner Embark on this thrilling journey of learning and growth. With Compliance360, you'll not only master AML/CFT compliance – you'll become a champion for financial security and integrity.
+                </SoftTypography>
+              </SoftBox>
+              <SoftBox mt={2}>
+                <SoftTypography variant="body2" fontWeight="regular" color="dark">
+                  Contact us today to start your personalized AML training adventure!
+                </SoftTypography>
+              </SoftBox> */}
             </SoftBox>
-          </SoftBox>
+          </Grid>
         </Grid>
-      </Grid>
+      </SoftBox>
+
+
       <Footer />
-    </PageLayout>
+    </HomePagelayout>
   );
 }
 
+// Setting default values for the props of HomeLayout
 HomeLayout.defaultProps = {
   header: "",
   title: "",
   description: "",
   color: "info",
-  top: 20,
+  top: 7,
 };
 
 // Typechecking props for the HomeLayout

@@ -8,8 +8,6 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 // Images
-import wavesWhite from "assets/images/shapes/waves-white.svg";
-import rocketWhite from "assets/images/illustrations/rocket-white.png";
 import SoftButton from "components/SoftButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";

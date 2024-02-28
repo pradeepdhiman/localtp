@@ -19,7 +19,7 @@ import { useGetProfileQuery } from "utils/functions";
 import SoftBarLoader from "components/SoftLoaders/SoftBarLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { setProfileInfo } from "./profileSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Stack, Tab, Tabs } from "@mui/material";
 import SoftButton from "components/SoftButton";
 import DocUpload from "./components/DocUpload";
@@ -46,7 +46,7 @@ function Overview() {
   const [tabValue, setTabValue] = useState(0);
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   // const { data: { data: profile } = {}, isError: profileErr, isLoading: profileLoading } = useGetProfileQuery({ id: user?.applicantId }) || {};
-  const { data: { data: profile } = {}, isError: profileErr, isLoading: profileLoading } = useGetApplicantQuery({ id: user?.applicantId })
+  const { data: { data: profile } = {}, isError: profileErr, isLoading: profileLoading, refetch: refreshProfile } = useGetApplicantQuery({ id: user?.applicantId })
 
   function editClickhandler() {
     if (Object.keys(profileInfo).length) {
@@ -55,6 +55,15 @@ function Overview() {
       dispatch(setProfileInfo(profile));
     }
   }
+
+  useEffect(() => {
+    async function reloadProfile() {
+      try {
+        await refreshProfile()
+      } catch (err) { console.log(err) }
+    }
+    reloadProfile()
+  }, [profileInfo?.applicantID])
 
   function toogleSetting() {
     // dispatch(setProfileInfo({}))

@@ -1,5 +1,5 @@
 
-import curved9 from "assets/images/banners/vecteezy_asesor-financiero-contable-de-inversiones-consultando-con_7359372.JPG"
+import curved9 from "assets/images/banners/vecteezy_asesor-financiero-contable-de-inversiones-consultando-con_7359372.webp"
 import HomeLayout from "./components/homelayout";
 
 

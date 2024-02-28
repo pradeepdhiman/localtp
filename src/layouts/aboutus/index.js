@@ -1,5 +1,5 @@
 
-import curved9 from "assets/images/curved-images/homeBanner.png";
+import curved9 from "assets/images/curved-images/homeBanner.webp";
 import HomeLayout from "./components/homelayout";
 import { Card } from "@mui/material";
 import SoftBox from "components/SoftBox";

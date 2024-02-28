@@ -120,10 +120,14 @@ export const applicantApis = emptySplitApi.injectEndpoints({
         scheduleFilter: build.mutation({
             query: (data) => createRequest("/CourseSchedule/GetCourseSchedules", data),
         }),
+        docFilter: build.mutation({
+            query: (data) => createRequest("/ApplicantCourseDocs/GetAplicantDocs", data),
+        }),
     }),
 });
 
 export const {
+    useDocFilterMutation,
     useScheduleFilterMutation,
     useUpdateApplicantMutation,
     useEnrollcourseMutation,

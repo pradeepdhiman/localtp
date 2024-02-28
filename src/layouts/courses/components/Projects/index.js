@@ -15,11 +15,10 @@ import SoftTypography from "components/SoftTypography";
 import Table from "examples/Tables/Table";
 
 // Data
-import data from "layouts/courses/components/Projects/data";
 import SoftInput from "components/SoftInput";
 
 function Projects() {
-  const { columns, rows } = data();
+  let column, rows;
   const [menu, setMenu] = useState(null);
   const [formData, setFormData] = useState({
     'search': ''

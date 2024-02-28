@@ -9,17 +9,24 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 // Images
-import wavesWhite from "assets/images/shapes/waves-white.svg";
-// import rocketWhite from "assets/images/illustrations/rocket-white.png";
-import rocketWhite from "assets/images/banners/profileBanner.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
 import SoftButton from "components/SoftButton";
 import { _sourcePath } from "config/constant";
+import { useDispatch } from "react-redux";
+import { setSelectedCourse } from "utils/commonSlice";
 
 function BuildByDevelopers(props) {
+  const dispatch = useDispatch()
+
   const { course = {} } = props
   const location = useLocation()
   const navigate = useNavigate();
+
+  function selectCourse() {
+    dispatch(setSelectedCourse(course))
+    navigate(`${location.pathname}/${course.courseID}`)
+  }
+
   return (
     <Card>
       <SoftBox p={2}>
@@ -58,7 +65,8 @@ function BuildByDevelopers(props) {
               <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
                 {course.courseName}
               </SoftTypography>
-              <SoftButton onClick={() => navigate(`${location.pathname}/${course.courseID}`)} color="dark" variant="outlined" size="small">Read More</SoftButton>
+              <SoftButton onClick={selectCourse} color="dark" variant="outlined" size="small">Read More</SoftButton>
+              {/* <SoftButton onClick={() => navigate(`${location.pathname}/${course.courseID}`)} color="dark" variant="outlined" size="small">Read More</SoftButton> */}
             </SoftBox>
           </Grid>
         </Grid>
