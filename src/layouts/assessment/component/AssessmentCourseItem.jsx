@@ -63,7 +63,7 @@ const AssessmentCourseItem = ({ itemData = {} }) => {
                             <SoftBox width="100%" textAlign="left" mt={2} >
                                 <SoftProgress value={100} color="error" variant="gradient" label={false} />
                             </SoftBox>
-                            <Box mt={2}><SoftButton onClick={starthandler} size="small" color="info" variant="outlined">Take Assessment</SoftButton></Box>
+                            <Box mt={2}><SoftButton onClick={starthandler} size="small" color="dark" variant="outlined">Take Assessment</SoftButton></Box>
                         </SoftBox>
                     </Grid>
                 </Grid>

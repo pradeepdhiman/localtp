@@ -245,6 +245,8 @@ export function startAutoLogout(timeoutInMinutes = 1) {
 
 export const toastHandler = (response) => {
   const { data, error } = response;
+  console.log(data)
+  console.log(error)
   if (data?.success) {
     toast.success(data?.message, {
       position: toast.POSITION.TOP_RIGHT,

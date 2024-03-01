@@ -34,7 +34,6 @@ function RetakeTable(props) {
     const dispatch = useDispatch()
     const { list = [], loading = false, changeFilter } = props
 
-    console.log(list)
     const [menu, setMenu] = useState(null);
     const [rowPerPage, setRowPerPage] = useState(10);
     const [rows, setRows] = useState();
