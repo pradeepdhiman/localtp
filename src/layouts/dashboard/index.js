@@ -54,14 +54,19 @@ function Dashboard() {
             </SoftBox>
           </SoftBox>
           <SoftBox p={2}>
-            {appliedCourse?.data?.length !== 0 ?
-              <AppliedCourse course={appliedCourse?.data} /> : <Card>
+            {appliedCourse?.data?.length !== 0 ? (
+              <AppliedCourse course={appliedCourse?.data} />
+            ) : (
+              <Card>
                 <SoftBox p={2}>
                   <SoftTypography variant="button" fontWeight="bold" color="text">
-                    You did not apply any course so far.
+                    You have not applied to any courses yet.
                   </SoftTypography>
-                </SoftBox></Card>}
+                </SoftBox>
+              </Card>
+            )}
           </SoftBox>
+
         </Card> : null}
       </SoftBox>
       <SoftBox mb={3}>
@@ -82,14 +87,21 @@ function Dashboard() {
 
           <SoftBox p={2}>
             <Grid container spacing={3}>
-              {activeCourse?.data?.length && activeCourse?.data?.map(itemData => <Grid key={itemData.applicantCourseI} item xs={12} md={6} xl={3}>
-                <CourseItem item={itemData} />
-              </Grid>)}
-              {activeCourse?.data?.length === 0 && <Grid item xs><SoftTypography variant="button" fontWeight="bold" color="text">
-                You don’t have any active courses.
-              </SoftTypography></Grid>}
+              {activeCourse?.data?.map(itemData => (
+                <Grid key={itemData.applicantCourseI} item xs={12} md={6} xl={3}>
+                  <CourseItem item={itemData} />
+                </Grid>
+              ))}
+              {(!activeCourse?.data || activeCourse?.data.length === 0) && (
+                <Grid item xs={12}>
+                  <SoftTypography variant="button" fontWeight="bold" color="text">
+                    You don’t have any active courses.
+                  </SoftTypography>
+                </Grid>
+              )}
             </Grid>
           </SoftBox>
+
 
         </Card>
       </SoftBox>

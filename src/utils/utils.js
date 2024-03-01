@@ -244,7 +244,7 @@ export function startAutoLogout(timeoutInMinutes = 1) {
 
 
 export const toastHandler = (response) => {
-  const { data } = response;
+  const { data, error } = response;
   if (data?.success) {
     toast.success(data?.message, {
       position: toast.POSITION.TOP_RIGHT,
@@ -255,7 +255,7 @@ export const toastHandler = (response) => {
       draggable: false,
     });
   } else {
-    toast.error(data?.errors[0], {
+    toast.error(data ? data?.errors[0] : error?.data?.errors[0], {
       position: toast.POSITION.TOP_RIGHT,
       autoClose: 3000,
       hideProgressBar: false,
